@@ -1,0 +1,28 @@
+T‰m‰ kansio sis‰lt‰‰ skriptej‰ sorvin vaatimien riippuvuuksien
+asentamiseen eri j‰rjestelmille. Huomioita:
+
+
+* Debian (Ubuntu ym.) / Contributed by Leo Lahti
+ 
+
+* Fedora (Testattu Fedora 15) / Contributed by Joona Lehtom‰ki
+
+- Skriptiin in lis‰tty vipu "--no-gdal", mik‰li k‰ytt‰j‰ ei halua
+sekalaista l‰j‰‰ riippuvuuksia joita gdal-devel vaatii mukanaan.
+
+
+* openSUSE (Testattu openSUSE 11.4) / Contributed by Joona Lehtom‰ki
+
+- Skriptiin in lis‰tty vipu "--no-gdal", mik‰li k‰ytt‰j‰ ei halua
+sekalaista l‰j‰‰ riippuvuuksia joita gdal-devel vaatii mukanaan.
+
+- GDAL- ja GEOS-kirjastoja ei lˆydy openSUSEn tavanomaisista repoista,
+joten skripti lis‰‰ ensin paketinhallintaj‰rjestelm‰‰n Geo-repon,
+josta paketit lˆytyv‰t. 
+
+- skripti skippaa gpg-tarkastuksen (muuten vaatii k‰ytt‰j‰lt‰
+palautetta). 
+
+- openSUSEn versio (11.4) on kovakoodattu URLiin, joten skripti on
+spesifi t‰lle versiolle. Saattaa toimia vanhemmissakin versioissa.
+
