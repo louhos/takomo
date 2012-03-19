@@ -70,4 +70,6 @@ map.plot <- map.plot + geom_polygon(data=subset(natural.df, type %in% c("park"))
 # Set the limits to match the bounding box
 # map.plot <- map.plot + xlim(Hbox["x","min"], Hbox["x","max"]) + ylim(Hbox["y","min"], Hbox["y","max"])
 
+## TESTS FOR PLACES AND POINTS
+shape.dat <- readShapeSpatial(paste(data.folder, "finland.shp/places.shp", sep=""))
 
