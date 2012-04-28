@@ -6,12 +6,13 @@
 # a given region, defined by a bounding box. The output is given in ggplot2-compatible
 # data frames, but you can also use the shape objects
 
+library(sorvi)
 
 # Functions for preprocessing the OSM data
-source("OpenStreetMap/OSM_functions_20120310.R")
+source("OSM_functions_20120310.R")
 
 # Define path for your data folder
-data.folder <- "/Users/juusoparkkinen/Documents/workspace/data/"
+data.folder <- "~/tmp/"
 
 # Set bounding box
 # NOTE! The larger the box, the longer the script will run!
