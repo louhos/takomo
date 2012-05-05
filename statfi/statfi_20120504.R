@@ -21,8 +21,10 @@ folder.urls <- as.vector(sapply(databasetreeNodes[insDocs], function(x) unlist(s
 folder.urls <- gsub("\\.\\.\\/", "http://pxweb2.stat.fi/database/", folder.urls)
 
 # For each subfolder, extract urls for the .px files
-px.tree <- list()#vector("list", length(folder.urls))
-for (i in 1:5) { #seq(px.tree)) {
+px.tree <- vector("list", length(folder.urls))
+for (i in seq(px.tree)) {
+  if (i %% 10 == 0)
+    message(i, ", ", appendLF=FALSE)
   # Write the contents of the statfi file to a temporary file
   temp.filename2 <- "TEMP_statfi.txt"
   sink(temp.filename2)
@@ -42,5 +44,5 @@ for (i in 1:5) { #seq(px.tree)) {
   # Extract title
   names(px.tree)[i] <- gsub("</title>", "", gsub("<title>", "", statfi[4]))
 }
-
+save(px.tree, file="StatFi_px_urls.RData")
 
