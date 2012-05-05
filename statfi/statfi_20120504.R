@@ -8,12 +8,13 @@ url <- "http://pxweb2.stat.fi/database/StatFin/databasetreeNodes_fi.js"
 # Write the contents of databasetreeNodes_fi.js directly into a text file
 temp.filename <- "TEMP_databasetreeNodes.txt"
 sink(temp.filename)
-htmlParse(url)
+print(htmlParse(url))
 sink()
 
 # Read the data and delete the file
 databasetreeNodes <- readLines(temp.filename)
 file.remove(temp.filename)
+
 
 # Extract urls for the subfolders
 # NOTE! This skips the parent folders, e.g. Asuminen or Elinolot
@@ -23,9 +24,11 @@ insDocs <- grep("insDoc", databasetreeNodes)
 folder.urls <- as.vector(sapply(databasetreeNodes[insDocs], function(x) unlist(strsplit(x, split="\""))[6]))
 folder.urls <- gsub("\\.\\.\\/", "http://pxweb2.stat.fi/database/", folder.urls)
 
+
 # For each subfolder, extract urls for the .px files
 # px.tree has now two levels of hierarchy
 px.tree <- vector("list", length(folder.urls))
+#for (i in seq(px.tree)) {
 for (i in seq(px.tree)) {
   if (i %% 10 == 0)
     message(i, ", ", appendLF=FALSE)
