@@ -16,11 +16,15 @@ databasetreeNodes <- readLines(temp.filename)
 file.remove(temp.filename)
 
 # Extract urls for the subfolders
+# NOTE! This skips the parent folders, e.g. Asuminen or Elinolot
+# Those could be found with grep("insFld", ...)
+# If we want to retain the whole hierarchy we would need to get those as well
 insDocs <- grep("insDoc", databasetreeNodes)
 folder.urls <- as.vector(sapply(databasetreeNodes[insDocs], function(x) unlist(strsplit(x, split="\""))[6]))
 folder.urls <- gsub("\\.\\.\\/", "http://pxweb2.stat.fi/database/", folder.urls)
 
 # For each subfolder, extract urls for the .px files
+# px.tree has now two levels of hierarchy
 px.tree <- vector("list", length(folder.urls))
 for (i in seq(px.tree)) {
   if (i %% 10 == 0)
