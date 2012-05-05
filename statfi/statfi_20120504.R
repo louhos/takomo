@@ -48,7 +48,7 @@ for (i in seq(px.tree)) {
   # Extract title
   names(px.tree)[i] <- gsub("</title>", "", gsub("<title>", "", statfi[4]))
 }
-save(px.tree, file="StatFi_px_urls_20120505.RData")
+save(px.tree, file="statfi/StatFi_px_urls_20120505.RData")
 
 # CSV conversion
 # Create file/folder structure similar to the original
