@@ -51,4 +51,30 @@ for (i in seq(px.tree)) {
   # Extract title
   names(px.tree)[i] <- gsub("</title>", "", gsub("<title>", "", statfi[4]))
 }
-save(px.tree, file="StatFi_px_urls_20120505.RData")
+
+save(px.tree, file="statfi/StatFi_px_urls_20120505.RData")
+
+# CSV conversion
+# Create file/folder structure similar to the original
+message("Changing folder to StatFin where the data will be saved!")
+setwd("statfi/StatFin")
+for (i in seq(px.tree)) {
+  # Loop over the files
+  for (j in seq(px.tree[[i]])) {
+    path <- unlist(strsplit(px.tree[[i]][[j]], split="\\/"))
+    l1.folder <- path[6]
+    l2.folder <- paste(l1.folder, path[7], sep="/")
+    filename <- gsub("\\.px", "\\.txt", path[8])
+    # Check whether level 1 folder exists - if not, create it
+    if (!file.exists(l1.folder))
+      dir.create(l1.folder)
+    # Check whether level 2 folder exists - if not, create it
+    if (!file.exists(l2.folder))
+      dir.create(l2.folder)
+    # Write temporary files 
+    write("TEMPTEMPTEMP", file=paste(l2.folder, filename, sep="/"))
+  }
+}
+
+
+
