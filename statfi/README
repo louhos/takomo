@@ -1,0 +1,135 @@
+Tämä hakemisto sisältää kuntatason dataa HSOpen-tapahtumaan 
+Helsingissä 20.5.2012.
+
+Tiedot on poimittu automaattisesti Tilastokeskuksen ja Maanmittauslaitoksen 
+sivuilta suomalaisen avoimen datan soRvi-ohjelmakirjaston (versio 0.1.70) 
+hakurutiineilla. Hakemisto sisältää seuraavat kuntatason csv-tiedostot
+puolipisteellä (;) eroteltuna:
+
+- Koostetaulukko, joka sisältää kaikki alla mainitut aineistot 
+  (HSOpenKuntadata.csv)
+- Suomen kuntien perustietoja (Tilastokeskus-KuntienAvainluvut.csv ja MML.csv)
+- Kunnallisvaaleista 2000 (Kunnallisvaalit2000.csv)
+- Kunnallisvaaleista 2004 (Kunnallisvaalit2004.csv)
+- Kunnallisvaaleista 2008 (Kunnallisvaalit2008.csv)
+- Eduskuntavaaleista 2007-2011 (Eduskuntavaalit_2007_2011.csv)
+
+Aineistot on käsitelty siten, että tiedostojen rivit vastaavat toisiaan. 
+Kukin rivi vastaa yhtä kuntaa. Tietoja ei ole taulukoitu siltä osin kuin 
+kunnan nimi ei ole vertailukelpoinen Tilastokeskuksen 
+kuntien avainlukutaulukon kanssa (esimerkiksi muuttuneet kuntanimet). 
+
+Aineistot on koostanut Leo Lahti, Juuso Parkkinen ja Joona Lehtomäki 2012. 
+Koostaminen onnistuu tiedostolla collect.R, joka kutsuu 
+soRvi-ohjelmakirjaston versiota tiedostossa sorvi_0.1.70.tar.gz; asennusohjeet 
+http://louhos.github.com/sorvi/asennus.html. Uudet lähdekoodit avointen 
+tietoaineistojen käsittelyyn voidaan liittää osaksi Louhos-ohjelmakirjastoa. 
+Lisätiedot: http://louhos.github.com/contact.html
+
+Aineistojen alkuperäiset lähteet on eritelty alla. 
+
+----------------------------------------------------------------------
+
+(C) MML 2012
+Maanmittauslaitoksen kuntadataa (MML.csv)
+
+Lähde: http://www.maanmittauslaitos.fi/aineistot-palvelut/digitaaliset-tuotteet/ilmaiset-aineistot/hankinta
+
+----------------------------------------------------------------------
+
+(C) Tilastokeskus 2012
+Kuntien avainluvut (Tilastokeskus-KuntienAvainluvut.csv)
+
+Lähde: http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px
+
+----------------------------------------------------------------------
+
+(C) Tilastokeskus 2012
+
+Eduskuntavaalit 2007-2011  (Eduskuntavaalit_2007_2011.csv)
+
+2.2 Äänioikeutetut ja äänestäneet sekä ennakolta äänestäneet sukupuolen mukaan 
+kunnittain eduskuntavaaleissa 2011 ja 2007
+
+Lähde: http://pxweb2.stat.fi/database/StatFin/vaa/evaa/evaa_fi.asp
+
+Tiedosto: http://pxweb2.stat.fi/database/StatFin/vaa/evaa/120_evaa_tau_104_fi.px
+
+-----------------------------------------------------------------------
+
+(C) Tilastokeskus 2012
+
+Kunnallisvaalit 2000 (Kunnallisvaalit2000.csv)
+
+Lähde: http://pxweb2.stat.fi/database/StatFin/vaa/kvaa_2000/kvaa_2000_fi.asp
+
+
+Äänestystiedot
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa_2000/010_kvaa_2000_2008-10-17_tau_101_fi.px
+
+Ehdokkaat puolueittain vaalipiirin ja kunnan mukaan kunnallisvaaleissa 2000
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa_2000/020_kvaa_2000_2008-10-17_tau_102_fi.px
+
+Valitut puolueittain vaalipiirin ja kunnan mukaan kunnallisvaaleissa 2000
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa_2000/030_kvaa_2000_2008-10-17_tau_103_fi.px
+
+Kunnallisvaalit 2000, puolueiden kannatus
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa_2000/040_kvaa_2000_2008-10-17_tau_104_fi.px
+
+----------------------------------------------------------------------
+
+(C) Tilastokeskus 2012
+
+Kunnallisvaalit 2004 (Kunnallisvaalit2004.csv)
+
+Taulukot tilastossa: 5. Kunnallisvaalit 2004 - vaalitulos, äänestäminen
+Lähde: http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/2004_05_fi.asp
+
+
+Kunnallisvaalit 2004, äänestystiedot
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/010_KVAA_2004_2008-07-23_TAU_101_FI.px
+
+Kunnallisvaalit 2004, valittujen lukumäärä
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/010_kvaa_2004_2008-08-28_tau_103_fi.px
+
+Puolueiden äänimäärät ja äänestysprosentti sekä valittujen lukumäärä 
+kunnittain kunnallisvaaleissa 2004 ja muutos edellisiin vaaleihin 
+verrattuna
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/060_kvaa_2004_2008-08-27_tau_111_fi.px
+
+Puolueiden äänimäärät ja valittujen lukumäärä kunnittain (pienet puolueet), hylätyt liput sekä ennakkoäänestäneet kunnallisvaaleissa 2004
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/060_kvaa_2004_2008-08-27_tau_114_fi.px
+
+Äänioikeutetut ja äänestäneet sukupuolen mukaan, hyväksytyt äänestysliput, valtuutetuiksi valitut ja ennakkoäänet puolueittain sekä hylättyjen äänestyslippujen lukumäärä kunnittain kunnallisvaaleissa 2004
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_05/060_kvaa_2004_2008-08-28_tau_116_fi.px
+
+----------------------------------------------------------------------
+
+(C) Tilastokeskus 2012
+
+Kunnallisvaalit 2008 (Kunnallisvaalit2008.csv) 
+
+Taulukot tilastossa: 5. Kunnallisvaalit 2008 - vaalitulos, äänestäminen
+Lähde: http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/2008_05_fi.asp
+
+
+Kunnallisvaalit 2008, äänestystiedot
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/610_kvaa_2008_2009-10-30_tau_137_fi.px
+
+Naisehdokkaitten vaalitiedot puolueen ja kunnan mukaan kunnallisvaaleissa 2008
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/720_kvaa_2008_2009-12-30_tau_148_fi.px
+
+Kunnallisvaalit 2008, valittujen lukumäärä
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/630_kvaa_2008_2009-10-30_tau_139_fi.px
+
+Puolueiden äänimäärät ja äänestysprosentti sekä valittujen lukumäärä 
+kunnittain kunnallisvaaleissa 2008 ja muutos edellisiin vaaleihin 
+verrattuna
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/680_kvaa_2008_2009-11-02_tau_144_fi.px
+
+Puolueiden äänimäärät ja valittujen lukumäärä kunnittain (pienet puolueet), hylätyt liput sekä ennakkoäänestäneet kunnallisvaaleissa 2008
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/700_kvaa_2008_2009-11-02_tau_146_fi.px
+
+Äänioikeutetut ja äänestäneet sukupuolen mukaan, hyväksytyt äänestysliput, valtuutetuiksi valitut ja ennakkoäänet puolueittain sekä hylättyjen äänestyslippujen lukumäärä kunnittain kunnallisvaaleissa 2008
+http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/710_kvaa_2008_2009-11-02_tau_147_fi.px
+
