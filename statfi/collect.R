@@ -2,7 +2,7 @@
 # louhos.github.com/sorvi/
 
 # Copyright (C) 2012 Leo Lahti, Juuso Parkkinen and Joona Lehtomäki. 
-# All rights reserved. Contact: <leo.lahti@iki.fi>
+# All rights reserved. Contact: <http://louhos.github.com/contact.html>
 
 # This program is open source software; you can redistribute it and/or
 # modify it under the terms of the FreeBSD License (keep this notice):
