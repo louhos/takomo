@@ -1,4 +1,4 @@
-# Copyright (C) 2012 Louhos
+# Copyright (C) 2012 Louhos (louhos.github.com)
 # Contact: sorvi-commits@lists.r-forge.r-project.org
 # All rights reserved.
 
