@@ -26,3 +26,9 @@ palautetta).
 - openSUSEn versio (11.4) on kovakoodattu URLiin, joten skripti on
 spesifi t�lle versiolle. Saattaa toimia vanhemmissakin versioissa.
 
+
+* Tarpeellisten R-pakettien pitäisi asentua automaattisesti soRvin
+GitHub-asennusohjeilla (http://louhos.github.com/sorvi/), riippuvuudet voi 
+vaihtoehtoisesti asentaa tämän hakemiston skriptillä sorvi.dependencies.R
+
+
