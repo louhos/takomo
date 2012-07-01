@@ -9,7 +9,7 @@
 # Copyright (C) 2011-2012 Leo Lahti <leo.lahti@iki.fi>
 #
 # Licence: FreeBSD (keep this notice)
-#
+
 
 set -e
 
