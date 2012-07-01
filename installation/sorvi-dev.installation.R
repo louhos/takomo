@@ -24,7 +24,7 @@
 
 install.packages(devtools)
 library(devtools)
-install_github(repo = "soRvi", username = "louhos", type = "source")
+install_github(repo = "soRvi-dev", username = "louhos", type = "source")
 
 
 
