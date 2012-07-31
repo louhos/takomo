@@ -70,17 +70,10 @@ rep.word.mat.preprocessed <- rep.word.mat.raw
 # First 548 in the list are numbers (these include some sensible years, though...)
 rep.word.mat.preprocessed <- rep.word.mat.preprocessed[,-(1:548)]
 # Remove stopwords
-finnish.stopwords <- as.vector(as.matrix(read.csv("finnish_stop_edit_20120305.txt", skip=1, header=F)))
+finnish.stopwords <- as.vector(as.matrix(read.csv("http://ouzor.github.com/files/data/misc/finnish_stop_edit_20120305.txt", skip=1, header=F)))
+
 rep.word.mat.preprocessed <- rep.word.mat.preprocessed[,-which(colnames(rep.word.mat.preprocessed) %in% finnish.stopwords)]
 # sum(rep.word.mat.preprocessed) # 1081889
 save(rep.word.mat.preprocessed, file="Representatives_vs_words_matrix_preprocessed_20120731.RData")
 
-
-#############
-## ANALYZE ##
-#############
-
-# Compute td-idf
-tf.idf.mat.raw <- prop.table(rep.word.mat.raw, margin=2)
-tf.idf.max <- apply(tf.idf.mat.raw, 2, max)
 
