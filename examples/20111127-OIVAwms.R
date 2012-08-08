@@ -8,7 +8,7 @@ library(raster)
 library(rgdal)
 
 # MML:n kuntadata ladataan soRvista
-data(MML)
+LoadData("MML")
 sp <- MML[["1_milj_Shape_etrs_shape"]][["kunta1_p"]]
 
 # Listaa kaikki soRvi:ssa olevat WMS urlit

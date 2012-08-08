@@ -23,7 +23,7 @@ if (!gpclibPermit()) { gpclibPermit() }
 
 # Lue nykyiset kuntarajat Maanmittauslaitoksen aineistosta
 # (C) MML 2011
-data(MML)
+LoadData("MML")
 fi.kunnat <- MML[["1_milj_Shape_etrs_shape"]][["kunta1_p"]]
 
 # Länsi-Turunmaan nimi vaihtui Paraisiksi vuoden 2012 alusta,

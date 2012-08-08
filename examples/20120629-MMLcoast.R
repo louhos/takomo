@@ -10,9 +10,9 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This script was implemented with soRvi version 0.1.71
+# This script was implemented with soRvi version 0.1.79
 library(sorvi)
-data(MML)
+LoadData("MML")
 
 coast1 <- MML[["4_5_milj_shape_etrs-tm35fin"]][["coast"]]
 PlotShape(coast1, varname = "SHAPE_Area")
