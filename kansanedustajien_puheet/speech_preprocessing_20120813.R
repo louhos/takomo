@@ -1,4 +1,4 @@
-# Code for analyzing edustajien-puheet data
+# Code for analyzing Finnish parliamentary speech data
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 # Copyright 2012 Juuso Parkkinen, juuso.parkkinen@gmail.com. All rights reserved.
 
@@ -6,21 +6,19 @@
 ## READ DATA ##
 ###############
 
-# Data given as zip
+# Data given as zip in the HS Next blog
 # More information: http://blogit.hs.fi/hsnext/avodataa-kansanedustajien-puheet-muutettuna-perusmuotoon
 temp <- tempfile()
 download.file("http://www2.hs.fi/extrat/hsnext/edustajien-puheet.zip", temp)
 raw.dat <- read.csv(unz(temp, "edustajien-puheet.csv"), sep="|", header=FALSE)
 unlink(temp)
 
-# Read data (header missing in the csv)
-# raw.dat <- read.csv("edustajien-puheet.csv", sep="|", header=FALSE)
 # Add column names manually (based on the xls-file)
 names(raw.dat) <- c("Tunniste", "Päivämäärä", "Puhuja", "Puolue", "Vaalipiiri", "Käsiteltävä_asia", "Puhe_perusmuodossa", "Puhe_alkuperäisenä")
 # Remove the original speech data to save space
 speech.dat <- raw.dat[,-8]
 # Save
-save(speech.dat, file="Raw_speech_20120204.RData")
+save(speech.dat, file="data/Raw_speech_20120813.RData")
 
 
 #####################
@@ -29,7 +27,7 @@ save(speech.dat, file="Raw_speech_20120204.RData")
 
 load("Raw_speech_20120204.RData")
 
-# Get representatives
+# Extract representatives
 representatives <- sort(levels(speech.dat$Puhuja))
 representatives <- representatives[-which(representatives=="")]
 
@@ -52,8 +50,7 @@ names(wordlist.raw) <- representatives
 word.table.raw <- table(unlist(wordlist.raw))
 
 # Get a representatives to words -matrix
-rep.word.mat.raw <- matrix(0, nrow=length(representatives), ncol=length(word.table.raw),
-                           dimnames=list(representatives, names(word.table.raw)))
+rep.word.mat.raw <- matrix(0, nrow=length(representatives), ncol=length(word.table.raw), dimnames=list(representatives, names(word.table.raw)))
 for (ri in 1:length(representatives)) {
   rep.table <- table(wordlist.raw[[ri]])
   rep.word.mat.raw[ri, names(rep.table)] <- rep.table
