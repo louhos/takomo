@@ -1,4 +1,4 @@
-# Code for analyzing Finnish parliamentary speech data
+# Code for preprocessing Finnish parliamentary speech data
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 # Copyright 2012 Juuso Parkkinen, juuso.parkkinen@gmail.com. All rights reserved.
 
@@ -18,6 +18,7 @@ names(raw.dat) <- c("Tunniste", "Päivämäärä", "Puhuja", "Puolue", "Vaalipii
 # Remove the original speech data to save space
 speech.dat <- raw.dat[,-8]
 # Save
+dir.create("data")
 save(speech.dat, file="data/Raw_speech_20120813.RData")
 
 
@@ -25,7 +26,7 @@ save(speech.dat, file="data/Raw_speech_20120813.RData")
 ## PREPROCESS DATA ##
 #####################
 
-load("Raw_speech_20120204.RData")
+load("data/Raw_speech_20120813.RData")
 
 # Extract representatives
 representatives <- sort(levels(speech.dat$Puhuja))
@@ -34,7 +35,7 @@ representatives <- representatives[-which(representatives=="")]
 # Add party info
 rep.party <- sort(unique(paste(speech.dat$Puhuja, " (", speech.dat$Puolue, ")", sep="")))
 rep.party <- rep.party[-which(rep.party==" ()")]
-save(rep.party, file="Rep-party_20120731.RData")
+save(rep.party, file="data/Rep-party_20120813.RData")
 
 # Get list of individual words for each representative
 wordlist.raw <- list()
@@ -56,7 +57,7 @@ for (ri in 1:length(representatives)) {
   rep.word.mat.raw[ri, names(rep.table)] <- rep.table
 }
 # sum(rep.word.mat.raw) # 1543827
-save(rep.word.mat.raw, file="Representatives_vs_words_matrix_raw_20120731.RData")
+save(rep.word.mat.raw, file="data/Representatives_vs_words_matrix_raw_20120813.RData")
 
 
 ##################
@@ -68,9 +69,8 @@ rep.word.mat.preprocessed <- rep.word.mat.raw
 rep.word.mat.preprocessed <- rep.word.mat.preprocessed[,-(1:548)]
 # Remove stopwords
 finnish.stopwords <- as.vector(as.matrix(read.csv("http://ouzor.github.com/files/data/misc/finnish_stop_edit_20120305.txt", skip=1, header=F)))
-
 rep.word.mat.preprocessed <- rep.word.mat.preprocessed[,-which(colnames(rep.word.mat.preprocessed) %in% finnish.stopwords)]
 # sum(rep.word.mat.preprocessed) # 1081889
-save(rep.word.mat.preprocessed, file="Representatives_vs_words_matrix_preprocessed_20120731.RData")
+save(rep.word.mat.preprocessed, file="data/Representatives_vs_words_matrix_preprocessed_20120813.RData")
 
 
