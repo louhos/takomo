@@ -2,18 +2,19 @@
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 # Copyright 2012 Juuso Parkkinen, juuso.parkkinen@gmail.com. All rights reserved.
 
-# Load topic model output and preprocessed data
-load("data/LDA_Gibbs_probmats_20120813.RData")
 
 ###############################
 ## EYE DIAGRAM VISUALIZATION ##
 ###############################
 
+# Load topic model output and preprocessed data
+load("data/LDA_Gibbs_probmats_20120813.RData")
+
 # Get the eye diagram code from Github: https://github.com/ouzor/eyediagram
 eyediagram.folder <- "/Users/juusoparkkinen/Documents/workspace/ouzor/eyediagram/"
 source(paste(eyediagram.folder, "eyediagram.R", sep=""))
 input.folder <- paste(eyediagram.folder, "example/input/", sep="")
-output.file <- paste(eyediagram.folder, "example/EyeDiagram_Speech_test", sep="")
+output.file <- paste(eyediagram.folder, "example/EyeDiagram_Speech_20120813", sep="")
 dir.create(input.folder)
 
 # Get top documents and words for each topic
@@ -30,9 +31,9 @@ w2t <- t(lda.matrices$topic2word[totake$topics, totake$words, drop=FALSE])
 
 # Set more parameters
 infotext <- c("Left: Representatives", "Middle: Topics", "Rigth: Top words for the topics")
-font.sizes <- c(20, 22, 30, 30, 60, 60)
+font.sizes <- c(20, 22, 30, 30, 40, 40)
 radius.adjustments <- c(-200, 0, 1.5, 0.8, 0.8, 90)
-curve.factors <- c(10, 50, 10, 50)
+curve.factors <- c(10, 100, 10, 100)
 
 # Write input for the eyediagram code
 writeEyeDiagramInput(d2t, w2t, input.folder, output.file, infotext, font.sizes=font.sizes, radius.adjustments=radius.adjustments, curve.factors=curve.factors, topic.names=topics)
