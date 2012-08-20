@@ -45,9 +45,7 @@ setwd("/Users/juusoparkkinen/Documents/workspace/louhos/takomo/kansanedustajien_
 
 # Run again, highlighting topic 18
 output.file2 <- paste(eyediagram.folder, "example/EyeDiagram_Speech_Topic18_20120813", sep="")
-
 writeEyeDiagramInput(d2t, w2t, input.folder, output.file2, infotext, hl.topic=15, font.sizes=font.sizes, radius.adjustments=radius.adjustments, curve.factors=curve.factors, topic.names=topics)
-
 # Run the visualization script
 setwd(eyediagram.folder)
 system(paste(eyediagram.folder, "application.linux/eyediagram", sep=""))
