@@ -1,4 +1,5 @@
 # This script is posted to the Louhos-blog (http://louhos.wordpress.com)
+# Copyright (C) 2010-2012 Louhos <louhos.github.com>. All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice):
