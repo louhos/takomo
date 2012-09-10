@@ -1,4 +1,4 @@
-library(sorvi) # 0.1.81
+library(sorvi) # 0.1.83
 
 # Read election data from datavaalit.fi
 election.data <- ReadDatavaalit("election.data")
@@ -24,4 +24,11 @@ sp$voting.percentage <- voting.percentages[match(mml.id, municipality.id)]
 # Visualize voting percentages across Finland
 tmp <- PlotShape(sp, "voting.percentage")
 
+# Load the city council of Helsinki
+helsinki.council <- ReadDatavaalit("hel.council.members")
 
+# Get stats on different parties
+GetParties(helsinki.council)
+
+# Get individual member of the council
+(ville <- member(council, "Ville Ylikahri"))
