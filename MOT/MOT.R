@@ -1,3 +1,5 @@
+# This script is posted to the Louhos-blog (http://louhos.wordpress.com)
+
 # Copyright (C) 2010-2012 Louhos <louhos.github.com>. 
 # All rights reserved.
 
