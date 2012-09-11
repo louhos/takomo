@@ -1,3 +1,14 @@
+# This script retrieves information of the state support for 
+# Finnish companies from MOT YLE website 
+# (YLE is a national broadcasting company in Finland);
+# calculates the total subsidies obtained in each county;
+# merges with National Land Survey (MML) county region data;
+# visualizes the total subsidies.
+#
+# Shortcomings: for data retrieval demonstration purposes only; 
+# not normalized against the number of years available for 
+# each county etc.; see the MOT data for details.
+
 # This script is posted to the Louhos-blog (http://louhos.wordpress.com)
 
 # Copyright (C) 2010-2012 Louhos <louhos.github.com>. 
@@ -11,17 +22,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of 
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
-# This script retrieves subsidiary information for Finnish companies from
-# MOT YLE website (national broadcasting company in Finland);
-# calculates the total subsidies obtained in each county;
-# merges with National Land Survey (MML) county region data;
-# visualizes the total subsidies.
-#
-# Shortcomings: for demonstration purposes; not normalized against 
-# the number of years available for each county etc.; see the 
-# MOT data for details.
-
-# Tested with sorvi 0.1.84
+# Tested with sorvi 0.1.85
 library(sorvi)
 library(plyr)
 
