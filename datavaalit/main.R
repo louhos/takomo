@@ -31,5 +31,7 @@ helsinki.council <- ReadDatavaalit("hel.council.members")
 GetParties(helsinki.council)
 
 # Get individual member of the council
-(ville <- member(council, "Ville Ylikahri"))
+(ville <- GetMember(helsinki.council, "Ville Ylikahri"))
+
+
 
