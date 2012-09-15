@@ -28,10 +28,10 @@ tmp <- PlotShape(sp, "voting.percentage")
 helsinki.council <- ReadDatavaalit("hel.council.members")
 
 # Get stats on different parties
-GetParties(helsinki.council)
+print(GetParties(helsinki.council))
 
 # Get individual member of the council
-(ville <- GetMember(helsinki.council, "Ville Ylikahri"))
+ville <- GetMember(helsinki.council, "Ville Ylikahri")
 
 
 
