@@ -32,3 +32,4 @@ GetParties(helsinki.council)
 
 # Get individual member of the council
 (ville <- member(council, "Ville Ylikahri"))
+
