@@ -21,6 +21,9 @@ sp <- MML[["1_milj_Shape_etrs_shape"]]$kunta1_p
 mml.id <- as.numeric(as.character(as.data.frame(sp)$Kunta))
 sp$voting.percentage <- voting.percentages[match(mml.id, municipality.id)]
 
+# Save sp for reporting
+save(sp, file="datavaalit/datavaalit_demo.RData")
+
 # Visualize voting percentages across Finland
 tmp <- PlotShape(sp, "voting.percentage")
 

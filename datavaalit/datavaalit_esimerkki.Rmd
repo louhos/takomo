@@ -19,6 +19,3 @@ tmp <- PlotShape(sp, "voting.percentage")
 
 ```
 
-```{r session.info}
-sessionInfo()
-```
