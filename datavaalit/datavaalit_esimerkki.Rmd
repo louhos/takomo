@@ -1,0 +1,24 @@
+# Datavaalit esimerkki
+* Esimerkki datavaalit-datan visualisoinnista R:llä
+
+```{r setup, include=FALSE}
+# Load preprocessed datavaalit data
+library(sorvi)
+load("datavaalit_demo.RData")
+#opts_chunk$set(fig.path='figure/slides-', cache.path='cache/slides-', cache=TRUE)
+# upload images automatically
+opts_knit$set(upload.fun = imgur_upload)
+```
+
+---
+
+# Äänestysprosentti
+
+```{r voting}
+tmp <- PlotShape(sp, "voting.percentage")
+
+```
+
+```{r session.info}
+sessionInfo()
+```
