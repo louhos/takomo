@@ -23,7 +23,6 @@ insDocs <- grep("insDoc", databasetreeNodes)
 folder.urls <- as.vector(sapply(databasetreeNodes[insDocs], function(x) unlist(strsplit(x, split="\""))[6]))
 folder.urls <- gsub("\\.\\.\\/", "http://pxweb2.stat.fi/database/", folder.urls)
 
-
 # For each subfolder, extract urls for the .px files
 # px.tree has now two levels of hierarchy
 px.tree <- vector("list", length(folder.urls))
