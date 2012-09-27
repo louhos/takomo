@@ -137,9 +137,10 @@ ReadCandidates <- function(district.id, cache=NA) {
   # Either use the cached files or fetch over network
   if (is.na(cache)) {
     
-    data.source <- url(paste("http://192.49.229.35/K2012/s/ehd_listat/kokomaa.htm#ladattavat",
-                          file.name, sep=""))
-    message(paste("Reading data from URL", data.url))
+    data.source <- paste("http://192.49.229.35/K2012/s/ehd_listat/",
+                          file.name, sep="")
+    
+    message(paste("Reading data from URL", data.source))
     
   } else {
     
@@ -254,9 +255,9 @@ election.district.ids  <- election.district.ids[-c(5)]
 cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 
 all.districts <- lapply(election.district.ids, 
-                        function(x) {ReadCandidates(x, cache=cache.dir)})
+                        function(x) {ReadCandidates(x)})
 # Bind everything into a single data frame
-candidates <- do.call("rbind", all.districts)
+candidates2 <- do.call("rbind", all.districts)
 
 # Dump into a csv file (for Teelmo)
 write.table(candidates, "MoJ_canidates_finland.csv", sep=";", quote=FALSE,
