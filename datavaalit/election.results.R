@@ -16,8 +16,9 @@
 
 # Preliminary scripts to fetch Finnish election data from 
 # Ministry of Justice web server.
+# Based on sorvi 0.1.87 develop branch
 
-library(sorvi) # 0.1.87
+library(sorvi) 
 
 # Get candidate data for election district 3 (Varsinais-Suomen vaalipiiri)
 candidates.3 <- ReadElectionData("candidates", district.id = 3) 
