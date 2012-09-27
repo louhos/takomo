@@ -258,7 +258,7 @@ cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 all.districts <- lapply(election.district.ids, 
                         function(x) {ReadCandidates(x)})
 # Bind everything into a single data frame
-candidates2 <- do.call("rbind", all.districts)
+candidates <- do.call("rbind", all.districts)
 
 # Dump into a csv file (for Teelmo)
 write.table(candidates, "MoJ_canidates_finland.csv", sep=";", quote=FALSE,
