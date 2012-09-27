@@ -1,7 +1,9 @@
+# Function definitions
+
 #' Description:
-#' Form file name for Finnish Election data, according to the naming scheme
-#' from the ministy of justice.
-#' For example data and schema documentation, see data from hs.fi: 
+#' This function can be used to construct file name for Finnish Election data, 
+#' according to the standardized naming scheme defined by the ministy of justice.
+#' For details on example data and schema documentation, see data from hs.fi: 
 #' http://dynamic.hs.fi/datat/om-esimerkkidata-huhtikuu.zip
 #'
 #' @param election Election name. Options: "presidentin vaali", "eduskuntavaalit", "kunnallisvaalit", "europarlamenttivaalit", "aluevaali", "kansanäänestys"
@@ -21,35 +23,35 @@
 #' @examples # 
 #' @keywords utilities
 
-FileNameElectionData <- function (election, year, stage, data = NULL, info, region, suffix = "", file.type = "csv") { 
+FileNameElectionData <- function (election, year, stage, data = NULL, info, 
+                                  region, suffix = "", file.type = "csv") { 
 
   # Define ID conversions		     
-
   election.ids <- rbind(c("pv", "presidentin vaali"),
-	          c("e", "eduskuntavaalit"),
-		  c("k", "kunnallisvaalit"),
-		  c("epv", "europarlamenttivaalit"),
-		  c("mkv", "aluevaali"),
-		  c("vka", "kansanäänestys"))
+	                      c("e", "eduskuntavaalit"),
+                  		  c("k", "kunnallisvaalit"),
+                  		  c("epv", "europarlamenttivaalit"),
+                  		  c("mkv", "aluevaali"),
+                  		  c("vka", "kansanäänestys"))
   colnames(election.ids) <- c("id", "name")
   election.ids <- as.data.frame(election.ids)
 
   stage.ids <- rbind(c("a", "alustava"),
-	          c("t", "tarkastus"))
+	                   c("t", "tarkastus"))
   colnames(stage.ids) <- c("id", "name")
   stage.ids <- as.data.frame(stage.ids)
 
   data.ids <- rbind(c("a", "alue"),
-     	      c("e", "ehdokas"),
-     	      c("p", "puolue"),
-     	      c("k", "kansanäänestys"))
+             	      c("e", "ehdokas"),
+             	      c("p", "puolue"),
+             	      c("k", "kansanäänestys"))
   colnames(data.ids) <- c("id", "name")
   data.ids <- as.data.frame(data.ids)	      
 
   info.ids <- rbind(c("a", "äänestysaluetaso"),
-	          c("t", "tilastotiedot"),
-	          c("y", "ei.äänestysaluetasoa"),
-	          c("", ""))
+        	          c("t", "tilastotiedot"),
+        	          c("y", "ei.äänestysaluetasoa"),
+        	          c("", ""))
   colnames(info.ids) <- c("id", "name")
   info.ids <- as.data.frame(info.ids)	      
 
@@ -67,12 +69,13 @@ FileNameElectionData <- function (election, year, stage, data = NULL, info, regi
 
   # TODO: add option to provide region.id as text instead of ID
   if (file.type == "csv") {
-    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, data.id, info.id, "_", region.id, ".csv", sep = "")
+    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, data.id, 
+                   info.id, "_", region.id, ".csv", sep = "")
   } else if (file.type == "xml") { 
-    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, info.id, "_", region.id, ".xml", sep = "")
+    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, info.id, 
+                   "_", region.id, ".xml", sep = "")
   }
 
   fname
 
 }
-
