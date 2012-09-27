@@ -177,6 +177,20 @@ ReadCandidates <- function(district.id, cache=NA) {
   
 }
 
+#' Description:
+#' Wrapper function for ReadCandidates that gets all 14 districts and returns
+#' all data in a single data frame.
+#'
+#' @param cache character directory path to location where files are cached
+#'
+#' @return Data frame
+#' @export 
+#' @references
+#' See citation("sorvi") 
+#' @author Joona Lehtomaki \email{louhos@@googlegroups.com}
+#' @examples # 
+#' @keywords utilities
+
 ReadAllCandidates <- function(cache=NA) {
   
   election.district.ids  <- 1:15
@@ -265,9 +279,6 @@ xml <- FileNameElectionData(election = "kunnallisvaalit", year = 2012, stage = "
 # Oulun vaalipiiri = ehd_14.csv
 # Lapin vaalipiiri = ehd_15.csv
 
-election.district.ids  <- 1:15
-# Remember, there is no id 5!
-election.district.ids  <- election.district.ids[-c(5)]
 # Determine the cache dir if needed
 cache <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 
