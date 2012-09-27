@@ -165,16 +165,50 @@ ReadCandidates <- function(district.id, cache=NA) {
                          fileEncoding="iso-8859-1")
   
   # In the original csv file, there is also a trailing ";" -> there really is
-  # only 28 columns
-  raw.data <- raw.data[1:28]
+  # only 29 columns
+  raw.data <- raw.data[1:29]
   
   # Get the suitable header from common_data.json
   header <- .readCommoData()
   header <- header$OMehdokkaat$header
   colnames(raw.data)  <- header
   
+  # Column pre-processing
+  raw.data$Sukupuoli <- factor(raw.data$Sukupuoli, labels=c("Mies", "Nainen"))
+  
   return(raw.data)
   
+}
+
+#' Description:
+#' Wrapper function for ReadCandidates that gets all 14 districts and returns
+#' all data in a single data frame.
+#'
+#' @param cache character directory path to location where files are cached
+#'
+#' @return Data frame
+#' @export 
+#' @references
+#' See citation("sorvi") 
+#' @author Joona Lehtomaki \email{louhos@@googlegroups.com}
+#' @examples # 
+#' @keywords utilities
+
+ReadAllCandidates <- function(cache=NA) {
+  
+  election.district.ids  <- 1:15
+  # Remember, there is no id 5!
+  election.district.ids  <- election.district.ids[-c(5)]
+  # Determine the cache dir if needed
+  #cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
+  
+  all.districts <- lapply(election.district.ids, 
+                          function(x) {ReadCandidates(x, cache)})
+  
+  # Bind everything into a single data frame
+  candidates <- do.call("rbind", all.districts)
+  
+  return(candidates)
 }
 
 
@@ -249,16 +283,15 @@ xml <- FileNameElectionData(election = "kunnallisvaalit", year = 2012, stage = "
 # Oulun vaalipiiri = ehd_14.csv
 # Lapin vaalipiiri = ehd_15.csv
 
-election.district.ids  <- 1:15
-# Remember, there is no id 5!
-election.district.ids  <- election.district.ids[-c(5)]
 # Determine the cache dir if needed
-cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
+cache <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 
 all.districts <- lapply(election.district.ids, 
                         function(x) {ReadCandidates(x)})
 # Bind everything into a single data frame
 candidates <- do.call("rbind", all.districts)
+
+candidates <- ReadAllCandidates(cache)
 
 # Dump into a csv file (for Teelmo)
 write.table(candidates, "MoJ_canidates_finland.csv", sep=";", quote=FALSE,
