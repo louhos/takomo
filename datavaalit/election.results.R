@@ -109,7 +109,7 @@ tab <- read.csv(csv, sep = ";")
 # OK
 #k-2012-tlt_aea_maa.csv
 csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "ehdokas", "äänestysaluetaso", "maa", suffix = "-tlt")
-tab <- read.csv(csv, sep = ";")
+candidate.info <- read.csv(csv, sep = ";")
 
 # Reading fails. TODO: Fix this.
 #k-2012-tlt_apa_maa.csv
@@ -123,8 +123,9 @@ csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "puolue", "ää
 #k-2012-tlt_aa_maa.xml
 xml <- FileNameElectionData(election = "kunnallisvaalit", year = 2012, stage = "alustava", info = "äänestysaluetaso", region = "maa", suffix = "-tlt", file.type = "xml")
 
-# The best way to read the election XML?
-# tab <- read.xml(xml, sep = ";")
+# NOTE: rather memory-intensive, skip by default
+#library(XML)
+#doc <- xmlInternalTreeParse(xml)
 
 # ----------------------------------------------------------------
 
