@@ -173,6 +173,9 @@ ReadCandidates <- function(district.id, cache=NA) {
   header <- header$OMehdokkaat$header
   colnames(raw.data)  <- header
   
+  # Column pre-processing
+  raw.data$Sukupuoli <- factor(raw.data$Sukupuoli, labels=c("Mies", "Nainen"))
+  
   return(raw.data)
   
 }
