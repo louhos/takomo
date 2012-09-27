@@ -165,8 +165,8 @@ ReadCandidates <- function(district.id, cache=NA) {
                          fileEncoding="iso-8859-1")
   
   # In the original csv file, there is also a trailing ";" -> there really is
-  # only 28 columns
-  raw.data <- raw.data[1:28]
+  # only 29 columns
+  raw.data <- raw.data[1:29]
   
   # Get the suitable header from common_data.json
   header <- .readCommoData()
@@ -175,6 +175,23 @@ ReadCandidates <- function(district.id, cache=NA) {
   
   return(raw.data)
   
+}
+
+ReadAllCandidates <- function(cache=NA) {
+  
+  election.district.ids  <- 1:15
+  # Remember, there is no id 5!
+  election.district.ids  <- election.district.ids[-c(5)]
+  # Determine the cache dir if needed
+  #cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
+  
+  all.districts <- lapply(election.district.ids, 
+                          function(x) {ReadCandidates(x, cache)})
+  
+  # Bind everything into a single data frame
+  candidates <- do.call("rbind", all.districts)
+  
+  return(candidates)
 }
 
 
@@ -252,12 +269,9 @@ election.district.ids  <- 1:15
 # Remember, there is no id 5!
 election.district.ids  <- election.district.ids[-c(5)]
 # Determine the cache dir if needed
-cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
+cache <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 
-all.districts <- lapply(election.district.ids, 
-                        function(x) {ReadCandidates(x)})
-# Bind everything into a single data frame
-candidates2 <- do.call("rbind", all.districts)
+candidates <- ReadAllCandidates(cache)
 
 # Dump into a csv file (for Teelmo)
 write.table(candidates, "MoJ_canidates_finland.csv", sep=";", quote=FALSE,
