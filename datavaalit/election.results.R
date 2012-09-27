@@ -1,8 +1,3 @@
-# Preliminary functionality to read Finnish election result data 
-# from Ministry of Justice web server. This script is based on
-# example data set and schema documentation available at hs.fi: 
-# http://dynamic.hs.fi/datat/om-esimerkkidata-huhtikuu.zip
-
 ##################################################################
 
 # Copyright (C) 2012 Louhos <louhos.github.com>. 
@@ -18,6 +13,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ##################################################################
+
+# Preliminary scripts to fetch Finnish election data from 
+# Ministry of Justice web server.
 
 library(sorvi) # 0.1.87
 
