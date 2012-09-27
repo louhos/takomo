@@ -1,0 +1,10 @@
+{
+	"OMehdokkaat": {
+		"header": ["Vaalilaji", "Vaalipiirinumero", "Kuntanumero", "Tietuetyypi", "Äänestysaluetunnus", "Vaalipiiritunus_fi", "Vaalipiiritunus_sv",
+			   	   "Vakiopuoluenumero", "Listapuoluenumero", "Vaaliliittonumero", "Nimilyhenne_fi", "Nimilyhenne_sv", "Ehdokasnumero", 
+			       "Alueen_nimi_fi", "Alueen_nimi_sv", "Etunimi", "Sukunimi", "Sukupuoli", "Ikä", "Kotikunta_koodi", "Kotikunta_nimi_fi",
+			       "Kotikunta_nimi_sv", "Europarlamentaarikko", "Kansanedustaja", "Kunnanvaltuutettu", "Maakuntavaltuutettu",
+			       "Vaaltapaht_nimilyh_1", "Ääniä_1_vertailuvaali"]
+	}
+
+}

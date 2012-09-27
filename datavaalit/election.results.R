@@ -43,34 +43,35 @@
 #' @examples # 
 #' @keywords utilities
 
-FileNameElectionData <- function (election, year, stage, data = NULL, info, region, suffix = "", file.type = "csv") { 
+FileNameElectionData <- function (election, year, stage, data = NULL, info, 
+                                  region, suffix = "", file.type = "csv") { 
 
   # Define ID conversions		     
   election.ids <- rbind(c("pv", "presidentin vaali"),
-	          c("e", "eduskuntavaalit"),
-		  c("k", "kunnallisvaalit"),
-		  c("epv", "europarlamenttivaalit"),
-		  c("mkv", "aluevaali"),
-		  c("vka", "kansanäänestys"))
+	                      c("e", "eduskuntavaalit"),
+                  		  c("k", "kunnallisvaalit"),
+                  		  c("epv", "europarlamenttivaalit"),
+                  		  c("mkv", "aluevaali"),
+                  		  c("vka", "kansanäänestys"))
   colnames(election.ids) <- c("id", "name")
   election.ids <- as.data.frame(election.ids)
 
   stage.ids <- rbind(c("a", "alustava"),
-	          c("t", "tarkastus"))
+	                   c("t", "tarkastus"))
   colnames(stage.ids) <- c("id", "name")
   stage.ids <- as.data.frame(stage.ids)
 
   data.ids <- rbind(c("a", "alue"),
-     	      c("e", "ehdokas"),
-     	      c("p", "puolue"),
-     	      c("k", "kansanäänestys"))
+             	      c("e", "ehdokas"),
+             	      c("p", "puolue"),
+             	      c("k", "kansanäänestys"))
   colnames(data.ids) <- c("id", "name")
   data.ids <- as.data.frame(data.ids)	      
 
   info.ids <- rbind(c("a", "äänestysaluetaso"),
-	          c("t", "tilastotiedot"),
-	          c("y", "ei.äänestysaluetasoa"),
-	          c("", ""))
+        	          c("t", "tilastotiedot"),
+        	          c("y", "ei.äänestysaluetasoa"),
+        	          c("", ""))
   colnames(info.ids) <- c("id", "name")
   info.ids <- as.data.frame(info.ids)	      
 
@@ -88,14 +89,101 @@ FileNameElectionData <- function (election, year, stage, data = NULL, info, regi
 
   # TODO: add option to provide region.id as text instead of ID
   if (file.type == "csv") {
-    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, data.id, info.id, "_", region.id, ".csv", sep = "")
+    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, data.id, 
+                   info.id, "_", region.id, ".csv", sep = "")
   } else if (file.type == "xml") { 
-    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, info.id, "_", region.id, ".xml", sep = "")
+    fname <- paste(election.id, "-", year.id, suffix, "_", stage.id, info.id, 
+                   "_", region.id, ".xml", sep = "")
   }
 
   fname
 
 }
+
+#' Description:
+#' Function for reading in Finnish Municipal Election candidate data published
+#' by Ministry of justice. As of 27-09-2012, the data and descriptions are
+#' available from http://192.49.229.35/K2012/s/ehd_listat/kokomaa.htm#ladattavat
+#'
+#' Candidate data comes in divided into 14 Election districts (vaalipiiri).
+#'
+#' @param district.id integer marking the election district ID. Options: [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+#' @param cache character directory path to location where files are cached
+#'
+#' @return Data frame
+#' @export 
+#' @references
+#' See citation("sorvi") 
+#' @author Joona Lehtomaki \email{louhos@@googlegroups.com}
+#' @examples # 
+#' @keywords utilities
+
+ReadCandidates <- function(district.id, cache=NA) {
+  
+  # Body of the filename is always the same
+  file.name.body <- "ehd_"
+  
+  # Coerce the disrict id into a character for building file paths / urls
+  district.id.char <- as.character(district.id)
+  
+  # Padding with leading zeros if needed
+  if (nchar(district.id.char) == 1) {
+    district.id.char <- paste("0", district.id.char, sep="")
+  }
+  
+  # Construct the file name
+  file.name <- paste(file.name.body, district.id.char, ".csv", sep="")
+  
+  # Either use the cached files or fetch over network
+  if (is.na(cache)) {
+    
+    data.source <- url(paste("http://192.49.229.35/K2012/s/ehd_listat/kokomaa.htm#ladattavat",
+                          file.name, sep=""))
+    message(paste("Reading data from URL", data.url))
+    
+  } else {
+    
+    if (file.exists(cache)) {
+      data.source <- file.path(cache, file.name)
+      
+      # Check if the actual file exists
+      if (!file.exists(data.source)) {
+        stop(paste("File", data.source, "does not exist."))
+      } else {
+        message(paste("Using cached version", data.source))
+      }
+      
+    } else {
+      stop("Cache requested, but not found")
+    }
+    
+    # Read the table over network, use the encodign provided by MoJ
+  }
+  # Read the data from selected data source
+  raw.data <- read.table(data.source, sep=";", as.is=TRUE, strip.white=TRUE,
+                         fileEncoding="iso-8859-1")
+  
+  # In the original csv file, there is also a trailing ";" -> there really is
+  # only 28 columns
+  raw.data <- raw.data[1:28]
+  
+  # Get the suitable header from common_data.json
+  header <- .readCommoData()
+  header <- header$OMehdokkaat$header
+  colnames(raw.data)  <- header
+  
+  return(raw.data)
+  
+}
+
+
+# Private functions -------------------------------------------------------
+
+.readCommoData <- function(data.file="common_data.json") {
+  library(rjson)
+  
+  return(fromJSON(paste(readLines(data.file), collapse = "")))
+} 
 
 # ---------------------------------------------------------------
 
@@ -103,17 +191,20 @@ FileNameElectionData <- function (election, year, stage, data = NULL, info, regi
 
 # OK
 #k-2012-tlt_aaa_maa.csv
-csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "alue", "äänestysaluetaso", "maa", suffix = "-tlt")
+csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "alue", 
+                            "äänestysaluetaso", "maa", suffix = "-tlt")
 tab <- read.csv(csv, sep = ";")
 
 # OK
 #k-2012-tlt_aea_maa.csv
-csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "ehdokas", "äänestysaluetaso", "maa", suffix = "-tlt")
-candidate.info <- read.csv(csv, sep = ";")
+csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "ehdokas", 
+                            "äänestysaluetaso", "maa", suffix = "-tlt")
+tab <- read.csv(csv, sep = ";")
 
 # Reading fails. TODO: Fix this.
 #k-2012-tlt_apa_maa.csv
-csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "puolue", "äänestysaluetaso", "maa", suffix = "-tlt")
+csv <- FileNameElectionData("kunnallisvaalit", 2012, "alustava", "puolue", 
+                            "äänestysaluetaso", "maa", suffix = "-tlt")
 #tab <- read.csv(csv, sep = ";")
 
 # ----------------------------------------------------------------
@@ -139,8 +230,37 @@ xml <- FileNameElectionData(election = "kunnallisvaalit", year = 2012, stage = "
 # 6) Etc.
 
 
+# Canidates ---------------------------------------------------------------
 
+# Election district files are:
+# Helsingin vaalipiiri = ehd_01.csv
+# Uudenmaan vaalipiiri = ehd_02.csv
+# Varsinais-Suomen vaalipiiri = ehd_03.csv
+# Satakunnan vaalipiiri= ehd_04.csv
+# Hämeen vaalipiiri = ehd_06.csv
+# Pirkanmaan vaalipiiri = ehd_07.csv
+# Kymen vaalipiiri = ehd_08.csv
+# Etelä-Savon vaalipiiri = ehd_09.csv
+# Pohjois-Savon vaalipiiri = ehd_10.csv
+# Pohjois-Karjalan vaalipiiri = ehd_11.csv
+# Vaasan vaalipiiri = ehd_12.csv
+# Keski-Suomen vaalipiiri = ehd_13.csv
+# Oulun vaalipiiri = ehd_14.csv
+# Lapin vaalipiiri = ehd_15.csv
 
+election.district.ids  <- 1:15
+# Remember, there is no id 5!
+election.district.ids  <- election.district.ids[-c(5)]
+# Determine the cache dir if needed
+cache.dir <- "/home/jlehtoma/Data/Datavaalit2012/OM-ehdokasdata/ehdokkaat"
 
+all.districts <- lapply(election.district.ids, 
+                        function(x) {ReadCandidates(x, cache=cache.dir)})
+# Bind everything into a single data frame
+candidates <- do.call("rbind", all.districts)
+
+# Dump into a csv file (for Teelmo)
+write.table(candidates, "MoJ_canidates_finland.csv", sep=";", quote=FALSE,
+            fileEncoding="iso-8859-1")
 
 
