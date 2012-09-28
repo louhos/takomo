@@ -16,7 +16,7 @@
 
 # Preliminary scripts to fetch Finnish election data from 
 # Ministry of Justice web server.
-# Based on sorvi 0.1.87 develop branch
+# Based on sorvi 0.1.88 develop branch
 
 library(sorvi) 
 
