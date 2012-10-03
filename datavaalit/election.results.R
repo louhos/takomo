@@ -29,7 +29,7 @@ library(sorvi)
 # parties.3 <- ReadElectionData("parties", district.id = "Varsinais-Suomen vaalipiiri") 
 
 # Get all party data across the whole country
-# load("~/Rpackages/louhos/data.sorvi/maanmittauslaitos/MML.rda")
+load("~/Rpackages/louhos/data.sorvi/maanmittauslaitos/MML.rda")
 parties.all <- ReadAllParties()
 
 # Get all candidate data across the whole country
