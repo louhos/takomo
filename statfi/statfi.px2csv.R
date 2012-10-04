@@ -1,4 +1,3 @@
-
 # CSV conversion
 # Create file/folder structure similar to the original
 
@@ -16,13 +15,13 @@ filesalreadyhandled <- NULL; i <- 0; save(filesalreadyhandled, i, file = "tmp.RD
 load("tmp.RData")
 
 library(pxR)
-#source("../read.pxr.fix.R") # Fix read.px function
+source("read.pxr.fix.R") # Fix read.px function
 
 # Manual test
 good.url <- "http://pxweb2.stat.fi/database/StatFin/asu/asas/010_asas_tau_101.px"
 bad.url <- "http://pxweb2.stat.fi/database/StatFin/hin/pthi/004_pthi_tau_004_fi.px"
 
-bad <- read.px(bad.url)
+bad <- read.px(bad.url, na.strings = c('"."', '".."', '"..."', '"...."', '"-"'))
 good <- read.px(good.url)
 
 stop("OK")
@@ -55,7 +54,7 @@ for (i in 1:length(px.tree)) {
       pxf <- px.tree[[i]][[j]]
       print(c(i, pxf))
       if (!pxf %in% bad.px.files) {
-      px <- read.px(pxf) 
+      px <- read.px(pxf, na.strings = c('"."', '".."', '"..."', '"...."', '"-"')) 
       df <- try(as.data.frame(px))
 
       if (is.data.frame(df)) {
