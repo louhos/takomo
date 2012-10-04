@@ -16,3 +16,10 @@
 
   df$Sukunimi <- sapply(strsplit(df[["Ehdokkaan nimi"]], " "), function (x) {x[[1]]})
   df$Etunimet <- sapply(strsplit(df[["Ehdokkaan nimi"]], " "), function (x) {paste(x[-1], collapse = " ")})
+
+  alue <- do.call(rbind, strsplit(as.character(df[["Äänestysalue"]]), " / "))
+  df$Kunta <- alue[, 1]
+  df$Alue <- alue[, 2]
+
+  df
+
