@@ -34,6 +34,18 @@ tabs <- NULL
 #source("statfi.px2csv.R")
 source("read.pxr.fix.R")
 
+###############################################
+
+print("Kunnallisvaalit 2008")
+
+can <- GetElectedCandidates(2008, "municipal", election.district = "Uudenmaan vaalipiiri") 
+
+inds <- match(municipalities, rownames(tab))
+
+write.table(tab[inds,], file = "Kunnallisvaalit2008.csv", sep = ";", quote = FALSE, row.names = FALSE)
+
+tabs <- cbind(tabs, tab[inds, ])
+
 ##########################################################################
 
 print("Tilastokeskus")
@@ -95,61 +107,6 @@ write.table(tab[inds,], file = "Kunnallisvaalit2004.csv", sep = ";", quote = FAL
 tabs <- cbind(tabs, tab[inds, ])
 
 ##############################################################################
-
-print("Kunnallisvaalit 2008")
-
-can <- GetElectedCandidates(2008, "municipal", election.district) 
-
-Helsingin vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/410_kvaa_2008_2009-11-02_tau_123_fi.px
-
-Uudenmaan vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/420_kvaa_2008_2009-11-02_tau_124_fi.px
-
-Varsinais-Suomen vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/430_kvaa_2008_2009-11-02_tau_125_fi.px
-
-Satakunnan vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/440_kvaa_2008_2009-11-02_tau_126_fi.px
-
-Hämeen vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/460_kvaa_2008_2009-11-02_tau_127_fi.px
-
-Pirkanmaan vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/470_kvaa_2008_2009-11-02_tau_128_fi.px
-
-Kymen vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/480_kvaa_2008_2009-11-02_tau_129_fi.px
-
-Etelä-Savon vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/490_kvaa_2008_2009-11-02_tau_130_fi.px
-
-Pohjois-Savon vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/500_kvaa_2008_2009-11-02_tau_131_fi.px
-
-Pohjois-Karjalan vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/510_kvaa_2008_2009-11-02_tau_132_fi.px
-
-Vaasan vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/520_kvaa_2008_2009-11-02_tau_133_fi.px
-
-Keski-Suomen vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/530_kvaa_2008_2009-11-02_tau_134_fi.px
-
-Oulun vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/540_kvaa_2008_2009-11-02_tau_135_fi.px
-
-Lapin vaalipiiri
-http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/550_kvaa_2008_2009-11-02_tau_136_fi.px
-
-
-inds <- match(municipalities, rownames(tab))
-
-write.table(tab[inds,], file = "Kunnallisvaalit2008.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- cbind(tabs, tab[inds, ])
-
-###############################################
 
 # Kaikki taulukot - kooste:
 
