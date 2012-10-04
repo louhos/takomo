@@ -1,6 +1,7 @@
    # List URLs for Statfi election candidate tables 2008
     # Source (C) Tilastokeskus:
-    # http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_04/2008_04_fi.asp
+   #http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_04/2004_04_fi.asp
+
     urls <- list()
     urls[["Helsingin vaalipiiri"]] <- "http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_04/040_KVAA_2004_2008-07-17_TAU_101_FI.px"
     urls[["Uudenmaan vaalipiiri"]] <- "http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2004_04/040_KVAA_2004_2008-07-17_TAU_102_FI.px"
