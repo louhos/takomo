@@ -38,7 +38,20 @@ source("read.pxr.fix.R")
 
 print("Kunnallisvaalit 2008")
 
-can <- GetElectedCandidates(2008, "municipal", election.district = "Uudenmaan vaalipiiri") 
+election.districts <- setdiff(1:15, 5) # There is no district 5
+tabs2008 <- lapply(election.districts, function (id) {print(id); GetElectedCandidates(2008, "municipal", election.district = id, verbose = TRUE) }
+
+###############################################
+
+print("Kunnallisvaalit 2004")
+
+tabs2004 <- lapply(election.districts, function (id) {print(id); GetElectedCandidates(2004, "municipal", election.district = id, verbose = TRUE) }
+
+###############################################
+
+stop("OK")
+
+###############################################
 
 inds <- match(municipalities, rownames(tab))
 
