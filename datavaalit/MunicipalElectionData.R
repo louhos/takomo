@@ -69,6 +69,11 @@ candidates2012 <- candidates2012[, c(coms, sort(setdiff(colnames(candidates2012)
 
 ###################################################
 
+
+
+
+###################################################
+
 # Dump into a csv file
 write.table(candidates2004, "municipal_elections_candidates_2004_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
