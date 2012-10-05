@@ -35,6 +35,8 @@ parties.all <- ReadAllParties()
 # Get all candidate data across the whole country
 candidates.all <- ReadAllCandidates()
 
+#load("tabs2008.RData")
+
 # -------------------------------------------------------------------------
 
 # Dump into a csv file

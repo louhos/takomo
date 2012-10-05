@@ -28,100 +28,56 @@
 # install.packages("sorvi_0.1.89", repos = "louhos", branch = "develop")
 
 library(sorvi)
-tabs <- NULL
 
 # Fix pxR
 #source("statfi.px2csv.R")
 source("read.pxr.fix.R")
 
+election.districts <- setdiff(1:15, 5) # There is no district 5
+
+###############################################
+
+print("Kunnallisvaalit 2004")
+tabs2004 <- lapply(election.districts, function (id) {GetElectedCandidates(2004, "municipal", election.district = id, verbose = TRUE) })
+
+candidates2004 <- do.call(rbind, tabs2004)
+
+save(candidates2004, file = "candidates2004.RData", compress = "xz")
+
 ###############################################
 
 print("Kunnallisvaalit 2008")
 
-election.districts <- setdiff(1:15, 5) # There is no district 5
-tabs2008 <- lapply(election.districts, function (id) {print(id); GetElectedCandidates(2008, "municipal", election.district = id, verbose = TRUE) }
+tabs2008 <- lapply(election.districts, function (id) {GetElectedCandidates(2008, "municipal", election.district = id, verbose = TRUE) })
 
-###############################################
+candidates2008 <- do.call(rbind, tabs2008)
 
-print("Kunnallisvaalit 2004")
+save(candidates2008, file = "candidates2008.RData", compress = "xz")
 
-tabs2004 <- lapply(election.districts, function (id) {print(id); GetElectedCandidates(2004, "municipal", election.district = id, verbose = TRUE) }
+#################################################
 
-###############################################
+print("Kunnallisvaalit 2012")
 
-stop("OK")
+candidates2012 <- ReadAllCandidates()
 
-###############################################
+save(candidates2012, file = "candidates2012.RData", compress = "xz")
 
-inds <- match(municipalities, rownames(tab))
+###################################################
 
-write.table(tab[inds,], file = "Kunnallisvaalit2008.csv", sep = ";", quote = FALSE, row.names = FALSE)
+# Fields in the same order, and discrepant fields in the end
+coms <- intersect(colnames(candidates2004), colnames(candidates2012))
+candidates2004 <- candidates2004[, c(coms, setdiff(colnames(candidates2004), coms))]
+candidates2008 <- candidates2008[, c(coms, setdiff(colnames(candidates2008), coms))]
+candidates2012 <- candidates2012[, c(coms, setdiff(colnames(candidates2012), coms))]
 
-tabs <- cbind(tabs, tab[inds, ])
+###################################################
 
-##########################################################################
+# Dump into a csv file
+write.table(candidates2004, "municipal_elections_candidates_2004_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
-print("Tilastokeskus")
+# Dump into a csv file
+write.table(candidates2008, "municipal_elections_candidates_2008_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
-# (C) Tilastokeskus 2012
-# "http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px
-
-statfi <- GetMunicipalityInfoStatFi() 
-municipalities <- rownames(statfi)
-write.table(statfi[municipalities, ], file = "Tilastokeskus-KuntienAvainluvut.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- statfi[municipalities, ]
-
-##########################################################################
-
-print("MML")
-
-# (C) MML 2012
-# http://www.maanmittauslaitos.fi/aineistot-palvelut/digitaaliset-tuotteet/ilmaiset-aineistot/hankinta
-
-LoadData("MML")
-mml <- GetMunicipalityInfoMML(MML)    
-write.table(mml[municipalities, ], file = "MML.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- cbind(tabs, mml[municipalities, ])
-
-##########################################################################
-
-print("Eduskuntavaalit 2007-2011")
-
-tab <- GetParliamentaryElectionData("municipality")
-
-# Match election data with other municipality data and write to output
-# write.table(tab[municipalities,], file = "Eduskuntavaalit_2007_2011.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- cbind(tabs, tab[municipalities, ])
-
-##############################################################################
-
-print("Kunnallisvaalit 2000")
-
-tab <- GetMunicipalElectionData2000("all.municipality.level.data")
-
-# Match election data with other municipality data
-write.table(tab[municipalities,], file = "Kunnallisvaalit2000.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- cbind(tabs, tab[municipalities, ])
-
-###############################################
-
-print("Kunnallisvaalit 2004")
-
-tab <- GetMunicipalElectionData2004("all.municipal")
-
-inds <- match(municipalities, rownames(tab))
-
-write.table(tab[inds,], file = "Kunnallisvaalit2004.csv", sep = ";", quote = FALSE, row.names = FALSE)
-
-tabs <- cbind(tabs, tab[inds, ])
-
-##############################################################################
-
-# Kaikki taulukot - kooste:
-
-# write.table(tabs, file = "elections.csv", sep = ";", quote = FALSE, row.names = FALSE)
+# Dump into a csv file
+write.table(candidates2012, "municipal_elections_candidates_2012_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
