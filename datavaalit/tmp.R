@@ -1,25 +1,39 @@
-  px <- read.px(url)
-  df <- as.data.frame(px)
+print("Kunnallisvaalit 2008")
 
-  df <- split(df, df$Ehdokas)[1:10]
+tabs2008 <- list()
+for (id in election.districts) {
+  tabs2008[[id]] <- GetElectedCandidates(2008, "municipal", election.district = id, verbose = TRUE) 
+}
 
-  # Convert into more compact table format
-  df <- lapply(df, function(dff) {m <- melt(dff, c("Ehdokas", "Äänestysalue", "Äänestystiedot"), "dat"); mc <- cast(m, Ehdokas + Äänestysalue ~ Äänestystiedot); mc <- mc[!mc[["Ehdokkaan numero"]] == 0, ];  })
+candidates2008 <- do.call(rbind, tabs2008)
 
-  df <- do.call(rbind, df)
+save(candidates2008, file = "candidates2008.RData", compress = "xz")
 
-  # Preprocess candidate field
-  ehd <- do.call(rbind, strsplit(as.character(df$Ehdokas), " / "))
-  df[["Ehdokkaan nimi"]] <- ehd[, 1]
-  df[["Puolue"]] <- ehd[, 2]
-  rm(ehd)
+#################################################
 
-  df$Sukunimi <- sapply(strsplit(df[["Ehdokkaan nimi"]], " "), function (x) {x[[1]]})
-  df$Etunimet <- sapply(strsplit(df[["Ehdokkaan nimi"]], " "), function (x) {paste(x[-1], collapse = " ")})
+print("Kunnallisvaalit 2012")
 
-  alue <- do.call(rbind, strsplit(as.character(df[["Äänestysalue"]]), " / "))
-  df$Kunta <- alue[, 1]
-  df$Alue <- alue[, 2]
+candidates2012 <- ReadAllCandidates()
 
-  df
+save(candidates2012, file = "candidates2012.RData", compress = "xz")
+
+###################################################
+
+# Fields in the same order, and discrepant fields in the end
+coms <- sort(intersect(colnames(candidates2004), colnames(candidates2012)))
+candidates2004 <- candidates2004[, c(coms, c("Äänestysalue", "Alue"), sort(setdiff(colnames(candidates2004), c(coms, c("Äänestysalue", "Alue")))))]
+candidates2008 <- candidates2008[, c(coms, c("Äänestysalue", "Alue"), sort(setdiff(colnames(candidates2008), c(coms, c("Äänestysalue", "Alue")))))]
+candidates2012 <- candidates2012[, c(coms, sort(setdiff(colnames(candidates2012), coms)))]
+
+###################################################
+
+# Dump into a csv file
+write.table(candidates2004, "municipal_elections_candidates_2004_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+
+# Dump into a csv file
+write.table(candidates2008, "municipal_elections_candidates_2008_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+
+# Dump into a csv file
+write.table(candidates2012, "municipal_elections_candidates_2012_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+
 
