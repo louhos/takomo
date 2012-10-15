@@ -35,6 +35,7 @@ names(nametables)[year] <- year.val
 
 library(ggplot2)
 library(gdata)
+library(reshape2)
 
 # Melt to a data frame
 temp <- melt(nametables, id.vars=c("V1", "V4"), measure.vars=c("V2", "V5"))

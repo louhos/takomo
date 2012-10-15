@@ -3,8 +3,10 @@
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 # Copyright 2011 Joona Lehtomäki, joona.lehtomaki@gmail.com.
 
+tmp <- try(library(raster))
+if (tmp == "try-error") {install.packages("raster"); library(raster)}
+
 library(sorvi)
-library(raster)
 library(rgdal)
 
 # MML:n kuntadata ladataan soRvista

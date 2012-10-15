@@ -10,7 +10,6 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-
 #################
 ## VOTING DATA ##
 #################
@@ -82,7 +81,7 @@ mchart.pks <- gvisMotionChart(pks.votes, idvar="Alue", timevar="Aika", options=l
 # Plot immediately (opens in browser)
 plot(mchart.pks)
 # Save as html (needs javascript to open!)
-print(mchart.pks, file="vaalit/Presidentti2012_MotionChart_PKS_20120207.html")
+print(mchart.pks, file="Presidentti2012_MotionChart_PKS_20120207.html")
 
 
 ####################
@@ -138,4 +137,4 @@ mchart.mun <- gvisMotionChart(mun.votes, idvar="Alue", timevar="Aika", options=l
 # Plot immediately (opens in browser)
 plot(mchart.mun)
 # Save as html (needs javascript to open!)
-print(mchart.mun, file="vaalit/Presidentti2012_MotionChart_Municipalities_20120207.html")
+print(mchart.mun, file="Presidentti2012_MotionChart_Municipalities_20120207.html")

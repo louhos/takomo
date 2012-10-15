@@ -13,6 +13,8 @@
 ## READ DATA ##
 ###############
 
+
+
 # Data given as zip in the HS Next blog
 # More information: http://blogit.hs.fi/hsnext/avodataa-kansanedustajien-puheet-muutettuna-perusmuotoon
 temp <- tempfile()
@@ -90,7 +92,9 @@ load("data/Representatives_vs_words_matrix_preprocessed_20120813.RData")
 load("data/Rep-party_20120813.RData")
 
 # Use the 'topicmodels' package
-library(topicmodels)
+tmp <- try(library(topicmodels))
+if (tmp == "try-error") {install.packages("topicmodels"); library(topicmodels)}
+
 # Use 20 topics. See package documentation for proper model selection.
 K <- 20
 # Set seed for random generator manually for reproducibility
