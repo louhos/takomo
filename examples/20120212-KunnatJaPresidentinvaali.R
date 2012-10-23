@@ -12,7 +12,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Install soRvi R package
-# http://sorvi.r-forge.r-project.org/asennus.html
+# http://louhos.github.com/sorvi
 # This script was implemented with soRvi version 0.1.49
 
 # This script was inspired by the visualization at:
@@ -72,7 +72,5 @@ mchart.mun <- gvisMotionChart(tab, idvar = "Alue",
 plot(mchart.mun)
 
 # Save as html (needs javascript to open!)
-print(mchart.mun, file="Presidentti2012_MotionChart_20120212.html")
-
-
+# print(mchart.mun, file = "Presidentti2012_MotionChart_20120212.html")
 
