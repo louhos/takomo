@@ -57,9 +57,11 @@ areas.cities <- SplitSpatial(areas, "Kuntanimi")
 ## MAP PLOT ## 
 ############## 
 
+install.packages(c("ggplot2", "gridExtra", "gpclib"))
 library(ggplot2) 
 library(gridExtra) 
 library(gpclib)
+
 # Get the data frame
 gpclibPermit()
 areas.df <- fortify(areas, region="Aluenumero")
@@ -75,7 +77,7 @@ theme_set(GetThemeMap())
 Helsinki.center <- c(lon=24.93, lat = 60.20) 
 HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 10, GRAYSCALE=TRUE, maptype="Map", scale=1) 
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat)) 
-hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE) 
+hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none") 
 hplot <- hplot + xlab(NULL) + ylab(NULL) 
 
 # Create first a common colour scale 
@@ -85,6 +87,7 @@ col.scale <- scale_colour_gradient(low = 'blue', high = 'red', limits=c(min.val,
 fill.scale <- scale_fill_gradient(low = 'blue', high = 'red', limits=c(min.val, max.val)) 
 
 # Make map for Pekka 
+message("NOTE! The following code does not work anymore since ggplot2 has been updated.")
 den_fill_scale <- col.scale 
 den_fill_scale$train(areas.df$Pekka.Haavisto.osuus, T) 
 areas.df$Pekka <- den_fill_scale$map(areas.df$Pekka.Haavisto.osuus) 
@@ -92,7 +95,7 @@ hplot.pekka <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, 
 
 # Add legend using an auxiliary ggplot object 
 p <- ggplot(data=areas.df) + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Pekka.Haavisto.osuus)) + fill.scale + labs(fill="Osuus äänistä (%)") 
-leg <- ggplotGrob(p + opts(keep="legend_box")) 
+leg <- ggplotGrob(p + theme(keep="legend_box")) 
 legend <- gTree(children=gList(leg), cl="legendGrob") 
 widthDetails.legendGrob <- function(x) unit(3, "cm") 
 hplot.pekka <- arrangeGrob(hplot.pekka, legend=legend, main="Pekka Haavisto") 
