@@ -67,21 +67,20 @@ areas.df$Pekka.Haavisto.osuus <- votes$Pekka.Haavisto.osuus[match(areas.df$id, v
 areas.df$Sauli.Niinistö.osuus <- votes$Sauli.Niinistö.osuus[match(areas.df$id, votes$Aluenumero)] 
 
 # Create a blank background for the maps 
-theme_map <- theme_bw() 
-theme_map$panel.background <-  theme_blank() 
-theme_map$panel.grid.major <- theme_blank() 
-theme_map$panel.grid.minor <- theme_blank() 
-theme_map$axis.ticks <- theme_blank() 
-theme_map$axis.text.x <- theme_blank() 
-theme_map$axis.text.y <- theme_blank() 
-theme_map$axis.title.x <- theme_blank() 
-theme_map$axis.title.y <- theme_blank() 
-theme_set(theme_map) 
+# theme_map <- theme_bw() 
+# theme_map$panel.background <-  theme_blank() 
+# theme_map$panel.grid.major <- theme_blank() 
+# theme_map$panel.grid.minor <- theme_blank() 
+# theme_map$axis.ticks <- theme_blank() 
+# theme_map$axis.text.x <- theme_blank() 
+# theme_map$axis.text.y <- theme_blank() 
+# theme_map$axis.title.x <- theme_blank() 
+# theme_map$axis.title.y <- theme_blank() 
+theme_set(GetThemeMap()) 
 
 # Get map of Helsinki for background 
 Helsinki.center <- c(lon=24.93, lat = 60.20) 
-HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 10, 
-                                      GRAYSCALE=TRUE, maptype="Map", scale=1) 
+HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 10, GRAYSCALE=TRUE, maptype="Map", scale=1) 
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat)) 
 hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE) 
 hplot <- hplot + xlab(NULL) + ylab(NULL) 
