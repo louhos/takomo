@@ -1,14 +1,31 @@
-# CSV conversion
-# Create file/folder structure similar to the original
-
 library(sorvi)
 #library(pxR)
 #source("read.pxr.fix.R") # Fix read.px function
+# i <- 0; save(i, file = "tmp.RData")
+
+# --------------------------------------
 
 # Get PX file urls
-source("statfi_files.R") # px.urls
 
-# i <- 0; save(i, file = "tmp.RData")
+# For more information, see:
+# http://www.stat.fi/org/lainsaadanto/avoin_data.html
+
+urls <- list(statfi = "http://pxweb2.stat.fi/database/StatFin/StatFin_rap.csv",
+     	     eurostat = "http://pxweb2.stat.fi/database/Eurostat/Eurostat_rap.csv")
+
+# StatFi
+tab1 <- read.csv(urls$statfi, sep = ";")
+
+# Eurostat
+tab2 <- read.csv(urls$eurostat, sep = ";")
+
+# Combine the tables
+tab <- rbind(tab1, tab2)
+
+# --------------------------------------
+
+px.urls <- unique(as.character(tab$File))
+
 load("tmp.RData")
 
 if (!exists("filesalreadyhandled")) { filesalreadyhandled <- c()}
@@ -17,6 +34,9 @@ if (!exists("pxf.errors")) { pxf.errors <- c()}
 if (!exists("pxf.ok")) { pxf.ok <- c()}
 
 k <- max(i, 1) # Start from the latest point
+
+# --------------------------------------
+
 for (i in k:length(px.urls)) {
 
   pxf <- px.urls[[i]]
@@ -53,6 +73,8 @@ for (i in k:length(px.urls)) {
   }
 
 }
+
+# ------------------------------------
 
 #[2] "http://pxweb2.stat.fi/database/StatFin/oik/koikrs/010_koikrs_tau_101_fi.px"
 #Error in data.frame(do.call(expand.grid, values[names.vals]), x$DATA$value) : 
