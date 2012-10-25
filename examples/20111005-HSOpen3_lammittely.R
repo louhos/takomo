@@ -19,11 +19,12 @@ library(ggplot2)
 # Get map of Helsinki (takes some time)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
 HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(theme_bw())
+#theme_set(theme_bw())
+theme_set(GetThemeMap())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
-hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE)
+hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
-hplot <- hplot + opts(title = 'Map of Helsinki')
+hplot <- hplot + ggtitle("Map of Helsinki")
 
 # Read coordinates for places in Helsinki Region
 # KML files downloaded from: http://www.hri.fi/fi/data/paakaupunkiseudun-aluejakokartat/
