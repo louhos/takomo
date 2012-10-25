@@ -13,8 +13,14 @@
 
 # Tested with sorvi_0.1.97
 # http://louhos.github.com/sorvi
-library(sorvi)
+
+# Install and load necessary packages
+install.packages(c("ggplot2", "gdata", "devtools"))
 library(ggplot2)
+library(gdata)  
+library(devtools)
+install_github(repo = "sorvi", username = "louhos")
+library(sorvi)
 
 # Get map of Helsinki (takes some time)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
@@ -47,7 +53,6 @@ names(Helsinki.m2.prices) <- c("Zip.code", "Price")
 ################################################
 
 # Load older housing pricing data to get Helsinki Zip codes (link to data obtained from Helsinki Region Infoshare)
-library(gdata)
 data.url <- "http://www.hel2.fi/tietokeskus/data/helsinki/helsingin_kaupungin_tilastollinen_vuosikirja_2009/3asuminen/3.24.xls"
 asuntodata <- read.xls(data.url, skip=5, header=T, fileEncoding="ISO-8859-1")
 
