@@ -14,13 +14,13 @@ urls <- list(statfi = "http://pxweb2.stat.fi/database/StatFin/StatFin_rap.csv",
      	     eurostat = "http://pxweb2.stat.fi/database/Eurostat/Eurostat_rap.csv")
 
 # StatFi
-tab1 <- read.csv(urls$statfi, sep = ";")
+#tab <- read.csv(urls$statfi, sep = ";")
 
 # Eurostat
-tab2 <- read.csv(urls$eurostat, sep = ";")
+tab <- read.csv(urls$eurostat, sep = ";")
 
 # Combine the tables
-tab <- rbind(tab1, tab2)
+#tab <- rbind(tab1, tab2)
 
 # --------------------------------------
 
@@ -33,7 +33,7 @@ if (!exists("non.extant.files")) { non.extant.files <- c()}
 if (!exists("pxf.errors")) { pxf.errors <- c()}
 if (!exists("pxf.ok")) { pxf.ok <- c()}
 
-k <- max(i, 1) # Start from the latest point
+k <- max(i+1, 1) # Start from the latest point
 
 # --------------------------------------
 
@@ -43,15 +43,15 @@ for (i in k:length(px.urls)) {
 
   if (!pxf %in% filesalreadyhandled) {
 
-    print(c(i, pxf))
+    print(c(i, pxf, length(px.urls)))
 
     openingtest <- NULL
     px <- NULL
     openingtest <- try(px <- sorvi::read.px(pxf))
 
-    if (length(openingtest)==1 && grep("cannot open the connection", openingtest) == 1) {
+    if (length(openingtest)==1 && (grep("cannot open the connection", openingtest) == 1 || substr(openingtest, 1, 5) == "Error") ) {
 
-      print(paste("not found", pxf))
+      print(paste("errors: ", pxf))
       non.extant.files <- c(non.extant.files, pxf)
 
     } else {
@@ -75,6 +75,17 @@ for (i in k:length(px.urls)) {
 }
 
 # ------------------------------------
+
+# mv tmp.RData statfi.screen.RData
+# mv tmp.RData eurostat.screen.RData
+
+# Statfi
+# c(length(pxf.ok), length(px.urls), length(pxf.ok)/length(px.urls))
+# 1989.0000000 2614.0000000    0.7609028
+
+# Eurostat
+# c(length(pxf.ok), length(px.urls), length(pxf.ok)/length(px.urls))
+# 1158.0000000 1159.0000000    0.9991372
 
 #[2] "http://pxweb2.stat.fi/database/StatFin/oik/koikrs/010_koikrs_tau_101_fi.px"
 #Error in data.frame(do.call(expand.grid, values[names.vals]), x$DATA$value) : 
