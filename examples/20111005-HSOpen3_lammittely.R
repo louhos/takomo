@@ -18,8 +18,7 @@
 install.packages(c("ggplot2", "gdata", "devtools"))
 library(ggplot2)
 library(gdata)  
-library(devtools)
-install_github(repo = "sorvi", username = "louhos")
+# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
 # Get map of Helsinki (takes some time)
