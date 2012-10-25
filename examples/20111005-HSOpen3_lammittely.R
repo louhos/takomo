@@ -35,7 +35,8 @@ hplot <- hplot + ggtitle("Map of Helsinki")
 # Read coordinates for places in Helsinki Region
 # KML files downloaded from: http://www.hri.fi/fi/data/paakaupunkiseudun-aluejakokartat/
 # KML to CSV conversion with http://choonchernlim.com/kmlcsv/
-pienalue <- read.csv("data/PKS_Kartta_Rajat_KML2011/PKS_pienalue_piste.csv", header=F)
+#pienalue <- read.csv("data/PKS_Kartta_Rajat_KML2011/PKS_pienalue_piste.csv", header=F)
+pienalue <- GetHRIaluejakokartat()
 names(pienalue) <- c("lon", "lat", "Alue", "")
 
 # Get Oikotie myynnit data
