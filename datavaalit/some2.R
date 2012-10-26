@@ -20,21 +20,26 @@ csome$Puolue <- droplevels(csome$Puolue)
 csome$TWfr <- csome$TW / unlist(isot[csome$Puolue])
 csome$FBfr <- csome$FB / unlist(isot[csome$Puolue])
 
+# Customize ggplot2 theme
+theme_custom <- ggplot2::theme_grey()
+theme_custom$axis.title.x <- element_text(size=18)
+theme_custom$axis.text.x <- element_text(angle=90, vjust=0.5, size=12)
+theme_custom$axis.title.y <- element_text(angle=90, size=18)
+theme_custom$axis.text.y <- element_text(angle=90, size=12)
+theme_custom$strip.text.y <- element_text(size=12, face="bold")
+theme_set(theme_custom)
+
 p <- ggplot(csome, aes(x=FB, y=TW, label=Puolue)) 
-p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä") + 
-  ylab("Twitter-päivitysten määrä") + geom_smooth(method = lm) +
-  theme()
+p <- p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä") + 
+    ylab("Twitter-päivitysten määrä") + geom_smooth(method = lm)
+print(p)
 
 p <- ggplot(csome, aes(x=log10(FBfr), y=log10(TWfr), label=Puolue)) 
-p + geom_text(size = 5) + xlab("log10(Facebook-päivitysten määrä)") + 
-  xlim(c(-1, 2)) + ylim(c(-1, 2)) +
-  ylab("log10(Twitter-päivitysten määrä)") +
-  theme(title = element_text(size=18),
-        axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12)) + 
-  ggtitle("Normalisoidut some-päivitysten määrät")
+p <- p + geom_text(size = 5) + xlab("log10(Facebook-päivitysten määrä)") + 
+    xlim(c(-1, 2)) + ylim(c(-1, 2)) +
+    ylab("log10(Twitter-päivitysten määrä)") +
+    ggtitle("Normalisoidut some-päivitysten määrät")
+print(p)
 
 
 # Time series -------------------------------------------------------------
@@ -57,36 +62,23 @@ tsome.fb <- subset(tsome, Media == 'FB')
 tsome.tw <- subset(tsome, Media == 'TW')
 
 # All social media updates
-
 p <- ggplot(tsome, aes(x = Aika)) 
-p + geom_histogram(binaxis = "y", binwidth=0.1) + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
-  facet_grid(Puolue ~ .) + ggtitle("Kaikki some-päivitykset")
+p <- p + geom_histogram(binaxis = "y", binwidth=0.1) + ylab("lkm") +
+    facet_grid(Puolue ~ .) + ggtitle("Kaikki some-päivitykset")
+print(p)
 
 # Facebook updates
 
 p <- ggplot(tsome.fb, aes(x = Aika)) 
-p + geom_histogram(binaxis = "y", binwidth=0.1, fill="#3B5998") + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
+p <- p + geom_histogram(binaxis = "y", binwidth=0.1, fill="#3B5998") + ylab("lkm") +
   facet_grid(Puolue ~ .) + ggtitle("Facebook päivitykset")
+print(p)
 
 # Twitter updates
 p <- ggplot(tsome.tw, aes(x = Aika)) 
-p + geom_histogram(binaxis = "y", binwidth=0.1, fill="#00ACED") + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
+p <- p + geom_histogram(binaxis = "y", binwidth=0.1, fill="#00ACED") + ylab("lkm") +
   facet_grid(Puolue ~ .) + ggtitle("Twitter päivitykset")
+print(p)
 
 party_stats  <- ddply(tsome, c(.(Aika), .(Puolue)), summarise,
                       lkm=length(Nimi),
@@ -94,24 +86,16 @@ party_stats  <- ddply(tsome, c(.(Aika), .(Puolue)), summarise,
 party_stats$lkmfr <- party_stats$lkm / party_stats$ehd
 
 p2 <- ggplot(party_stats, aes(x = Aika, y = lkmfr, group = Puolue)) 
-p2 + geom_line(aes(colour = Puolue))
+p2 <- p2 + geom_line(aes(colour = Puolue))
+print(p2)
 
-# Themes
-theme.sm <- theme_update(axis.title.x = element_text(size=18),
-                         axis.title.y  = element_text(angle=0, size=12),
-                         axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-                         axis.title.y = element_text(size=18),
-                         axis.text.y  = element_text(size=12),
-                        strip.text.y = element_text(size=12, face="bold"))
-
-theme_set(theme.sm)
 
 # All social media updates
 p <- ggplot(party_stats, aes(x = Aika, y=lkmfr)) 
-p <- p + geom_bar() + ylab("lkm") + theme.sm + 
-  ggtitle("Kaikki some-päivitykset")
-p + facet_grid(Puolue ~ .) 
-p + facet_grid(Puolue ~ ., scales="free_y")
+p <- p + geom_bar() + ylab("lkm") + ggtitle("Kaikki some-päivitykset")
+p <- p + facet_grid(Puolue ~ .) 
+#p + facet_grid(Puolue ~ ., scales="free_y")
+print(p)
 
 # Facebook updates 
 party_stats_fb  <- ddply(tsome.fb, c(.(Aika), .(Puolue)), summarise,
@@ -120,15 +104,10 @@ party_stats_fb  <- ddply(tsome.fb, c(.(Aika), .(Puolue)), summarise,
 party_stats_fb$lkmfr <- party_stats_fb$lkm / party_stats_fb$ehd
 
 p <- ggplot(party_stats_fb, aes(x = Aika, y=lkmfr)) 
-p <- p + geom_bar(fill="#3B5998") + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
-  ggtitle("Facebook päivitykset")
-p + facet_grid(Puolue ~ .) 
-p + facet_grid(Puolue ~ ., scales="free_y")
+p <- p + geom_bar(fill="#3B5998") + ylab("lkm") + ggtitle("Facebook päivitykset")
+p <- p + facet_grid(Puolue ~ .) 
+#p + facet_grid(Puolue ~ ., scales="free_y")
+print(p)
 
 # Twitter updates 
 party_stats_tw  <- ddply(tsome.tw, c(.(Aika), .(Puolue)), summarise,
@@ -138,12 +117,6 @@ party_stats_tw  <- ddply(tsome.tw, c(.(Aika), .(Puolue)), summarise,
 party_stats_tw$lkmfr <- party_stats_tw$lkm / party_stats_tw$ehd
 
 p <- ggplot(party_stats_tw, aes(x = Aika, y=lkmfr)) 
-p + geom_bar(fill="#00ACED") + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
-  facet_grid(Puolue ~ .) + ggtitle("Twitter päivitykset")
-
+p <- p + geom_bar(fill="#00ACED") + ylab("lkm") + facet_grid(Puolue ~ .) + ggtitle("Twitter päivitykset")
+print(p)
 
