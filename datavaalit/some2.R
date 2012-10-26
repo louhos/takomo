@@ -11,5 +11,6 @@ csome <- cast(some, Puolue~Media)
 csome$TW[which(is.na(csome$TW))]  <- 0
 csome$FB[which(is.na(csome$FB))]  <- 0
 
-p <- ggplot(csome, aes(x=log10(FB), y=log10(TW), label=Puolue)) 
-p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä (log10)") + ylab("Twitter-päivitysten määrä (log10)")
+p <- ggplot(csome, aes(x=FB, y=TW, label=Puolue)) 
+p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä (log10)") + 
+  ylab("Twitter-päivitysten määrä (log10)") + geom_smooth(method = lm) 
