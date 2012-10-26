@@ -2,5 +2,5 @@ some <- read.csv("http://www.datavaalit.fi/storage/some-updates-stats-2012-10-26
 names(some) <- c("Puolue", "Media", "dat")
 
 library(ggplot2)
-p <- ggplot(df, aes(x = Puolue, y = dat, group = Media)) + geom_bar()
-
+p <- ggplot(some, aes(x = Puolue, y = dat)) + geom_bar()
+p
