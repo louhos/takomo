@@ -81,6 +81,8 @@ df <- df[, c("RAKERA_AS", "RAKERA_MUU", "KARA_AS", "KARA_MUU")]
 keep <- apply(df, 1, function (x) {!all(x == 0)}) & !is.na(as.data.frame(sp)$NIMI)
 df <- df[keep,]
 rownames(df) <- as.character(as.data.frame(sp)[keep, "NIMI"])
+
+library(reshape)
 df <- rename(df, c(RAKERA_AS = "Rakenteilla (asuminen)", RAKERA_MUU = "Rakenteilla (muu)", KARA_AS = "Rakennettu (asuminen)", KARA_MUU = "Rakennettu (muu)"))
 #df <- df/as.data.frame(sp)$YKSLKM
 df <- df[rev(order(rowSums(df), decreasing = TRUE)[1:50]),]

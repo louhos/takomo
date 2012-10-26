@@ -16,30 +16,35 @@
 
 # Preliminary scripts to fetch Finnish election data from 
 # Ministry of Justice web server.
-# Based on sorvi 0.1.87 develop branch
+# Based on sorvi 0.1.89 in develop branch
 
 library(sorvi) 
 
 # Get candidate data for election district 3 (Varsinais-Suomen vaalipiiri)
-candidates.3 <- ReadElectionData("candidates", district.id = 3) 
+# candidates.3 <- ReadElectionData("candidates", district.id = 3) 
+# candidates.3 <- ReadElectionData("candidates", district.id = "Varsinais-Suomen vaalipiiri") 
 
 # Get party data for election district 3 (Varsinais-Suomen vaalipiiri)
-parties.3 <- ReadElectionData("parties", district.id = 3) 
+# parties.3 <- ReadElectionData("parties", district.id = 3) 
+# parties.3 <- ReadElectionData("parties", district.id = "Varsinais-Suomen vaalipiiri") 
+
+# Get all party data across the whole country
+load("~/Rpackages/louhos/data.sorvi/maanmittauslaitos/MML.rda")
+parties.all <- ReadAllParties()
 
 # Get all candidate data across the whole country
 candidates.all <- ReadAllCandidates()
- 
-# Get all party data across the whole country
-parties.all <- ReadAllParties()
+
+#load("tabs2008.RData")
 
 # -------------------------------------------------------------------------
 
 # Dump into a csv file
 write.table(candidates.all, "MoJ_candidates_finland.csv", sep=";", quote=FALSE,
-            fileEncoding="iso-8859-1", row.names=FALSE)
+            fileEncoding="iso-8859-1", row.names = FALSE)
 
 write.table(parties.all, "MoJ_parties_finland.csv", sep=";", quote=FALSE,
-            fileEncoding="iso-8859-1", row.names=FALSE)
+            fileEncoding="iso-8859-1", row.names = FALSE)
 
 # --------------------------------------------------------------------------
 

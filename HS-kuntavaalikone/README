@@ -1,0 +1,26 @@
+Koodit on lisensoitu CC-BY-NC 3.0-lisensillä.
+
+* arvokartta.R
+
+  Koodi pohjautuu Juha Törmäsen tekemään vaalikoneanalyysiin
+  http://www.loitto.com/tilastot/hsvaalikone12/
+
+  Koodi lukee ehdokkaiden esikäsitellyn arvotaulukon,  
+  tekee faktorianalyysin ja visualisoi tulokset kuntakohtaisesti
+
+  Arvokartan tietojen lähde on Helsingin Sanomien vaalikone: www.vaalikone.fi
+  Alkuperäiset tiedot on ladatty HS-next blogin kautta:
+  http://blogit.hs.fi/hsnext/vaalikoneen-arvokartan-taustatiedot-avoimena-datana
+  http://files.snstatic.fi/hs/2012/10/vaalikone121012.zip
+  ehdokasvastaukset-12-10-2012-verkkoon.xlsx
+
+* arvokartta-projektiovertailu.R
+  
+  Alustavaa vertailua eri dimensionpudotusmetodien käytöstä vaalikoneen
+  arvokartan visualisoinnissa. Viilataan myöhemmin lisää.
+  
+* vaalikone.R
+
+  Tutkaile koko vaalikoneen kysymyksiä, ei pelkästään arvokarttaa. Draft.
+  
+  

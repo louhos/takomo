@@ -8,6 +8,7 @@
 # visualisoinnista Maanmittauslaitoksen karttadatalla (vuonna 2010)
 
 # Lataa soRvi
+# http://louhos.github.com/sorvi
 library(sorvi)
 
 ###############################################

@@ -13,7 +13,7 @@
 #################################################################
 
 read.px <- function(filename, encoding = "latin1", 
-                    na.strings = c('"."', '".."', '"..."', '"...."', '"-"')) {
+                    na.strings = c('"."', '".."', '"..."', '"...."')) {
 
 #filename <- "http://pxweb2.stat.fi/database/StatFin/vaa/kvaa/2008_05/610_kvaa_2008_2009-10-30_tau_137_fi.px" # OK
 #filename <- "http://pxweb2.stat.fi/Database/StatFin/vaa/kvaa/2008_04/410_kvaa_2008_2009-11-02_tau_123_fi.px" # CRaSH
