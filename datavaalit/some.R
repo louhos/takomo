@@ -2,10 +2,13 @@ some <- read.csv("http://www.datavaalit.fi/storage/some-updates-stats-2012-10-26
 names(some) <- c("Puolue", "Media", "dat")
 
 
+# Barplot
 library(ggplot2)
+theme_set(theme_bw(10))
 p <- ggplot(some, aes(x = Puolue, y = dat, group = Media)) + geom_bar(stat = "identity") + facet_grid(. ~ Media) + coord_flip()
 
-some <- some[order(some$dat),]
+# Facebook update activity crossplot
+some <- some[rev(order(some$dat)),]
 some <- subset(some, Media == "FB")
-p <- ggplot(some, aes(x = Puolue, y = dat)) + geom_point()
+p <- ggplot(some, aes(y = log10(dat), x = 1:nrow(some), label = Puolue)) + geom_text(size = 3) + ylab("Päivitysten määrä (log10)") + xlab("Puolueen järjestysluku")
 
