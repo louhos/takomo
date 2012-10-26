@@ -10,6 +10,6 @@ p <- ggplot(some, aes(x = Puolue, y = dat, group = Media)) + geom_bar(stat = "id
 
 # Facebook update activity crossplot
 some <- some[rev(order(some$dat)),]
-some <- subset(some, Media == "FB")
-p <- ggplot(some, aes(y = log10(dat), x = 1:nrow(some), label = Puolue)) + geom_text(size = 3) + ylab("Päivitysten määrä (log10)") + xlab("Puolueen järjestysluku")
+#some <- subset(some, Media == "FB")
+p <- ggplot(some, aes(y = log10(dat), x = 1:nrow(some), label = Puolue)) + geom_text(size = 3, aes(color = Media)) + ylab("Päivitysten määrä (log10)") + xlab("Puolueen järjestysluku") + ggtitle("Kunnallisvaaliehdokkaiden aktiivisuus sosiaalisessa mediassa")
 p
