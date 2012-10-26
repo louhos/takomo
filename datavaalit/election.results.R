@@ -28,7 +28,7 @@ parties.3 <- ReadElectionData("parties", district.id = 3)
 
 # Get all candidate data across the whole country
 candidates.all <- ReadAllCandidates()
-
+ 
 # Get all party data across the whole country
 parties.all <- ReadAllParties()
 
@@ -36,10 +36,10 @@ parties.all <- ReadAllParties()
 
 # Dump into a csv file
 write.table(candidates.all, "MoJ_candidates_finland.csv", sep=";", quote=FALSE,
-            fileEncoding="iso-8859-1")
+            fileEncoding="iso-8859-1", row.names=FALSE)
 
 write.table(parties.all, "MoJ_parties_finland.csv", sep=";", quote=FALSE,
-            fileEncoding="iso-8859-1")
+            fileEncoding="iso-8859-1", row.names=FALSE)
 
 # --------------------------------------------------------------------------
 
