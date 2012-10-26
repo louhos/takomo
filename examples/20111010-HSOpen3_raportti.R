@@ -13,6 +13,11 @@
 # Install soRvi package
 # Instructions in http://sorvi.r-forge.r-project.org/asennus.html
 # NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
+
+# Install and load necessary packages
+install.packages("ggplot2")
+library(ggplot2)
+# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
 # Get Oikotie myynnit data
@@ -34,9 +39,9 @@ Helsinki.center <- c(lon=24.93, lat = 60.20)
 HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
 theme_set(theme_bw())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
-hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE)
+hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
-hplot <- hplot + opts(title = 'Map of Helsinki')
+hplot <- hplot + ggtitle("Map of Helsinki")
 
 ##########################
 ## Geocode street names ##
@@ -45,14 +50,18 @@ hplot <- hplot + opts(title = 'Map of Helsinki')
 # Get geocodes for the address combinations using GoogleMaps API
 # NOTE! Can query only 2500 times per day
 # Could use OpenStreetMap as well, see get.geocode.OpenStreetMap
-hr.geo.codes <- list()
-for (i in 1:2500) { #First day
-# Second day: for (i in (2501:nrow(combs))[-c(3699:3701-2499)]) { # Remove Tarkk'ampujankatu because it causes an error
-  if (i %% 100 == 0)
-    cat(i, ".")
-  temp <- GetGeocodeGoogleMaps(paste(hri.dat$Katu[i], hri.dat$Postinumero[i], "FI", sep=", "))
-  hr.geo.codes[[i]] <- as.numeric(temp)
-}
+message("Reading geocodes from dropbox...")
+con <- url("http://dl.dropbox.com/u/792906/data/HR_geocodes_20111023.RData")
+load(con)
+close(con)
+# hr.geo.codes <- list()
+# for (i in 1:2500) { #First day
+# # Second day: for (i in (2501:nrow(combs))[-c(3699:3701-2499)]) { # Remove Tarkk'ampujankatu because it causes an error
+#   if (i %% 100 == 0)
+#     cat(i, ".")
+#   temp <- GetGeocodeGoogleMaps(paste(hri.dat$Katu[i], hri.dat$Postinumero[i], "FI", sep=", "))
+#   hr.geo.codes[[i]] <- as.numeric(temp)
+# }
 
 # Filter out missing geocodes
 totake <- which(sapply(hr.geo.codes, length)==2)
@@ -75,7 +84,7 @@ hr.lukiot2 <- subset(hr.lukiot, min(HelsinkiMap$lat) <= lat & lat <= max(Helsink
 hplot2 <- hplot + geom_point(data=hri.dat2, aes(x=Lon, y=Lat, colour=Hinta.mediaani), size=2.5, alpha=0.8)
 hplot2 <- hplot2 + scale_colour_gradient(low="blue", high="red")
 hplot2 <- hplot2 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, size=Keskiarvo))
-hplot2 <- hplot2 + scale_area(to=c(5,8), breaks=seq(15, 21, 2))
+hplot2 <- hplot2 + scale_area(range=c(3,6), breaks=seq(15, 21, 2))
 hplot2 <- hplot2 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), colour="white", size=2)
-hplot2 <- hplot2 + opts(title="Pääkaupunkiseudun asuntojen neliöhinnat ja lukioiden paremmuus kartalla")
+hplot2 <- hplot2 + ggtitle("Pääkaupunkiseudun asuntojen neliöhinnat ja lukioiden paremmuus kartalla")
 ggsave("Helsinki_price_highschools_20111010_final.png", plot=hplot2, width=10, height=9)
