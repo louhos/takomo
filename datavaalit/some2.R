@@ -21,10 +21,7 @@ csome$FBfr <- csome$FB / unlist(isot[csome$Puolue])
 p <- ggplot(csome, aes(x=FB, y=TW, label=Puolue)) 
 p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä") + 
     ylab("Twitter-päivitysten määrä") + geom_smooth(method = lm) +
-    theme(axis.title.x = element_text(size=18),
-          axis.text.x  = element_text(size=12),
-          axis.title.y = element_text(size=18),
-          axis.text.y  = element_text(size=12))
+    theme()
 
 p <- ggplot(csome, aes(x=log10(FBfr), y=log10(TWfr), label=Puolue)) 
 p + geom_text(size = 5) + xlab("log10(Facebook-päivitysten määrä)") + 
