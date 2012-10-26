@@ -54,7 +54,6 @@ library(ggplot2)
 theme_set(theme_bw(8))
 some$Paivitykset.edustajaa.kohden <- some$dat.normalized
 p <- ggplot(some, aes(x = Puolue, y = Paivitykset.edustajaa.kohden, group = Media)) + geom_bar(stat = "identity") + coord_flip() + ggtitle("Ehdokkaiden aktiivisuus sosiaalisessa mediassa")
-p
 
 # ----------------------------------------
 
@@ -76,16 +75,5 @@ tw <- subset(some, Media == "Twitter")
 rownames(tw) <- as.character(tw$Puolue)
 df <- data.frame(list(Puolue = puolueet, Facebook = fb[puolueet, "dat.normalized"], Twitter = tw[puolueet, "dat.normalized"]))
 df <- df[apply(df, 1, function (x) {!any(is.na(x))}),]
-ggplot(df, aes(x = Facebook, y = Twitter, label = Puolue)) + geom_text(size = 3) + scale_x_continuous(lim = c(-1,max(df[, c("Facebook")]) + 2)) + scale_y_continuous(lim = c(-1,max(df[, c("Twitter")]))) + ggtitle("Facebook- ja Twitter-aktiivisuuden vertailua")
-
-# Puolueet laskevassa järjestyksessä: aktiivisuus sosiaalisessa mediassa 
-# ehdokasta kohden
-#p <- ggplot(some, aes(y = dat.normalized, x = 1:nrow(some), label = Puolue)) + geom_text(size = 3) + ylab("Päivitysten määrä edustajaa kohden") + xlab("Puolueen järjestysluku") + ggtitle("Kunnallisvaaliehdokkaiden aktiivisuus sosiaalisessa mediassa") + scale_x_continuous(lim = c(-3,nrow(some))) 
-
-
-
-# Ehdokkaiden määrä vs. aktiivisuus sosiaalisessa mediassa 
-# p2 <- ggplot(some, aes(x = log10(candidates), y = log10(dat), label = Puolue)) + geom_text(size = 3) + xlab("Ehdokkaiden määrä (Log10)") + ylab("Viestejä sosiaalisessa mediassa (Log10)") + scale_x_continuous(lim = c(-.5, max(log10(some$dat)) + .5 )) + ggtitle("Kunnallisvaaliehdokkaiden aktiivisuus sosiaalisessa mediassa")
-
-
+p <- ggplot(df, aes(x = Facebook, y = Twitter, label = Puolue)) + geom_text(size = 3) + scale_x_continuous(lim = c(-1,max(df[, c("Facebook")]) + 2)) + scale_y_continuous(lim = c(-1,max(df[, c("Twitter")]))) + ggtitle("Facebook- ja Twitter-aktiivisuuden vertailua")
 
