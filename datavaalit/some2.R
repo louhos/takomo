@@ -5,6 +5,7 @@ names(some) <- c("Puolue", "Media", "dat")
 
 csome <- cast(some, Puolue~Media)
 csome$TW[which(is.na(csome$TW))]  <- 0
+csome$FB[which(is.na(csome$TW))]  <- 0
 
-p <- ggplot(csome, aes(x=FB, y=TW, color=Puolue)) + geom_point()
+p <- ggplot(csome, aes(x=log10(FB), y=log10(TW), color=Puolue)) + geom_point()
 p
