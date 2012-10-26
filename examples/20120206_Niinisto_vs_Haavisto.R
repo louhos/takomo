@@ -9,7 +9,9 @@
 # Install soRvi package # Instructions in http://sorvi.r-forge.r-project.org/asennus.html 
 # This script was implemented with soRvi version 0.1.45 
 
-library(sorvi) 
+# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
+library(sorvi)
+
 
 ################# 
 ## VOTING DATA ## 

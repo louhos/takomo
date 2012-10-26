@@ -13,22 +13,29 @@
 
 # Tested with sorvi_0.1.97
 # http://louhos.github.com/sorvi
-library(sorvi)
+
+# Install and load necessary packages
+install.packages(c("ggplot2", "gdata", "devtools"))
 library(ggplot2)
+library(gdata)  
+# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
+library(sorvi)
 
 # Get map of Helsinki (takes some time)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
 HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(theme_bw())
+#theme_set(theme_bw())
+theme_set(GetThemeMap())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
-hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE)
+hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
-hplot <- hplot + opts(title = 'Map of Helsinki')
+hplot <- hplot + ggtitle("Map of Helsinki")
 
 # Read coordinates for places in Helsinki Region
 # KML files downloaded from: http://www.hri.fi/fi/data/paakaupunkiseudun-aluejakokartat/
 # KML to CSV conversion with http://choonchernlim.com/kmlcsv/
-pienalue <- read.csv("data/PKS_Kartta_Rajat_KML2011/PKS_pienalue_piste.csv", header=F)
+#pienalue <- read.csv("data/PKS_Kartta_Rajat_KML2011/PKS_pienalue_piste.csv", header=F)
+pienalue <- GetHRIaluejakokartat()
 names(pienalue) <- c("lon", "lat", "Alue", "")
 
 # Get Oikotie myynnit data
@@ -46,7 +53,6 @@ names(Helsinki.m2.prices) <- c("Zip.code", "Price")
 ################################################
 
 # Load older housing pricing data to get Helsinki Zip codes (link to data obtained from Helsinki Region Infoshare)
-library(gdata)
 data.url <- "http://www.hel2.fi/tietokeskus/data/helsinki/helsingin_kaupungin_tilastollinen_vuosikirja_2009/3asuminen/3.24.xls"
 asuntodata <- read.xls(data.url, skip=5, header=T, fileEncoding="ISO-8859-1")
 
