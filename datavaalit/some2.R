@@ -20,7 +20,7 @@ csome$TWfr <- csome$TW / unlist(isot[csome$Puolue])
 csome$FBfr <- csome$FB / unlist(isot[csome$Puolue])
 
 # Customize ggplot2 theme
-theme_custom <- ggplot2::theme_grey()
+theme_custom <- ggplot2::theme_bw(20)
 theme_custom$axis.title.x <- element_text(size=18)
 theme_custom$axis.text.x <- element_text(angle=90, vjust=0.5, size=12)
 theme_custom$axis.title.y <- element_text(angle=90, size=18)
@@ -43,7 +43,7 @@ print(p)
 
 # Time series -------------------------------------------------------------
 
-theme_set(theme_bw(20))
+# theme_set(theme_bw(20))
 
 #tsome <- read.csv("datavaalit/data/some-updates.csv", sep=";", header=FALSE)
 temp <- tempfile()
