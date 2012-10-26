@@ -10,88 +10,150 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-
-# Install soRvi package
-# Instructions in http://sorvi.r-forge.r-project.org/asennus.html
-# NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
+# Install and load necessary packages
+install.packages("ggplot2")
+library(ggplot2)
+# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
-# Get map of Helsinki (takes some time)
-Helsinki.center <- c(lon=24.93, lat = 60.20)
-HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(theme_bw())
-hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
-hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(legend=FALSE)
-hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
-hplot <- hplot + opts(title = 'Map of Helsinki')
 
-# Read coordinates for places in Helsinki Region
-# KML files downloaded from: http://www.hri.fi/fi/data/paakaupunkiseudun-aluejakokartat/
-# KML to CSV conversion with http://choonchernlim.com/kmlcsv/
-pienalue <- read.csv("data/PKS_Kartta_Rajat_KML2011/PKS_pienalue_piste.csv", header=F)
-names(pienalue) <- c("lon", "lat", "Alue", "")
+###############
+## Load data ##
+###############
+
 
 # Get Oikotie myynnit data
 Oikotie <- GetOikotie()
 hr.myynnit <- Oikotie$hr.myynnit
 
-# Compute average prices per square meter for Helsinki zip codes
-# Helsinki.m2.prices <- aggregate(Helsinki.myynnit$Price.per.square, list(Helsinki.myynnit$Zip.code), mean)
-# names(Helsinki.m2.prices) <- c("Zip.code", "Price")
-Helsinki.m2.prices <- aggregate(hr.myynnit$Price.per.square, list(hr.myynnit$Zip.code), mean)
-names(Helsinki.m2.prices) <- c("Zip.code", "Price")
+# Get Lukio data
+Lukiot <- GetLukiot()
+hr.lukiot <- Lukiot$hr.lukiot
 
-################################################
-## Connect Helsinki zip codes to region names ##
-################################################
+# Load Helsinki region area data
+HRI.aluejakokartat <- GetHRIaluejakokartat()
+pks.df <- HRI.aluejakokartat$pienalue.df
+pks.pienalue <- HRI.aluejakokartat$pienalue
 
-# Load older housing pricing data to get Helsinki Zip codes (link to data obtained from Helsinki Region Infoshare)
-library(gdata)
-data.url <- "http://www.hel2.fi/tietokeskus/data/helsinki/helsingin_kaupungin_tilastollinen_vuosikirja_2009/3asuminen/3.24.xls"
-asuntodata <- read.xls(data.url, skip=5, header=T, fileEncoding="ISO-8859-1")
+######################
+## Combine datasets ##
+######################
 
-# Use only area and zip code information
-asuntodata <- asuntodata[-c(1,75,76),-(3:8)]
-names(asuntodata) <- c("Postinumero", "Alue")
-asuntodata$Postinumero <- paste("00", as.vector(asuntodata$Postinumero), "0", sep="")
+# Get unique address combinations (street, zip code)
+combs <- aggregate(hr.myynnit$Price.per.square, list(hr.myynnit$Zip.code, hr.myynnit$Street), median)
+names(combs) <- c("Postinumero", "Katu", "Mediaanihinta")
 
-# Extract Finnish area names
-# Need to fix Scandinavian characters, as I can't get fileEncoding to work with read.xls...
-temp <- gsub("\xe4", "ä", as.vector(asuntodata$Alue))
-temp <- gsub("\xf6", "ö", temp)
-temp <- sapply(strsplit(temp, split=" - "), function(x) x[1])
-asuntodata$Alue <- temp
+# Get geocodes for the address combinations using GoogleMaps API
+# NOTE! Can query only 2500 times per day
+# Could use OpenStreetMap as well, see GetGeocodeOpenStreetMapmessage("Reading geocodes from dropbox...")
+con <- url("http://dl.dropbox.com/u/792906/data/HR_geocodes_20111023.RData")
+load(con)
+close(con)
 
-#################################
-## Combine everything together ##
-#################################
+# hr.geo.codes <- list()
+# for (i in 1:2500) { #First day
+#   # Second day: for (i in (2500:nrow(combs))[-c(3699:3701-2499)]) { # Remove Tarkk'ampujankatu because it causes an error
+#   if (i %% 100 == 0)
+#     cat(i, ".")
+#   temp <- get.geocode.GoogleMaps(paste(combs$Katu[i], combs$Postinumero[i], "FI", sep=", "))
+#   hr.geo.codes[[i]] <- as.numeric(temp)
+# }
 
-# Get those zip codes for which we have prices
-Postinumerot <- as.vector(Helsinki.m2.prices$Zip.code[Helsinki.m2.prices$Zip.code %in% asuntodata$Postinumero])
+# Add geocodes to combinations (use only clear geocodes where exactly two coordinates values given)
+combs$Lat <- combs$Lon <- rep(NA, nrow(combs))
+clears <- which(sapply(hr.geo.codes, length)==2)
+combs$Lat[clears] <- sapply(hr.geo.codes[clears], function(x) x[1])
+combs$Lon[clears] <- sapply(hr.geo.codes[clears], function(x) x[2])
 
-# Get area names for those zip codes
-Alueet <- as.vector(asuntodata$Alue)[match(Postinumerot, asuntodata$Postinumero)]
+# Get Helsinki region area boundaries (areas are represented as polygons in PKS aluejako data)
+coords.list <- lapply(pks.pienalue@polygons, function(x) x@Polygons[[1]]@coords)
 
-# Fixe some area names manually
-fixed.areas <- c("Kamppi", "NA", "Etu-Töölö", "Meilahti", "NA",
-                 "Vanha Munkkiniemi", "Kuusisaari", "Munkkivuori", "Vallila", "NA",
-                 "Hermanni", "Vanhakaupunki", "Metsälä", "Maunula", "NA",
-                 "Ala-Malmi", "Pukinmäki", "NA", "Latokartano", "NA",
-                 "NA", "NA", "Itäkeskus", "NA", "Mellunmäki", 
-                 "Keski-Vuosaari")
-Alueet[!(Alueet %in% pienalue$Alue)] <- fixed.areas
+# Map address combinations to Helsinki region areas
+area.inds <- rep(NA, length(clears))
+for (i in 1:length(clears)) {
+  if (i %% 100 == 0) cat(i, "")
+  gc <- hr.geo.codes[clears][[i]]
+  temp <- sapply(coords.list, function(x) point.in.polygon(gc[2], gc[1], x[,1], x[,2]))
+  if (any(temp==1))
+    area.inds[i] <- which(temp==1)
+}
 
-# Remove still missing values
-Postinumerot <- Postinumerot[-which(Alueet=="NA")]
-Alueet <- Alueet[-which(Alueet=="NA")]
-Pituuspiiri <- pienalue$lon[match(Alueet, pienalue$Alue)]
-Leveyspiiri <- pienalue$lat[match(Alueet, pienalue$Alue)]
-Neliöhinta <- Helsinki.m2.prices$Price[match(Postinumerot, Helsinki.m2.prices$Zip.code)]
+# Compute median prices for each area in PKS aluejakodata
+# Note! Can't use precomputed prices from combs, as the medians wouldn't end up right
+area.median.prices <- area.mean.prices <- rep(NA, nrow(pks.pienalue))
+for (a in 1:length(area.median.prices)) {
+  if (a %% 10 == 0) cat(a, "")
+  # Get all combinations that belong to current area (if any)
+  if (any(area.inds==a, na.rm=T)) {
+    comb.inds <- which(area.inds==a)
+    temp.prices <- c()
+    # Get all rows from original hr.myynnit that match to current area
+    for (ci in comb.inds) {
+      rows <- which(hr.myynnit$Street == combs$Katu[clears][ci] & hr.myynnit$Zip.code == combs$Postinumero[clears][ci])
+      temp.prices <- c(temp.prices, hr.myynnit$Price.per.square[rows])
+    }
+    area.median.prices[a] <- median(temp.prices)
+    area.mean.prices[a] <- mean(temp.prices)
+  }
+}
 
-# Construct a dataframe for plotting
-df <- data.frame(Postinumero=Postinumerot, Alue=Alueet, lon=Pituuspiiri, lat=Leveyspiiri, Neliöhinta=Neliöhinta)
+# Add price info to pks.df
+pks.df$Mediaanihinta <- pks.df$Keskihinta <- NA
+for (a in 1:length(area.median.prices)) {
+  rows <- which(pks.df$id==as.character(a))
+  if (length(rows) > 0) {
+    pks.df$Mediaanihinta[rows] <- area.median.prices[a]
+    pks.df$Keskihinta[rows] <- area.mean.prices[a]
+  }
+}
 
-# Add region names and prices on top of plain Helsinki map
-hplot2 <- hplot + geom_point(data=df, aes(x=lon, y=lat, size=Neliöhinta))
-hplot2 <- hplot2 + geom_text(data=df, aes(x=lon, y=lat, label=Alue), size=1.5, hjust=1, vjust=2)
-ggsave("Helsinki_prices_20111005.png", plot=hplot2, width=8, height=8)
+###################
+## Plot on a map ##
+###################
+
+# Load map of Helsinki region from GoogleMaps
+center <- c(lon=24.90, lat = 60.20)
+hr.map <- GetStaticmapGoogleMaps(center = center, zoom = 10, GRAYSCALE=TRUE, maptype="map", scale=1)
+
+# Construct plain map plot
+theme_set(theme_bw())
+hplot <- ggplot(hr.map)
+hplot <- hplot + geom_tile(aes(x=lon, y=lat, fill=fill)) + scale_fill_identity(guide="none")
+hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
+hplot <- hplot + ggtitle("Map of Helsinki")
+# ggsave("HR_map_20111023.png", plot=hplot, width=8, height=8)
+
+# Add region boundaries (filter out sea regions)
+pks.df2 <- subset(pks.df, !(Nimi %in% c("Ulkosaaret", "Länsisaaret", "Itäsaaret")))
+hplot2 <- hplot + geom_path(data=pks.df2, aes(x=long, y=lat, group=id))
+# ggsave("HR_map_areas_20111023.png", plot=hplot2,  width=8, height=8)
+
+# Add apartment price info
+# Need to train fill scale separately for price info, because static map already uses fill
+den_fill_scale <- scale_colour_gradient(low = 'blue', high = 'red')
+den_fill_scale$train(pks.df2$Mediaanihinta, T)
+pks.df2$Mediaanihinta2 <- den_fill_scale$map(pks.df2$Mediaanihinta)
+hplot3 <- hplot2 + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta2), colour="white", alpha=0.7, size=0.2)
+# ggsave("Helsinki_map_areas_prices_20111023.png", plot=hplot3,  width=8, height=8)
+
+# Add high school info (filter out schools not in map range)
+hr.lukiot2 <- subset(hr.lukiot, min(hr.map$lat) <= lat & lat <= max(hr.map$lat) & min(hr.map$lon) <= lon & lon <= max(hr.map$lon))
+hplot4 <- hplot3 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
+hplot4 <- hplot4 + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
+hplot4 <- hplot4 + opts(title="Pääkaupunkiseudun asuntojen hinnat ja lukioiden paremmuus", legend.position="none")
+hplot4 <- hplot4 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), size=1)
+# ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
+
+# Add legend for price scale (a bit tricky!)
+p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
+p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
+p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
+leg <- ggplotGrob(p + opts(keep="legend_box"))
+legend <- gTree(children=gList(leg), cl="legendGrob")
+widthDetails.legendGrob <- function(x) unit(3, "cm")
+
+# Save final plot (takes some time)
+# Use arrangeGrob from package gridExtra to join plot and a separate legend
+install.packages(gridExtra)
+library(gridExtra)
+ggsave("Helsinki_map_areas_prices_schools_20111023.png", plot=arrangeGrob(hplot4, legend=legend),  width=11, height=10)
