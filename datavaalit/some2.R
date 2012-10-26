@@ -1,5 +1,6 @@
 library(reshape)
 library(plyr)
+library(ggplot2)
 
 some <- read.csv("http://www.datavaalit.fi/storage/some-updates-stats-2012-10-26.csv", sep = ",")
 names(some) <- c("Puolue", "Media", "dat")
@@ -37,7 +38,12 @@ p + geom_text(size = 5) + xlab("log10(Facebook-päivitysten määrä)") +
 
 # Time series -------------------------------------------------------------
 
-tsome <- read.csv("datavaalit/data/some-updates.csv", sep=";", header=FALSE)
+
+#tsome <- read.csv("datavaalit/data/some-updates.csv", sep=";", header=FALSE)
+temp <- tempfile()
+download.file("http://www.datavaalit.fi/storage/some-updates-2012-10-26.zip", temp)
+tsome <- read.csv(unz(temp, "some-updates.csv"), sep=";", header=FALSE)
+unlink(temp)
 names(tsome) <- c("Nimi", "Puolue", "Kunta", "Sukupuoli", "Media", "Aika", "X")
 
 tsome$Aika <- as.factor(as.Date(tsome$Aika)) 
