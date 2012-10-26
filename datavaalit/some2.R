@@ -21,23 +21,24 @@ csome$FBfr <- csome$FB / unlist(isot[csome$Puolue])
 
 p <- ggplot(csome, aes(x=FB, y=TW, label=Puolue)) 
 p + geom_text(size = 5) + xlab("Facebook-päivitysten määrä") + 
-    ylab("Twitter-päivitysten määrä") + geom_smooth(method = lm) +
-    theme()
+  ylab("Twitter-päivitysten määrä") + geom_smooth(method = lm) +
+  theme()
 
 p <- ggplot(csome, aes(x=log10(FBfr), y=log10(TWfr), label=Puolue)) 
 p + geom_text(size = 5) + xlab("log10(Facebook-päivitysten määrä)") + 
-    xlim(c(-1, 2)) + ylim(c(-1, 2)) +
-    ylab("log10(Twitter-päivitysten määrä)") +
-    theme(title = element_text(size=18),
-          axis.title.x = element_text(size=18),
-          axis.text.x  = element_text(size=12),
-          axis.title.y = element_text(size=18),
-          axis.text.y  = element_text(size=12)) + 
-    ggtitle("Normalisoidut some-päivitysten määrät")
+  xlim(c(-1, 2)) + ylim(c(-1, 2)) +
+  ylab("log10(Twitter-päivitysten määrä)") +
+  theme(title = element_text(size=18),
+        axis.title.x = element_text(size=18),
+        axis.text.x  = element_text(size=12),
+        axis.title.y = element_text(size=18),
+        axis.text.y  = element_text(size=12)) + 
+  ggtitle("Normalisoidut some-päivitysten määrät")
 
 
 # Time series -------------------------------------------------------------
 
+theme_set(theme_bw(20))
 
 #tsome <- read.csv("datavaalit/data/some-updates.csv", sep=";", header=FALSE)
 temp <- tempfile()
@@ -58,12 +59,12 @@ tsome.tw <- subset(tsome, Media == 'TW')
 
 p <- ggplot(tsome, aes(x = Aika)) 
 p + geom_histogram(binaxis = "y", binwidth=0.1) + ylab("lkm") +
-    theme(axis.title.x = element_text(size=18),
-          axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-          axis.title.y = element_text(size=18),
-          axis.text.y  = element_text(size=12),
-          strip.text.y = element_text(size=12, face="bold")) +
-    facet_grid(Puolue ~ .) + ggtitle("Kaikki some-päivitykset")
+  theme(axis.title.x = element_text(size=18),
+        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
+        axis.title.y = element_text(size=18),
+        axis.text.y  = element_text(size=12),
+        strip.text.y = element_text(size=12, face="bold")) +
+  facet_grid(Puolue ~ .) + ggtitle("Kaikki some-päivitykset")
 
 # Facebook updates
 
@@ -86,8 +87,6 @@ p + geom_histogram(binaxis = "y", binwidth=0.1, fill="#00ACED") + ylab("lkm") +
         strip.text.y = element_text(size=12, face="bold")) +
   facet_grid(Puolue ~ .) + ggtitle("Twitter päivitykset")
 
-
-
 party_stats  <- ddply(tsome, c(.(Aika), .(Puolue)), summarise,
                       lkm=length(Nimi),
                       ehd=unlist(isot[Puolue][1]))
@@ -96,22 +95,27 @@ party_stats$lkmfr <- party_stats$lkm / party_stats$ehd
 p2 <- ggplot(party_stats, aes(x = Aika, y = lkmfr, group = Puolue)) 
 p2 + geom_line(aes(colour = Puolue))
 
+# Themes
+theme.sm <- theme_update(axis.title.x = element_text(size=18),
+                         axis.title.y  = element_text(angle=0, size=12),
+                         axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
+                         axis.title.y = element_text(size=18),
+                         axis.text.y  = element_text(size=12),
+                        strip.text.y = element_text(size=12, face="bold"))
+
+theme_set(theme.sm)
+
 # All social media updates
 p <- ggplot(party_stats, aes(x = Aika, y=lkmfr)) 
-p <- p + geom_bar() + ylab("lkm") +
-  theme(axis.title.x = element_text(size=18),
-        axis.text.x  = element_text(angle=90, vjust=0.5, size=12),
-        axis.title.y = element_text(size=18),
-        axis.text.y  = element_text(size=12),
-        strip.text.y = element_text(size=12, face="bold")) +
-   ggtitle("Kaikki some-päivitykset")
+p <- p + geom_bar() + ylab("lkm") + theme.sm + 
+  ggtitle("Kaikki some-päivitykset")
 p + facet_grid(Puolue ~ .) 
 p + facet_grid(Puolue ~ ., scales="free_y")
 
 # Facebook updates 
 party_stats_fb  <- ddply(tsome.fb, c(.(Aika), .(Puolue)), summarise,
-                      lkm=length(Nimi),
-                      ehd=unlist(isot[Puolue][1]))
+                         lkm=length(Nimi),
+                         ehd=unlist(isot[Puolue][1]))
 party_stats_fb$lkmfr <- party_stats_fb$lkm / party_stats_fb$ehd
 
 p <- ggplot(party_stats_fb, aes(x = Aika, y=lkmfr)) 
