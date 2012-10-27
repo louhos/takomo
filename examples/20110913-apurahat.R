@@ -23,37 +23,37 @@ apurahat <- GetApurahat()
 
 # Load maakuntakartta (need to permit the use of gpclib)
 if (!gpclibPermitStatus())
-gpclibPermit()
+  gpclibPermit()
 #maakuntakartta <- GetMaakuntainfo()
 
-  # Load maakuntakartta-data
-  library(sp)
-  con <- url("http://gadm.org/data/rda/FIN_adm2.RData", encoding="UTF-8")
-  load(con)
-  close(con)
-    
-  # Fix province names
-  gadm@data$Maakunnat <- factor(gsub("\xe4", "?", gadm@data$NAME_2))
-  levels(gadm@data$Maakunnat) <- c("KESKI-SUOMI", "KESKI-POHJANMAA", "ITÄ-UUSIMAA", "VARSINAIS-SUOMI", "KAINUU", "KYMENLAAKSO", "LAPPI", "POHJOIS-KARJALA","POHJOIS-SAVO", "POHJOIS-POHJANMAA", "POHJANMAA", "PIRKANMAA", "PÄIJÄT-HÄME", "SATAKUNTA", "ETELÄ-KARJALA", "ETELÄ-POHJANMAA", "ETELÄ-SAVO", "KANTA-HÄME", "UUSIMAA")
-  
-  # Change to ggplot2-format with fortify
-  library(ggplot2)
-  if (!gpclibPermitStatus())
-    gpclibPermit()
-  maakuntakartta <- fortify(gadm, region="Maakunnat")
-  
-  # Remove ITA-UUSIMAA
-  maakuntakartta$id[maakuntakartta$id=="ITÄ-UUSIMAA"] <- "UUSIMAA"
-  
-  # Add data of province population sizes
-  # Data obtained manually from Tilastokeskus
-  temp <- data.frame(maakunta=sort(unique(maakuntakartta$id)))
+# Load maakuntakartta-data
+library(sp)
+con <- url("http://gadm.org/data/rda/FIN_adm2.RData", encoding="UTF-8")
+load(con)
+close(con)
+
+# Fix province names
+gadm@data$Maakunnat <- factor(gsub("\xe4", "?", gadm@data$NAME_2))
+levels(gadm@data$Maakunnat) <- c("KESKI-SUOMI", "KESKI-POHJANMAA", "ITÄ-UUSIMAA", "VARSINAIS-SUOMI", "KAINUU", "KYMENLAAKSO", "LAPPI", "POHJOIS-KARJALA","POHJOIS-SAVO", "POHJOIS-POHJANMAA", "POHJANMAA", "PIRKANMAA", "PÄIJÄT-HÄME", "SATAKUNTA", "ETELÄ-KARJALA", "ETELÄ-POHJANMAA", "ETELÄ-SAVO", "KANTA-HÄME", "UUSIMAA")
+
+# Change to ggplot2-format with fortify
+library(ggplot2)
+if (!gpclibPermitStatus())
+  gpclibPermit()
+maakuntakartta <- fortify(gadm, region="Maakunnat")
+
+# Remove ITA-UUSIMAA
+maakuntakartta$id[maakuntakartta$id=="ITÄ-UUSIMAA"] <- "UUSIMAA"
+
+# Add data of province population sizes
+# Data obtained manually from Tilastokeskus
+temp <- data.frame(maakunta=sort(unique(maakuntakartta$id)))
 
 
-  # Get population for each province
-  pop <- GetProvinceInfo()
-  temp$asukasluku <- pop[match(temp$maakunta, toupper(pop$Maakunta)), "Vakiluku"]
-  maakuntakartta$asukasluku <- temp$asukasluku[match(maakuntakartta$id, temp$maakunta)]
+# Get population for each province
+pop <- GetProvinceInfo()
+temp$asukasluku <- pop[match(temp$maakunta, toupper(pop$Maakunta)), "Vakiluku"]
+maakuntakartta$asukasluku <- temp$asukasluku[match(maakuntakartta$id, temp$maakunta)]
 
 
 ##########################
