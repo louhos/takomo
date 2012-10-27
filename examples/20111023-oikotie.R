@@ -131,26 +131,34 @@ hplot2 <- hplot + geom_path(data=pks.df2, aes(x=long, y=lat, group=id))
 # Add apartment price info
 # Need to train fill scale separately for price info, because static map already uses fill
 den_fill_scale <- scale_colour_gradient(low = 'blue', high = 'red')
-den_fill_scale$train(pks.df2$Mediaanihinta, T)
-pks.df2$Mediaanihinta2 <- den_fill_scale$map(pks.df2$Mediaanihinta)
+
+# OLD
+#den_fill_scale$train(pks.df2$Mediaanihinta, T)
+#pks.df2$Mediaanihinta2 <- den_fill_scale$map(pks.df2$Mediaanihinta)
+
+# NEW
+ggplot2:::scale_train(den_fill_scale, pks.df2$Mediaanihinta)
+# den_fill_scale$range$train(pks.df2$Mediaanihinta)
+pks.df2$Mediaanihinta2 <- ggplot2:::scale_map(den_fill_scale, pks.df2$Mediaanihinta)
+
 hplot3 <- hplot2 + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta2), colour="white", alpha=0.7, size=0.2)
 # ggsave("Helsinki_map_areas_prices_20111023.png", plot=hplot3,  width=8, height=8)
 
 # Add high school info (filter out schools not in map range)
 hr.lukiot2 <- subset(hr.lukiot, min(hr.map$lat) <= lat & lat <= max(hr.map$lat) & min(hr.map$lon) <= lon & lon <= max(hr.map$lon))
 hplot4 <- hplot3 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
-hplot4 <- hplot4 + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
-hplot4 <- hplot4 + opts(title="Pääkaupunkiseudun asuntojen hinnat ja lukioiden paremmuus", legend.position="none")
+hplot4 <- hplot4 + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo, guide="none"))
+hplot4 <- hplot4 + ggtitle("Pääkaupunkiseudun asuntojen hinnat ja lukioiden paremmuus")
 hplot4 <- hplot4 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), size=1)
-# ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
+ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
 
 # Add legend for price scale (a bit tricky!)
-p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
-p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
-p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
-leg <- ggplotGrob(p + opts(keep="legend_box"))
-legend <- gTree(children=gList(leg), cl="legendGrob")
-widthDetails.legendGrob <- function(x) unit(3, "cm")
+# p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
+# p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
+# p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
+# leg <- ggplotGrob(p + opts(keep="legend_box"))
+# legend <- gTree(children=gList(leg), cl="legendGrob")
+# widthDetails.legendGrob <- function(x) unit(3, "cm")
 
 # Save final plot (takes some time)
 # Use arrangeGrob from package gridExtra to join plot and a separate legend
