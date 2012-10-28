@@ -11,8 +11,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Install and load necessary packages
-install.packages("ggplot2")
+install.packages(c("ggplot2", "gridExtra"))
 library(ggplot2)
+library(gridExtra)
 # sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
@@ -71,7 +72,7 @@ coords.list <- lapply(pks.pienalue@polygons, function(x) x@Polygons[[1]]@coords)
 # Map address combinations to Helsinki region areas
 area.inds <- rep(NA, length(clears))
 for (i in 1:length(clears)) {
-  if (i %% 100 == 0) cat(i, "")
+  if (i %% 100 == 0) cat(i/length(cars), "\n")
   gc <- hr.geo.codes[clears][[i]]
   temp <- sapply(coords.list, function(x) point.in.polygon(gc[2], gc[1], x[,1], x[,2]))
   if (any(temp==1))
@@ -82,7 +83,7 @@ for (i in 1:length(clears)) {
 # Note! Can't use precomputed prices from combs, as the medians wouldn't end up right
 area.median.prices <- area.mean.prices <- rep(NA, nrow(pks.pienalue))
 for (a in 1:length(area.median.prices)) {
-  if (a %% 10 == 0) cat(a, "")
+  if (a %% 10 == 0) cat(a/length(area.meadian.prices), "\n")
   # Get all combinations that belong to current area (if any)
   if (any(area.inds==a, na.rm=T)) {
     comb.inds <- which(area.inds==a)
@@ -131,14 +132,7 @@ hplot2 <- hplot + geom_path(data=pks.df2, aes(x=long, y=lat, group=id))
 # Add apartment price info
 # Need to train fill scale separately for price info, because static map already uses fill
 den_fill_scale <- scale_colour_gradient(low = 'blue', high = 'red')
-
-# OLD
-#den_fill_scale$train(pks.df2$Mediaanihinta, T)
-#pks.df2$Mediaanihinta2 <- den_fill_scale$map(pks.df2$Mediaanihinta)
-
-# NEW
 ggplot2:::scale_train(den_fill_scale, pks.df2$Mediaanihinta)
-# den_fill_scale$range$train(pks.df2$Mediaanihinta)
 pks.df2$Mediaanihinta2 <- ggplot2:::scale_map(den_fill_scale, pks.df2$Mediaanihinta)
 
 hplot3 <- hplot2 + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta2), colour="white", alpha=0.7, size=0.2)
@@ -150,18 +144,19 @@ hplot4 <- hplot3 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarv
 hplot4 <- hplot4 + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo, guide="none"))
 hplot4 <- hplot4 + ggtitle("Pääkaupunkiseudun asuntojen hinnat ja lukioiden paremmuus")
 hplot4 <- hplot4 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), size=1)
-ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
+# ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
 
 # Add legend for price scale (a bit tricky!)
-# p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
-# p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
-# p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
-# leg <- ggplotGrob(p + opts(keep="legend_box"))
-# legend <- gTree(children=gList(leg), cl="legendGrob")
-# widthDetails.legendGrob <- function(x) unit(3, "cm")
+p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
+p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
+p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
+p <- p + scale_fill_gradient(low="blue", high="red")
+tmp <- ggplot_gtable(ggplot_build(p))
+leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+legend <- tmp$grobs[[leg]]
 
-# Save final plot (takes some time)
-# Use arrangeGrob from package gridExtra to join plot and a separate legend
-install.packages(gridExtra)
-library(gridExtra)
-ggsave("Helsinki_map_areas_prices_schools_20111023.png", plot=arrangeGrob(hplot4, legend=legend),  width=11, height=10)
+# Save final plot with custom legend (takes some time)
+p.final <- grid.arrange(arrangeGrob(hplot4 + theme(legend.position="none")), legend, widths=c(1, 0.2), nrow=1)
+png("Helsinki_map_areas_prices_schools_20111023.png")
+grid.arrange(arrangeGrob(hplot4 + theme(legend.position="none")), legend, widths=c(1, 0.2), nrow=1)
+dev.off()
