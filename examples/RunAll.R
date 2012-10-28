@@ -2,8 +2,7 @@
 fs <- list.files(pattern = ".R$")
 
 # Files TO FIX
-fixme.files <-  c(		  
-		  "20111023-oikotie.R", 
+fixme.files <-  c(
 		  "20120206_Niinisto_vs_Haavisto.R", 
 		  "20120820-aihepiirianalyysi.R", 
 
