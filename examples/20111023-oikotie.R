@@ -1,6 +1,6 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice): 
@@ -14,6 +14,7 @@
 install.packages(c("ggplot2", "gridExtra"))
 library(ggplot2)
 library(gridExtra)
+
 # sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
