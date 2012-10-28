@@ -72,7 +72,7 @@ coords.list <- lapply(pks.pienalue@polygons, function(x) x@Polygons[[1]]@coords)
 # Map address combinations to Helsinki region areas
 area.inds <- rep(NA, length(clears))
 for (i in 1:length(clears)) {
-  if (i %% 100 == 0) cat(i/length(cars), "\n")
+  if (i %% 100 == 0) cat(i/length(clears), "\n")
   gc <- hr.geo.codes[clears][[i]]
   temp <- sapply(coords.list, function(x) point.in.polygon(gc[2], gc[1], x[,1], x[,2]))
   if (any(temp==1))
@@ -83,7 +83,7 @@ for (i in 1:length(clears)) {
 # Note! Can't use precomputed prices from combs, as the medians wouldn't end up right
 area.median.prices <- area.mean.prices <- rep(NA, nrow(pks.pienalue))
 for (a in 1:length(area.median.prices)) {
-  if (a %% 10 == 0) cat(a/length(area.meadian.prices), "\n")
+  if (a %% 10 == 0) cat(a/length(area.median.prices), "\n")
   # Get all combinations that belong to current area (if any)
   if (any(area.inds==a, na.rm=T)) {
     comb.inds <- which(area.inds==a)
