@@ -148,7 +148,7 @@ hplot4 <- hplot4 + ggtitle("Pääkaupunkiseudun asuntojen hinnat ja lukioiden pa
 hplot4 <- hplot4 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), size=1)
 # ggsave("Helsinki_map_areas_prices_schools_prel_20111023.png", plot=hplot4,  width=8, height=8)
 
-# Add legend for price scale (a bit tricky!)
+# Create a separate legend for the price scale (a bit tricky!)
 p <- ggplot(data=pks.df2) + geom_polygon(data=pks.df2, aes(x=long, y=lat, group=id, fill=Mediaanihinta))
 p <- p + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, colour=Keskiarvo), size=3)
 p <- p + scale_colour_gradient2(low = 'yellow1', mid='greenyellow', high = 'green3', midpoint=mean(hr.lukiot2$Keskiarvo))
@@ -158,7 +158,6 @@ leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
 legend <- tmp$grobs[[leg]]
 
 # Save final plot with custom legend (takes some time)
-p.final <- grid.arrange(arrangeGrob(hplot4 + theme(legend.position="none")), legend, widths=c(1, 0.2), nrow=1)
 png("Helsinki_map_areas_prices_schools_20111023.png")
 grid.arrange(arrangeGrob(hplot4 + theme(legend.position="none")), legend, widths=c(1, 0.2), nrow=1)
 dev.off()
