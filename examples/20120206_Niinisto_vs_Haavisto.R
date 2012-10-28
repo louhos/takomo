@@ -9,6 +9,13 @@
 # Install soRvi package # Instructions in http://sorvi.r-forge.r-project.org/asennus.html 
 # This script was implemented with soRvi version 0.1.45 
 
+# Install and load necessary packages
+install.packages(c("rgdal", "ggplot2", "gridExtra", "gpclib"))
+library(rgdal)
+library(ggplot2)
+library(gridExtra) 
+library(gpclib)
+
 # sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
@@ -27,8 +34,7 @@ names(votes) <- gsub("ääniä", "osuus", names(votes))
 names(votes) <- gsub("temp", "ääniä", names(votes)) 
 
 ## Read voting area data from HKK (Helsingin kaupungin kiinteistovirasto) 
-install.packages("rgdal")
-library(rgdal) 
+
 areas <- GetHKK(which.data="Aanestysaluejako", data.dir="TEMP") 
 
 # Create new Aluenumero code from TKTUNNUS for areas data (discard the first 2
@@ -59,10 +65,7 @@ areas.cities <- SplitSpatial(areas, "Kuntanimi")
 ## MAP PLOT ## 
 ############## 
 
-install.packages(c("ggplot2", "gridExtra", "gpclib"))
-library(ggplot2) 
-library(gridExtra) 
-library(gpclib)
+
 
 # Get the data frame
 gpclibPermit()
@@ -89,10 +92,15 @@ col.scale <- scale_colour_gradient(low = 'blue', high = 'red', limits=c(min.val,
 fill.scale <- scale_fill_gradient(low = 'blue', high = 'red', limits=c(min.val, max.val)) 
 
 # Make map for Pekka 
-message("NOTE! The following code does not work anymore since ggplot2 has been updated.")
+# message("NOTE! The following code does not work anymore since ggplot2 has been updated.")
 den_fill_scale <- col.scale 
+ggplot2:::scale_train(den_fill_scale, pks.df2$Mediaanihinta)
+pks.df2$Mediaanihinta2 <- ggplot2:::scale_map(den_fill_scale, pks.df2$Mediaanihinta)
+
 den_fill_scale$train(areas.df$Pekka.Haavisto.osuus, T) 
 areas.df$Pekka <- den_fill_scale$map(areas.df$Pekka.Haavisto.osuus) 
+# den_fill_scale$train(areas.df$Pekka.Haavisto.osuus, T) 
+# areas.df$Pekka <- den_fill_scale$map(areas.df$Pekka.Haavisto.osuus) 
 hplot.pekka <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Pekka), colour="white", alpha=0.7, size=0.2) 
 
 # Add legend using an auxiliary ggplot object 
