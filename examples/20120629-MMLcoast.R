@@ -12,10 +12,9 @@
 
 # This script was implemented with soRvi version 0.1.79
 library(sorvi)
-LoadData("MML")
 
-coast1 <- MML[["4_5_milj_shape_etrs-tm35fin"]][["coast"]]
+coast1 <- LoadMML(data.id = "coast", resolution = "4_5_milj_shape_etrs-tm35fin")
 PlotShape(coast1, varname = "SHAPE_Area")
 
-coast2 <- MML[["1_milj_Shape_etrs_shape"]][["coast_p"]]
+coast2 <- LoadMML(data.id = "coast_p", resolution = "1_milj_Shape_etrs_shape")
 PlotShape(coast2, varname = "SHAPE_Area")

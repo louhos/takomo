@@ -10,8 +10,7 @@ library(sorvi)
 library(rgdal)
 
 # MML:n kuntadata ladataan soRvista
-LoadData("MML")
-sp <- MML[["1_milj_Shape_etrs_shape"]][["kunta1_p"]]
+sp <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
 
 # Listaa kaikki soRvi:ssa olevat WMS urlit
 ListWMSurls()
