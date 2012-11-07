@@ -1,7 +1,6 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. 
-# All rights reserved.
+# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice): 
@@ -11,8 +10,10 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Tested with sorvi_0.1.97
-# http://louhos.github.com/sorvi
+
+# Install soRvi package
+# Instructions in http://sorvi.r-forge.r-project.org/asennus.html
+# NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
 
 # Install and load necessary packages
 install.packages(c("ggplot2", "gdata"))
@@ -24,7 +25,7 @@ library(sorvi)
 # Get map of Helsinki (takes some time)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
 HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(GetThemeMap())
+theme_set(theme_bw())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
 hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')

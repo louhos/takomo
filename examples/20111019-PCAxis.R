@@ -16,8 +16,7 @@ library(sorvi)
 # Lue Suomen kuntarajat SpatialPolygon-muodossa
 # (C) Maanmittauslaitos 2011
 # http://www.maanmittauslaitos.fi/aineistot-palvelut/digitaaliset-tuotteet/ilmaiset-aineistot/hankinta
-LoadData("MML")
-sp <- MML[["1_milj_Shape_etrs_shape"]][["kunta1_p"]]
+sp <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
 
 #################################################
 

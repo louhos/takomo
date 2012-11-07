@@ -23,12 +23,9 @@
 # Asenna ensin sorvi ja vaaditut riippuvuudet. 
 # Asennusohjeet löytyvät osoitteesta:
 # http://louhos.github.com/sorvi/asennus.html
-# install.packages("sorvi_0.1.92", repos = "louhos", branch = "develop")
+# install.packages("sorvi", repos = "louhos", branch = "develop")
 
 library(sorvi)
-
-# Fix pxR
-source("read.pxr.fix.R")
 
 election.districts <- setdiff(1:15, 5) # There is no district 5
 
@@ -74,17 +71,42 @@ save(candidates2008, file = "candidates2008.RData", compress = "xz")
 
 print("Kunnallisvaalit 2012")
 
-candidates2012 <- ReadAllCandidates()
+# Oikeusministeriö / Ministry of Justice
+candidates2012.moj <- ReadAllCandidates()
 
-save(candidates2012, file = "candidates2012.RData", compress = "xz")
+# library(sorvi); 
+# election.districts <- setdiff(1:15, 5) # There is no district 5
+
+# election.districts <- setdiff(election.districts, 6) # Problem with 6
+# 6: Hämeen
+
+# election.districts <- setdiff(election.districts, 9) # Problem with 9
+# 9: Etelä-Savon
+
+# Tilastokeskus / Statistics Finland
+tabs2012 <- list()
+for (id in election.districts) {
+#for (id in 10:15) {
+  tabs2012[[id]] <- GetElectedCandidates(2012, "municipal", election.district = id, verbose = TRUE) 
+}
+
+candidates2012.statfi <- do.call(rbind, tabs2012)
+
+save(candidates2012.moj, candidates2012.statfi, file = "candidates2012.RData", compress = "xz")
+
+
 
 ###################################################
 
 # Fields in the same order, and discrepant fields in the end
-coms <- sort(intersect(colnames(candidates2004), colnames(candidates2012)))
+coms <- sort(intersect(colnames(candidates2004), colnames(candidates2012.moj)))
 candidates2004 <- candidates2004[, c(coms, c("Äänestysalue", "Alue"), sort(setdiff(colnames(candidates2004), c(coms, c("Äänestysalue", "Alue")))))]
 candidates2008 <- candidates2008[, c(coms, c("Äänestysalue", "Alue"), sort(setdiff(colnames(candidates2008), c(coms, c("Äänestysalue", "Alue")))))]
-candidates2012 <- candidates2012[, c(coms, sort(setdiff(colnames(candidates2012), coms)))]
+
+candidates2012.statfi <- candidates2012.statfi[, c(coms, c("Aanestysalue", "Alue"), sort(setdiff(colnames(candidates2012.statfi), c(coms, c("Aanestysalue", "Alue")))))]
+
+candidates2012.moj <- candidates2012.moj[, c(coms, sort(setdiff(colnames(candidates2012.moj), coms)))]
+
 
 ###################################################
 
@@ -112,21 +134,24 @@ candidates2004.municipallevel <- subset(candidates2004, Alue == "Kunta yhteensä
 
 candidates2008.municipallevel <- subset(candidates2008, Alue == "Kunta yhteensä")
 
+candidates2012.municipallevel <- subset(candidates2012.statfi, Alue == "Kunta yhteensä")
+
 ###################################################
 
 # Dump into a csv file
 write.table(candidates2004, "municipal_elections_candidates_2004_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
-# Dump into a csv file
 write.table(candidates2008, "municipal_elections_candidates_2008_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+
+write.table(candidates2012.statfi, "municipal_elections_candidates_2012_finland_statfi.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
 write.table(candidates2004.municipallevel, "municipal_elections_candidates_2004_finland_small.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
-# Dump into a csv file
 write.table(candidates2008.municipallevel, "municipal_elections_candidates_2008_finland_small.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
-# Dump into a csv file
-write.table(candidates2012, "municipal_elections_candidates_2012_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+write.table(candidates2012.municipallevel, "municipal_elections_candidates_2012_finland_small.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
+
+write.table(candidates2012.moj, "municipal_elections_candidates_2012_finland.csv", sep=";", quote=FALSE, fileEncoding="iso-8859-1", row.names = FALSE)
 
 
 

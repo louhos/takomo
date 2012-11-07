@@ -1,13 +1,21 @@
-# This script is posted to the Louhos-blog # http://louhos.wordpress.com 
-# Copyright (C) 2008-2012 Juuso Parkkinen &lt;juuso.parkkinen@gmail.com&gt;. All rights reserved. 
+# This script is posted to the Louhos-blog 
+# http://louhos.wordpress.com 
+# Copyright (C) 2008-2012 Juuso Parkkinen, <juuso.parkkinen@gmail.com>. All rights reserved. 
+
 # This program is open source software; you can redistribute it and/or modify 
 # it under the terms of the FreeBSD License (keep this notice): 
 # http://en.wikipedia.org/wiki/BSD_licenses 
+
 # This program is distributed in the hope that it will be useful, 
 # but WITHOUT ANY WARRANTY; without even the implied warranty of 
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-# Install soRvi package # Instructions in http://sorvi.r-forge.r-project.org/asennus.html 
-# This script was implemented with soRvi version 0.1.45 
+
+# Install and load necessary packages
+install.packages(c("rgdal", "ggplot2", "gridExtra", "gpclib"))
+library(rgdal)
+library(ggplot2)
+library(gridExtra) 
+library(gpclib)
 
 # sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
@@ -27,8 +35,7 @@ names(votes) <- gsub("ääniä", "osuus", names(votes))
 names(votes) <- gsub("temp", "ääniä", names(votes)) 
 
 ## Read voting area data from HKK (Helsingin kaupungin kiinteistovirasto) 
-install.packages("rgdal")
-library(rgdal) 
+
 areas <- GetHKK(which.data="Aanestysaluejako", data.dir="TEMP") 
 
 # Create new Aluenumero code from TKTUNNUS for areas data (discard the first 2
@@ -55,14 +62,10 @@ areas@data$Kuntanimi <- factor(areas@data$Kuntanimi)
 # Split the spatial data into respective cities
 areas.cities <- SplitSpatial(areas, "Kuntanimi")
 
+
 ############## 
 ## MAP PLOT ## 
 ############## 
-
-install.packages(c("ggplot2", "gridExtra", "gpclib"))
-library(ggplot2) 
-library(gridExtra) 
-library(gpclib)
 
 # Get the data frame
 gpclibPermit()
@@ -88,27 +91,26 @@ max.val <- max(areas.df$Pekka.Haavisto.osuus, areas.df$Sauli.Niinistö.osuus)
 col.scale <- scale_colour_gradient(low = 'blue', high = 'red', limits=c(min.val, max.val)) 
 fill.scale <- scale_fill_gradient(low = 'blue', high = 'red', limits=c(min.val, max.val)) 
 
-# Make map for Pekka 
-message("NOTE! The following code does not work anymore since ggplot2 has been updated.")
+# Make map for Pekka with custom colour scale
 den_fill_scale <- col.scale 
-den_fill_scale$train(areas.df$Pekka.Haavisto.osuus, T) 
-areas.df$Pekka <- den_fill_scale$map(areas.df$Pekka.Haavisto.osuus) 
-hplot.pekka <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Pekka), colour="white", alpha=0.7, size=0.2) 
+ggplot2:::scale_train(den_fill_scale, areas.df$Pekka.Haavisto.osuus)
+areas.df$Pekka <- ggplot2:::scale_map(den_fill_scale, areas.df$Pekka.Haavisto.osuus)
+hplot.pekka <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Pekka), colour="white", alpha=0.7, size=0.2) + ggtitle("Pekka Haavisto")
+
+# Make map for Sauli with custom colour scale
+den_fill_scale <- col.scale 
+ggplot2:::scale_train(den_fill_scale, areas.df$Sauli.Niinistö.osuus)
+areas.df$Sauli <- ggplot2:::scale_map(den_fill_scale, areas.df$Sauli.Niinistö.osuus)
+hplot.sauli <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Sauli), colour="white", alpha=0.7, size=0.2) + ggtitle("Sauli Niinistö")
 
 # Add legend using an auxiliary ggplot object 
 p <- ggplot(data=areas.df) + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Pekka.Haavisto.osuus)) + fill.scale + labs(fill="Osuus äänistä (%)") 
-leg <- ggplotGrob(p + theme(keep="legend_box")) 
-legend <- gTree(children=gList(leg), cl="legendGrob") 
-widthDetails.legendGrob <- function(x) unit(3, "cm") 
-hplot.pekka <- arrangeGrob(hplot.pekka, legend=legend, main="Pekka Haavisto") 
+tmp <- ggplot_gtable(ggplot_build(p))
+leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+legend <- tmp$grobs[[leg]]
 
-# Make map for Sauli and use the same legend
-den_fill_scale <- col.scale 
-den_fill_scale$train(areas.df$Sauli.Niinistö.osuus, T) 
-areas.df$Sauli <- den_fill_scale$map(areas.df$Sauli.Niinistö.osuus) 
-hplot.sauli <- hplot + geom_polygon(data=areas.df, aes(x=long, y=lat, group=id, fill=Sauli), colour="white", alpha=0.7, size=0.2) 
-hplot.sauli <- arrangeGrob(hplot.sauli, legend=legend, main="Sauli Niinistö") 
+# Plot together
+png("Presidentti2012_PKS_Haavisto-Niinisto_20120207.png", width=1000, height=450)
+grid.arrange(arrangeGrob(hplot.pekka + theme(legend.position="none"), hplot.sauli + theme(legend.position="none"), nrow=1), legend, widths=c(1, 0.1), nrow=1)
+dev.off()
 
-# Save together 
-both.plot <- arrangeGrob(hplot.pekka, hplot.sauli, nrow=1) 
-ggsave(both.plot, file="vaalit/Presidentti2012_PKS_Haavisto-Niinisto_20120207.png", width=20, height=9)
