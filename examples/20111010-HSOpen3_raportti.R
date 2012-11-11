@@ -1,6 +1,7 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice): 
@@ -11,12 +12,17 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Install soRvi package
-# Instructions in http://sorvi.r-forge.r-project.org/asennus.html
+# Instructions in http://louhos.github.com/sorvi/asennus.html
 # NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
 
 # Install and load necessary packages
-install.packages("ggplot2")
-library(ggplot2)
+
+# Install only if package is not already available; speeds up
+if (!try(require("ggplot2")))  {
+  install.packages("ggplot2")
+  require(ggplot2)
+}
+
 # sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
