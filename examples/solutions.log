@@ -1,0 +1,46 @@
+
+# Warnings
+
+* 20110924-nimet.R 
+
+Jotain warningeja null devicestä
+
+* 20111010-HSOpen3_raportti.R 
+
+windows-1252 coding RStudiossa avas r-filen ääkköset päin.. Vaihdoin UTF-8 ja avasin filen uudelleen ni toimi. Eli kaipa tuo UTF-8 ois se mihin pitäis pyrkiä. muuten ton 20111010-HSOpen3_raportti.R ajettua ja kuvaki tallentu nätisti! 
+
+* 20111005-aaltokymppi.R 
+- toimii ja kuvakin tuli. Tässäkin taitaa olla noita paketteja käytössä, joita ei välttämättä ole asennettu. Eli ehkä kaikkiin skripteihin pitäis laittaa alkuun se install.packages?
+
+Warning message:
+In discrete_scale("colour", "hue", hue_pal(h, c, l, h.start, direction),  :
+  "legend" argument in scale_XXX is deprecated. Use guide="none" for suppress the guide display.
+
+# IMPROVE
+
+
+
+
+
+# OK
+
+* source("20120920-FinlandCO2.R") 
+-> akselit piti lisää erikseen ennen kuin ne toimii macissa?
+
+* 20111009-kuntien-sukupuolijakauma.R 
+
+* 20111023-oikotie.R  Kuva tosin hieman epäselvä :)
+
+* source("20120205-presidentti2012analysis.R")
+ei toimi koska ei löydy President2012GetData.R:ää. 
+-> OK, ei fiksata koska vaatii personal API keyn
+
+* source("20120115-Presidentti2012.R") 
+ei toimi koska ei löydy api.R:ää. 
+-> OK, ei fiksata koska vaatii personal API keyn
+
+* source("20120206_Niinisto_vs_Haavisto.R") 
+toimii sen jälkeen kun laittaa fileEncodingin tähän:
+votes <- read.csv(votes.url, sep=";", fileEncoding="UTF-8")
+Muuten ei ääkköset toimineet kunnolla eikä sarakkeiden nimien etsiminen onnistunut.
+-> OK, done

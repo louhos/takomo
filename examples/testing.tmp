@@ -1,0 +1,90 @@
+
+
+source("20120212-KunnatJaPresidentinvaali.R")
+ei toimi vaan pamahtaa:
+
+> votes1 <- GetElectionResultsPresidentti2012(election.round = 1, 
++        	  				    level = "municipalities")
+Reading Finnish presidential election result data from http://www2.hs.fi/extrat/hsnext/presidentti1-tulos.csv
+Reading Finnish presidential election result data from http://www2.hs.fi/extrat/hsnext/presidentti2.csv
+Loading election region data from Tilastokeskus
+Reading Vaalipiiri information from  http://www.stat.fi/meta/luokitukset/vaalipiiri/001-2012/luokitusavain_kunta.html
+Error in GetElectionResultsPresidentti2012(election.round = 1, level = "municipalities") : 
+  Election regions do not match between election rounds.
+
+Lisäks tulee:
+
+> municipality.info <- cast(municipality.info[, c("Alue", "Alueluokitus.2012", "Tunnusluku", "value")], Alue ~ Tunnusluku) # Convert to wide format
+Error: could not find function "cast"
+
+# -----------------------------
+
+20111019-PCAxis.R pamahti tähän:
+
+> px <- GetPXTilastokeskus("http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px")
+Reading Tilastokeskus data from  http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px
+Error in data.frame(do.call(expand.grid, values[names.vals]), x$DATA$value) : 
+  arguments imply differing number of rows: 129408, 0
+In addition: Warning message:
+In scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings,  :
+  invalid input found on input connection 'http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px'
+
+# -----------------------
+
+20111117-muuttoliike.R pamahti rgl- ja rworldmap-pakettien puuttumiseen. Niiden asennuksen jälkeen pamahti tähän:
+
+> # Plot the map with the final visualization
+> q <- spplot(worldmap, "NAME", col.regions = cols.countries,
++ main = NULL, colorkey = FALSE, lwd = .4, col = "black")
+Error in .local(obj, ...) : 
+  length of col.regions should match number of factor levels
+
+# ------------------------------
+
+20111127-OIVAwms.R pamahti rasteri-paketin asentamisen jälkeen tähän:
+
+> corine.lahti <- GetWMSraster(WMS=corine.wms,
++                              layer='CorineLandCover2006_25m',
++                              extent=sp.lahti,
++                              resolution=25)
+Error in .local(.Object, ...) : `<GDAL_WMS>
+  <Service name="WMS">
+    <Version>1.1.1</Version>
+    <ServerUrl>http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Maanpeite/MapServer/WMSServer</ServerUrl>
+    <SRS>EPSG:3067</SRS>
+    <ImageFormat>image/tiff</ImageFormat>
+    <Layers>CorineLandCover2006_25m</Layers>
+    <Style/>
+  </Service>
+  <DataWindow>
+    <UpperLeftX>421070.7559</UpperLeftX>
+    <UpperLeftY>6767780.5116</UpperLeftY>
+    <LowerRightX>437003.1007</LowerRightX>
+    <LowerRightY>6752911.6213</LowerRightY>
+    <SizeX>637</SizeX>
+    <Sizey>595</Sizey>
+    <YOrigin>top</YOrigin>
+  </DataWindow>
+  <Projection>EPSG:3067</Projection>
+  <BandsCount>3</BandsCount>
+  <Cache/>
+</GDAL_WMS>' does not exist in the file system,
+and is not recognised as a supported dataset name.
+
+# ------------------------------------
+
+* source("20111206-HSY.R")
+
+kuvien tallennus ei oikein futaa, vaikka poistinkin kommentti-merkin png-funktioiden edestä.
+-> LL: Mikä ongelma tässä?
+
+* source("20120629-MMLcoast.R") 
+toimii, mutta kuva on hieman hämärä. Punainen kartta ja legendi jossain 10^11.
+-> LL: en saanut kuvaa Dellissä lainkaan näkyviin??
+
+* source("20120207-Presidentti2012_MotionCharts.R") 
+  Kuvat ei näy ollenkaan ja tulee herjaa:
+  > plot(mchart.mun)
+  Error: object of type 'closure' is not subsettable
+-> Mulla toimii. Tein jotain fiksejä. Uusi testaus?
+
