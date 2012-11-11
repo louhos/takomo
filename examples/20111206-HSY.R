@@ -1,4 +1,4 @@
-# (C) Leo Lahti 2011 <leo.lahti@iki.fi>. All rights reserved.
+# (C) Louhos 2011-2012 <louhos@googlegroups.com>. All rights reserved.
 # License: FreeBSD (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
@@ -8,11 +8,18 @@
 # http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx
 # http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf
 
-# Tama esimerkki on testattu sorvi-paketin versiolla 0.1.42
+# Tama esimerkki on testattu sorvi-paketin versiolla 0.2.11
 # http://louhos.github.com/sorvi/asennus.html
 
 # Load soRvi open data toolkit
+# http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
+
+# Install reshape package if needed
+if (!try(require(library(reshape)))) {
+  install.packages("reshape")
+  require(reshape)
+}
 
 # Hae HSY:n Vaestoruudukko-data shape-muodossa
 sp <- GetHSY("Vaestoruudukko")
@@ -27,9 +34,9 @@ at = at, ncol = length(at),
 main = "Helsingin asukasjakauma")
 
 # Tallenna kuva PNG-muodossa
-#png("HSY.vaesto.png")
+png("HSY.vaesto.png")
 print(q)
-#dev.off()
+dev.off()
 
 #####################################################
 
@@ -49,9 +56,9 @@ at = at, ncol = length(at),
 palette = palette,
 main = "Vanhimman rakennuksen rakennusvuosi")
 
-#png("HSY.vanhinrakennus.png")
+png("HSY.vanhinrakennus.png")
 print(q)
-#dev.off()
+dev.off()
 
 ###############################################
 
@@ -82,12 +89,6 @@ keep <- apply(df, 1, function (x) {!all(x == 0)}) & !is.na(as.data.frame(sp)$NIM
 df <- df[keep,]
 rownames(df) <- as.character(as.data.frame(sp)[keep, "NIMI"])
 
-
-if (!try(library(reshape))) {
-  install.packages("reshape")
-  library("reshape")
-}
-
 df <- rename(df, c(RAKERA_AS = "Rakenteilla (asuminen)", RAKERA_MUU = "Rakenteilla (muu)", KARA_AS = "Rakennettu (asuminen)", KARA_MUU = "Rakennettu (muu)"))
 #df <- df/as.data.frame(sp)$YKSLKM
 df <- df[rev(order(rowSums(df), decreasing = TRUE)[1:50]),]
@@ -97,7 +98,7 @@ FD.palette <- rev(c("orange", "darkgray", "blue", "black"))
 options(scipen=2)
 
 
-#png("HSY.kerrosala.png")
+png("HSY.kerrosala.png")
 par(mar=c(6, 8, 3, 2), las = 1)
 barplot(t(df), beside=F,col=FD.palette, border=FD.palette, space=1, legend=F,
 ylab = "", xlab="Neliometria",
@@ -106,7 +107,7 @@ mgp=c(4.5,1,0), horiz = TRUE,
 cex.names = 0.7, xlim = c(0, 1.02*max(rowSums(df))))
 legend("bottomright", legend=rev(rownames(t(df))), fill=rev(FD.palette))
 box()
-#dev.off()
+dev.off()
 
 ###############################################
 
@@ -123,7 +124,7 @@ df <- df[, c("Muu", "Asuminen")]
 FD.palette <- c("darkgray", "orange")
 options(scipen=2)
 
-#png("HSY.kerrosala2.png")
+png("HSY.kerrosala2.png")
 par(mar=c(4, 8, 3, 2), las = 1)
 barplot(t(df), beside=F,col=FD.palette, border=FD.palette, space=1, legend=F,
 ylab = "", xlab="Neliometria",
@@ -132,5 +133,5 @@ mgp=c(4.5,1,0), horiz = TRUE,
 cex.names = 0.7, xlim = c(0, 1.02*max(rowSums(df))))
 legend("bottomright", legend=rev(rownames(t(df))), fill=rev(FD.palette))
 box()
-#dev.off()
+dev.off()
 
