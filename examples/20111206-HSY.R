@@ -9,9 +9,9 @@
 # http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf
 
 # Tama esimerkki on testattu sorvi-paketin versiolla 0.1.42
-# http://sorvi.r-forge.r-project.org/asennus.html
+# http://louhos.github.com/sorvi/asennus.html
 
-# Load soRvi open data toolkit (http://sorvi.r-forge.r-project.org)
+# Load soRvi open data toolkit
 library(sorvi)
 
 # Hae HSY:n Vaestoruudukko-data shape-muodossa
@@ -82,7 +82,12 @@ keep <- apply(df, 1, function (x) {!all(x == 0)}) & !is.na(as.data.frame(sp)$NIM
 df <- df[keep,]
 rownames(df) <- as.character(as.data.frame(sp)[keep, "NIMI"])
 
-library(reshape)
+
+if (!try(library(reshape))) {
+  install.packages("reshape")
+  library("reshape")
+}
+
 df <- rename(df, c(RAKERA_AS = "Rakenteilla (asuminen)", RAKERA_MUU = "Rakenteilla (muu)", KARA_AS = "Rakennettu (asuminen)", KARA_MUU = "Rakennettu (muu)"))
 #df <- df/as.data.frame(sp)$YKSLKM
 df <- df[rev(order(rowSums(df), decreasing = TRUE)[1:50]),]
