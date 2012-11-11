@@ -3,16 +3,16 @@ fs <- list.files(pattern = ".R$")
 
 # Files TO FIX
 fixme.files <-  c("20120820-aihepiirianalyysi.R", 
-
-		  "20120115-Presidentti2012.R",
-		  "20120205-presidentti2012analysis.R",
 		  "20120226-kuntajako.R", 
-
 		  "20110117-HRI.R") 
 
+# Files to SKIP from testing
+skip.files <- c(
+  "20120205-presidentti2012analysis.R" # -> requires personal API key
+  "20120115-Presidentti2012.R", # -> requires personal API key
+	   )
 
-
-fs <- setdiff(fs, c("RunAll.R", fixme.files))
+fs <- setdiff(fs, c("RunAll.R", fixme.files, skip.files))
 
 # Run all R files
 for (f in sample(fs)) { 
