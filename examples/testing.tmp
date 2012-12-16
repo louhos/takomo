@@ -1,35 +1,3 @@
-
-source("20120212-KunnatJaPresidentinvaali.R")
-ei toimi vaan pamahtaa:
-
-> votes1 <- GetElectionResultsPresidentti2012(election.round = 1, 
-+        	  				    level = "municipalities")
-Reading Finnish presidential election result data from http://www2.hs.fi/extrat/hsnext/presidentti1-tulos.csv
-Reading Finnish presidential election result data from http://www2.hs.fi/extrat/hsnext/presidentti2.csv
-Loading election region data from Tilastokeskus
-Reading Vaalipiiri information from  http://www.stat.fi/meta/luokitukset/vaalipiiri/001-2012/luokitusavain_kunta.html
-Error in GetElectionResultsPresidentti2012(election.round = 1, level = "municipalities") : 
-  Election regions do not match between election rounds.
-
-Lisäks tulee:
-
-> municipality.info <- cast(municipality.info[, c("Alue", "Alueluokitus.2012", "Tunnusluku", "value")], Alue ~ Tunnusluku) # Convert to wide format
-Error: could not find function "cast"
-
-# -----------------------------
-
-20111019-PCAxis.R pamahti tähän:
-
-> px <- GetPXTilastokeskus("http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px")
-Reading Tilastokeskus data from  http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px
-Error in data.frame(do.call(expand.grid, values[names.vals]), x$DATA$value) : 
-  arguments imply differing number of rows: 129408, 0
-In addition: Warning message:
-In scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings,  :
-  invalid input found on input connection 'http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px'
-
-# -----------------------
-
 20111117-muuttoliike.R pamahti rgl- ja rworldmap-pakettien puuttumiseen. Niiden asennuksen jälkeen pamahti tähän:
 
 > # Plot the map with the final visualization
@@ -37,6 +5,25 @@ In scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings,  :
 + main = NULL, colorkey = FALSE, lwd = .4, col = "black")
 Error in .local(obj, ...) : 
   length of col.regions should match number of factor levels
+
+
+# ------------------------------------
+
+* source("20111206-HSY.R")
+
+kuvien tallennus ei oikein futaa, vaikka poistinkin kommentti-merkin png-funktioiden edestä.
+-> LL: Mikä ongelma tässä?
+
+
+* source("20120629-MMLcoast.R") 
+toimii, mutta kuva on hieman hämärä. Punainen kartta ja legendi jossain 10^11.
+-> LL: en saanut kuvaa Dellissä lainkaan näkyviin??
+
+* source("20120207-Presidentti2012_MotionCharts.R") 
+  Kuvat ei näy ollenkaan ja tulee herjaa:
+  > plot(mchart.mun)
+  Error: object of type 'closure' is not subsettable
+-> Mulla toimii. Tein jotain fiksejä. Uusi testaus?
 
 # ------------------------------
 
@@ -69,21 +56,4 @@ Error in .local(.Object, ...) : `<GDAL_WMS>
   <Cache/>
 </GDAL_WMS>' does not exist in the file system,
 and is not recognised as a supported dataset name.
-
-# ------------------------------------
-
-* source("20111206-HSY.R")
-
-kuvien tallennus ei oikein futaa, vaikka poistinkin kommentti-merkin png-funktioiden edestä.
--> LL: Mikä ongelma tässä?
-
-* source("20120629-MMLcoast.R") 
-toimii, mutta kuva on hieman hämärä. Punainen kartta ja legendi jossain 10^11.
--> LL: en saanut kuvaa Dellissä lainkaan näkyviin??
-
-* source("20120207-Presidentti2012_MotionCharts.R") 
-  Kuvat ei näy ollenkaan ja tulee herjaa:
-  > plot(mchart.mun)
-  Error: object of type 'closure' is not subsettable
--> Mulla toimii. Tein jotain fiksejä. Uusi testaus?
 
