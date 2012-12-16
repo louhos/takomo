@@ -3,35 +3,4 @@
 toimii, mutta kuva on hieman hämärä. Punainen kartta ja legendi jossain 10^11.
 -> LL: en saanut kuvaa Dellissä lainkaan näkyviin??
 
-# ------------------------------
-
-20111127-OIVAwms.R pamahti rasteri-paketin asentamisen jälkeen tähän:
-
-> corine.lahti <- GetWMSraster(WMS=corine.wms,
-+                              layer='CorineLandCover2006_25m',
-+                              extent=sp.lahti,
-+                              resolution=25)
-Error in .local(.Object, ...) : `<GDAL_WMS>
-  <Service name="WMS">
-    <Version>1.1.1</Version>
-    <ServerUrl>http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Maanpeite/MapServer/WMSServer</ServerUrl>
-    <SRS>EPSG:3067</SRS>
-    <ImageFormat>image/tiff</ImageFormat>
-    <Layers>CorineLandCover2006_25m</Layers>
-    <Style/>
-  </Service>
-  <DataWindow>
-    <UpperLeftX>421070.7559</UpperLeftX>
-    <UpperLeftY>6767780.5116</UpperLeftY>
-    <LowerRightX>437003.1007</LowerRightX>
-    <LowerRightY>6752911.6213</LowerRightY>
-    <SizeX>637</SizeX>
-    <Sizey>595</Sizey>
-    <YOrigin>top</YOrigin>
-  </DataWindow>
-  <Projection>EPSG:3067</Projection>
-  <BandsCount>3</BandsCount>
-  <Cache/>
-</GDAL_WMS>' does not exist in the file system,
-and is not recognised as a supported dataset name.
 
