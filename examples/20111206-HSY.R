@@ -8,11 +8,10 @@
 # http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx
 # http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf
 
-# Tama esimerkki on testattu sorvi-paketin versiolla 0.2.11
+# Tama esimerkki on testattu sorvi-paketin versiolla 0.2.13
 # http://louhos.github.com/sorvi/asennus.html
 
 # Load soRvi open data toolkit
-# http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
 # Install reshape package if needed

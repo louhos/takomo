@@ -1,29 +1,7 @@
-20111117-muuttoliike.R pamahti rgl- ja rworldmap-pakettien puuttumiseen. Niiden asennuksen jälkeen pamahti tähän:
-
-> # Plot the map with the final visualization
-> q <- spplot(worldmap, "NAME", col.regions = cols.countries,
-+ main = NULL, colorkey = FALSE, lwd = .4, col = "black")
-Error in .local(obj, ...) : 
-  length of col.regions should match number of factor levels
-
-
-# ------------------------------------
-
-* source("20111206-HSY.R")
-
-kuvien tallennus ei oikein futaa, vaikka poistinkin kommentti-merkin png-funktioiden edestä.
--> LL: Mikä ongelma tässä?
-
 
 * source("20120629-MMLcoast.R") 
 toimii, mutta kuva on hieman hämärä. Punainen kartta ja legendi jossain 10^11.
 -> LL: en saanut kuvaa Dellissä lainkaan näkyviin??
-
-* source("20120207-Presidentti2012_MotionCharts.R") 
-  Kuvat ei näy ollenkaan ja tulee herjaa:
-  > plot(mchart.mun)
-  Error: object of type 'closure' is not subsettable
--> Mulla toimii. Tein jotain fiksejä. Uusi testaus?
 
 # ------------------------------
 
