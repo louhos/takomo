@@ -10,7 +10,6 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
 # Install sorvi R package
 # http://louhos.github.com/sorvi
 # This script was implemented with soRvi version 0.2.13
@@ -18,9 +17,21 @@
 # This script was inspired by the visualization at:
 # https://sites.google.com/site/tiedonlouhintaa/
 
+
 library(sorvi)
-library(XML)
-library(reshape)
+
+a <- try(library(XML)) 
+if (a == "try-error") {
+  install.packages("XML")
+  library(XML)
+}
+
+a <- try(library(reshape)) 
+if (a == "try-error") {
+  install.packages("reshape")
+  library(reshape)
+}
+
 
 # Retrieve the data / Lataa aineistot
 
@@ -31,11 +42,9 @@ votes1 <- GetElectionResultsPresidentti2012(election.round = 1,
 votes2 <- GetElectionResultsPresidentti2012(election.round = 2, 
        	  				    level = "municipalities")
 
-
 # Get municipality information from Tilastokeskus
 # Hae kuntatason perustilastot Tilastokeskukselta
 municipality.info <- GetPXTilastokeskus("http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px")
-
 
 # Process and match the data sets / Yhdista datat
 
@@ -63,7 +72,13 @@ tab[["Aluenumero"]] <- NULL
 
 # Visualization
 # Plot Motion Chart using googleVis package
-library(googleVis)
+
+a <- try(library(googleVis)) 
+if (a == "try-error") {
+  install.packages("googleVis")
+  library(googleVis)
+}
+
 mchart.mun <- gvisMotionChart(tab, idvar = "Alue", 
 	      			   timevar = "Aika", 
 				   options = list(height = 600, width = 700))

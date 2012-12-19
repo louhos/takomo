@@ -55,7 +55,6 @@ names(votes2) <- gsub("\\.", " ", names(votes2))
 names(votes1)[3:39] <- paste("1.K", names(votes1)[3:39], sep=" ")
 names(votes2)[3:15] <- paste("2.K", names(votes2)[3:15], sep=" ")
 
-
 #####################
 ## Helsinki Region ##
 #####################
