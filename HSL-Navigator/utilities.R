@@ -15,13 +15,10 @@ diffschedule <- function(t1, t2, ...) {
   # Pad the time Strings of needed
   t1 <- padd.time(t1)
   t2 <- padd.time(t2)
+  
   t1 <- as.POSIXlt(t1, format=.get.format(t1))
   t2 <- as.POSIXlt(t2, format=.get.format(t2))
   return(as.vector(difftime(t2, t1, ...)))
-}
-
-hour <- function(x) {
-  
 }
 
 padd.time <- Vectorize(function(x) {
