@@ -10,7 +10,7 @@ temp <- gsub(" ", "_", temp)
 names(dat) <- temp
 
 # Read stops data
-stops <- read.csv(paste(data.folder, "HSL_Navigator/google_transit/stops.txt", sep=""))
+stops <- read.csv(paste(data.folder, "google_transit/stops.txt", sep=""))
 # any(is.na(stops$stop_lat))
 # [1] FALSE
 # => no missing location info in stops
