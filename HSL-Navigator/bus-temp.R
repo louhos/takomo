@@ -11,12 +11,19 @@ CleanRoute <- function(route.id) {
   ok.trips1 <- as.vector(ur1$Trip[ur1$NuniqueRanks==max(ur1$NuniqueRanks) & ur1$NuniqueRanks==ur1$Nranks])
   ok.trips2 <- as.vector(ur2$Trip[ur2$NuniqueRanks==max(ur2$NuniqueRanks) & ur2$NuniqueRanks==ur2$Nranks])
   
+  
   bus.clean1 <- droplevels(subset(bus.1, Trip %in% ok.trips1))
   bus.clean2 <- droplevels(subset(bus.2, Trip %in% ok.trips2))
-  return(list(bus1=bus.clean1, bus2=bus.clean2))
+  res <- rbind(bus.clean1, bus.clean2)
+  res$Direction <- paste("Direction", res$Direction)
+  return(res)
 }
-temp <- CleanRoute("106")
-ggplot(temp$bus1, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15) + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
+route.id <- "550"
+temp <- CleanRoute(route.id)
+ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + xlab("BusStop") + ylab("Observed - Schedule (min)") + ggtitle(paste("Route", route.id)) + facet_wrap(~Direction, nrow=2)
+
+# ggplot(temp$bus1, aes(x=Rank, y=timediff)) + geom_smooth() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
+
 
 
 
