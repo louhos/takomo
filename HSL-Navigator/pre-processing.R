@@ -11,7 +11,7 @@ dat <- read.csv(file.path(data.folder, "hastusgps20130114-20130120.rdm"),
                 sep=";", header=FALSE)
 
 # Read and set header
-temp <- scan(paste(data.folder, "hastus_kuvaus.txt", sep=""), what="character", 
+temp <- scan(file.path(data.folder, "hastus_kuvaus.txt"), what="character", 
              sep=";", n=19)
 temp <- gsub(" ", "_", temp)
 names(dat) <- temp

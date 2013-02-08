@@ -1,3 +1,4 @@
+source(".Rprofile")
 source("HSL-Navigator/pre-processing.R")
 
 daily.bus <- ddply(dat, c("Measured_date", "hour"), summarise,
