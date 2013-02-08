@@ -1,6 +1,6 @@
 # Script for reading HSL bus stop location data
 
-data.folder <- "/Users/juusoparkkinen/Documents/workspace/data/HSL_Navigator/"
+# data.folder <- "/Users/juusoparkkinen/Documents/workspace/data/HSL_Navigator/"
 
 # Read data
 dat <- read.csv(paste(data.folder, "hastusgps20130114-20130120.rdm", sep=""), sep=";", header=FALSE)
