@@ -13,13 +13,6 @@ library(raster)
 
 # MML:n kuntadata ladataan soRvista
 sp <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape")
-```
-
-```
-## Error: cannot open the connection
-```
-
-```r
 
 # Listaa kaikki soRvi:ssa olevat WMS urlit
 wms.urls <- ListWMSurls()
@@ -71,13 +64,6 @@ ortoilma.wms <- PreprocessWMS(url = LoadWMSurl(provider = "OIVA", service = "Ima
 
 # Erotellaan kunta-aineistosta Lahden polygoni
 sp.lahti <- sp[which(sp@data$Kunta_ni1 == "Lahti"), ]
-```
-
-```
-## Error: missing value where TRUE/FALSE needed
-```
-
-```r
 
 # Haetaan Corine rasteri Lahden alueelta HUOM: jos aineistoa haetaan
 # suuren tai useamman kunnan alueelta, on syytä käyttää pienempää
@@ -124,8 +110,7 @@ plot(sp.lahti, add = TRUE, lwd = 2)
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for
-## function 'plot': Error: object 'sp.lahti' not found
+## Error: plot.new has not been called yet
 ```
 
 
@@ -165,8 +150,7 @@ plot(sp.lahti, add = TRUE, lwd = 2)
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for
-## function 'plot': Error: object 'sp.lahti' not found
+## Error: plot.new has not been called yet
 ```
 
 
@@ -207,8 +191,7 @@ plot(sp.lahti, add = TRUE, lwd = 2)
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for
-## function 'plot': Error: object 'sp.lahti' not found
+## Error: plot.new has not been called yet
 ```
 
 
@@ -248,8 +231,7 @@ plot(sp.lahti, add = TRUE, lwd = 2)
 ```
 
 ```
-## Error: error in evaluating the argument 'x' in selecting a method for
-## function 'plot': Error: object 'sp.lahti' not found
+## Error: plot.new has not been called yet
 ```
 
 
