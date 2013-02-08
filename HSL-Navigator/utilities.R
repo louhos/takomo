@@ -10,14 +10,14 @@
 }, SIMPLIFY=TRUE, USE.NAMES=FALSE)
 
 diffschedule <- function(t1, t2, ...) {
-  # FIXME: date should be included as well. Right now the current date
-  # is assumed.
+
   # Pad the time Strings of needed
-  t1 <- padd.time(t1)
-  t2 <- padd.time(t2)
+  #t1 <- padd.time(t1)
+  #t2 <- padd.time(t2)
+
+  t1 <- as.POSIXlt(t1, format="%d/%M/%Y %H%M%S")
+  t2 <- as.POSIXlt(t2, format="%d/%M/%Y %H%M%S")
   
-  t1 <- as.POSIXlt(t1, format="DD/MM/YY %H%M%S")
-  t2 <- as.POSIXlt(t2, format="DD/MM/YY %H%M%S")
   return(as.vector(difftime(t2, t1, ...)))
 }
 
