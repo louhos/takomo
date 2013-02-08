@@ -33,8 +33,11 @@ dat$measured_arrival_time <- paste(dat$Measured_date,
 
 # Calculate the time diff between scheduled time and the measure arrival time
 dat$timediff <- diffschedule(dat$scheduled_time, 
-                                  dat$measured_arrival_time,
-                                  units="mins")
+                             dat$measured_arrival_time,
+                             units="mins")
 
 # Remove all the data for which timediff is not available
 dat <- dat[!is.na(dat$timediff),]
+
+# Remove "outliers". These are not necessary outliers...
+

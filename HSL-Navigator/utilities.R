@@ -15,6 +15,9 @@ diffschedule <- function(t1, t2, ...) {
   #t1 <- padd.time(t1)
   #t2 <- padd.time(t2)
 
+  #dat$scheduled_time, 
+  #dat$measured_arrival_time,
+  
   t1 <- as.POSIXlt(t1, format="%d/%M/%Y %H%M%S")
   t2 <- as.POSIXlt(t2, format="%d/%M/%Y %H%M%S")
   
