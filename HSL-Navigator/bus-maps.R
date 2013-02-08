@@ -1,6 +1,6 @@
 # Script for reading HSL bus stop location data
 
-data.folder <- "/Users/juusoparkkinen/Documents/workspace/data/HSL_Navigator/"
+# data.folder <- "/Users/juusoparkkinen/Documents/workspace/data/HSL_Navigator/"
 
 # Read data
 dat <- read.csv(paste(data.folder, "hastusgps20130114-20130120.rdm", sep=""), sep=";", header=FALSE)
@@ -10,7 +10,7 @@ temp <- gsub(" ", "_", temp)
 names(dat) <- temp
 
 # Read stops data
-stops <- read.csv(paste(data.folder, "google_transit/stops.txt", sep=""))
+stops <- read.csv(paste(data.folder, "HSL_Navigator/google_transit/stops.txt", sep=""))
 # any(is.na(stops$stop_lat))
 # [1] FALSE
 # => no missing location info in stops
