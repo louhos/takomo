@@ -1,5 +1,26 @@
 # Visualizations from bus statistics
 
+CleanRoute <- function(route.id) {
+  # take subset
+  bus <- droplevels(subset(dat, Route==route.id))
+  bus.1 <- subset(bus, Direction==1)
+  bus.2 <- subset(bus, Direction==2)
+  #
+  ur1 <- droplevels(ddply(bus.1, "Trip", summarise, NuniqueRanks=length(unique(Rank)), Nranks=length(Rank)))
+  ur2 <- droplevels(ddply(bus.2, "Trip", summarise, NuniqueRanks=length(unique(Rank)), Nranks=length(Rank)))
+  ok.trips1 <- as.vector(ur1$Trip[ur1$NuniqueRanks==max(ur1$NuniqueRanks) & ur1$NuniqueRanks==ur1$Nranks])
+  ok.trips2 <- as.vector(ur2$Trip[ur2$NuniqueRanks==max(ur2$NuniqueRanks) & ur2$NuniqueRanks==ur2$Nranks])
+  
+  bus.clean1 <- droplevels(subset(bus.1, Trip %in% ok.trips1))
+  bus.clean2 <- droplevels(subset(bus.2, Trip %in% ok.trips2))
+  return(list(bus1=bus.clean1, bus2=bus.clean2))
+}
+temp <- CleanRoute("70T")
+ggplot(temp$bus2, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + 
+  ylim(-15, 15) + 
+  geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + theme_xkcd
+
+
 # Take subset
 bus.106 <- droplevels(subset(dat, Route=="39"))
 bus.106.1 <- subset(bus.106, Direction==1)
@@ -50,9 +71,13 @@ bus.106.clean1 <- droplevels(subset(bus.106.1, Trip %in% ok.trips1))
 bus.106.clean2 <- droplevels(subset(bus.106.2, Trip %in% ok.trips2))
 
 ggplot(bus.106.clean1, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15) + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
-ggplot(bus.106.clean2, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15)
+ggplot(bus.106.clean2, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15) + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
 
 hist(bus.106.clean1$Rank, breaks=100)
 hist(bus.106.clean1$Trip, breaks=100)
 
 hist(bus.106.clean2$Rank, breaks=100)
+
+# TODO
+# Compute ratio of discarded Trips
+# Check time distribution the discarded Trips 
