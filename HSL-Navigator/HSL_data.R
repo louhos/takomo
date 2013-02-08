@@ -34,15 +34,16 @@ Hel.center$lat <- Hel.center$lat + 0.1
 # Hel.bbox <- unlist(attributes(Hel.map)$bb[c(2, 1, 4, 3)])
 # names(Hel.bbox) <- c("left", "bottom", "right", "top")
 
+# Use googlemap
 Hel.googlemap <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="google")
 hmap1 <- ggmap(Hel.googlemap) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
 hmap1
 
-# Stamen nor OSM works...
-Hel.stamen <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="stamen")
+# Use stamen
+Hel.stamen <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="stamen", maptype="watercolor")
 hmap2 <- ggmap(Hel.stamen) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
-Hel.osm <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="osm")
-hmap3 <- ggmap(Hel.osm) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
+# Hel.osm <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="osm")
+# hmap3 <- ggmap(Hel.osm) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
 
 
 # file.remove("ggmapTemp.png")
