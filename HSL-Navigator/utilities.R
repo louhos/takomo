@@ -20,6 +20,10 @@ diffschedule <- function(t1, t2, ...) {
   return(as.vector(difftime(t2, t1, ...)))
 }
 
+hour <- function(x) {
+  
+}
+
 padd.time <- Vectorize(function(x) {
   # Bounce NAs back
   if (is.na(x)) {
