@@ -18,10 +18,10 @@ CleanRoute <- function(route.id) {
   res$Direction <- paste("Direction", res$Direction)
   return(res)
 }
-route.id <- "106"
+route.id <- "506"
 temp <- CleanRoute(route.id)
 p <- ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + xlab("BusStop") + ylab("Observed - Schedule (min)") + ggtitle(paste("Route", route.id)) + facet_wrap(~Direction, nrow=2) + ylim(-10, 20)
-ggsave(plot=p, width=10, height=8, file="HSL-Navigator/Route_106.png")
+ggsave(plot=p, width=10, height=8, file=paste("HSL-Navigator/Route_",route.id,".png",sep=""))
 
 
 # ggplot(temp$bus1, aes(x=Rank, y=timediff)) + geom_smooth() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
