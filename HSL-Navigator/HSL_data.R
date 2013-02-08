@@ -25,6 +25,7 @@ dat2 <- merge(dat, stops, by.x="Location", by.y="stop_id")
 save(dat2, file="HSL-Navigator/HSL_data_combined_20130208.RData")
 
 # Plot then on map, using ggmap
+# install.packages(c("ggmap", "mapproj"))
 library(ggmap)
 
 # Locate Helsinki
