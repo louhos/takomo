@@ -42,6 +42,8 @@ hmap1
 # Use stamen
 Hel.stamen <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="stamen", maptype="watercolor")
 hmap2 <- ggmap(Hel.stamen) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
+ggsave(hmap2, file="HSL-Navigator/HSL_stops.png")
+
 # Hel.osm <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="osm")
 # hmap3 <- ggmap(Hel.osm) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
 
