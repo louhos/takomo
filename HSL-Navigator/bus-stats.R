@@ -1,34 +1,13 @@
-library(plyr)
+source("HSL-Navigator/pre-processing.R")
 
-source("HSL-Navigator/utilities.R")
-
-bus.data <- read.csv("HSL-Navigator/data/HSL.data.csv2", header=TRUE, sep=";")
-bus.data$Route <- trim.str(bus.data$Route)
-
-# Fix times
-
-# Scheduled.time and Measured.arrival.time need to include date as well
-bus.data$time <- padd.time(bus.data$Scheduled.time)
-bus.data$hour <- substr(bus.data$time, 1, 2)
-bus.data$scheduled_time <- paste(bus.data$Measured.date, 
-                                 paste0(bus.data$time, "00"))
-bus.data$measured_arrival_time <- paste(bus.data$Measured.date, 
-                                        padd.time(bus.data$Measured.arrival.time))
-
-bus.data$timediff <- diffschedule(bus.data$scheduled_time, 
-                                  bus.data$measured_arrival_time,
-                                  units="mins")
-
-bus.data <- bus.data[!is.na(bus.data$timediff),]
-
-daily.bus <- ddply(bus.data, c("Measured.date", "hour"), summarise,
+daily.bus <- ddply(dat, c("Measured_date", "hour"), summarise,
                       sd=sd(timediff, na.rm=T),
                       mean=mean(timediff),
                       median=median(timediff),
                       lower=quantile(timediff, probs=c(0.025)),
                       upper=quantile(timediff, probs=c(0.975)))
 
-bus.14 <- subset(bus.data, bus.data$Route == "14")
+bus.14 <- subset(dat, dat$Route == "14")
 
 bus.14$timediff <- diffschedule(bus.14$Scheduled.time, 
                               bus.14$Measured.arrival.time,
@@ -38,7 +17,7 @@ bus.14 <- bus.14[!is.na(bus.14$timediff),]
 boxplot(log(abs(bus.14$timediff)), breaks=100)
 
 
-bus.68 <- subset(bus.data, bus.data$Route == "68")
+bus.68 <- subset(dat, dat$Route == "68")
 
 bus.68$timediff <- diffschedule(bus.68$Scheduled.time, 
                               bus.68$Measured.arrival.time,

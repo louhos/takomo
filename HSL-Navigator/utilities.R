@@ -11,7 +11,7 @@
 
 diffschedule <- function(t1, t2, ...) {
 
-  # Pad the time Strings of needed
+  # Pad the time Strings if needed
   #t1 <- padd.time(t1)
   #t2 <- padd.time(t2)
 
