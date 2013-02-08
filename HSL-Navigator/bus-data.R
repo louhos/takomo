@@ -5,8 +5,15 @@ source("HSL-Navigator/utilities.R")
 bus.data <- read.csv("HSL-Navigator/data/HSL.data.csv2", header=TRUE, sep=";")
 bus.data$Route <- trim.str(bus.data$Route)
 
+# Fix times
+
+# Scheduled.time and Measured.arrival.time need to include date as well
 bus.data$time <- padd.time(bus.data$Scheduled.time)
 bus.data$hour <- substr(bus.data$time, 1, 2)
+bus.data$scheduled_time <- paste(bus.data$Measured.date, 
+                                 paste0(bus.data$time, "00"))
+bus.data$measured_arrival_time <- paste(bus.data$Measured.date, 
+                                        bus.data$Measured.arrival.time)
 
 bus.data$ontime <- diffschedule(bus.data$Scheduled.time, 
                                 bus.data$Measured.arrival.time,

@@ -16,8 +16,8 @@ diffschedule <- function(t1, t2, ...) {
   t1 <- padd.time(t1)
   t2 <- padd.time(t2)
   
-  t1 <- as.POSIXlt(t1, format=.get.format(t1))
-  t2 <- as.POSIXlt(t2, format=.get.format(t2))
+  t1 <- as.POSIXlt(t1, format="DD/MM/YY %H%M%S")
+  t2 <- as.POSIXlt(t2, format="DD/MM/YY %H%M%S")
   return(as.vector(difftime(t2, t1, ...)))
 }
 
