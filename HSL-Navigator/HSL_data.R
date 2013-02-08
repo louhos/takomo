@@ -27,11 +27,21 @@ save(dat2, file="HSL-Navigator/HSL_data_combined_20130208.RData")
 # Plot then on map, using ggmap
 library(ggmap)
 
+# Locate Helsinki
 Hel.center <- geocode("Helsinki")
 Hel.center$lat <- Hel.center$lat + 0.1
-# Hel.map <- qmap(c(lon=Hel.center$lon, lat=Hel.center$lat), source="google", zoom=10)
-Hel.map <- get_googlemap(center=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10)
-Hel2.map <- ggmap(Hel.map) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
-Hel2.map
-#stamen <- get_stamenmap()
+# Hel.bbox <- unlist(attributes(Hel.map)$bb[c(2, 1, 4, 3)])
+# names(Hel.bbox) <- c("left", "bottom", "right", "top")
+
+Hel.googlemap <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="google")
+hmap1 <- ggmap(Hel.googlemap) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
+hmap1
+
+# Stamen nor OSM works...
+Hel.stamen <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="stamen")
+hmap2 <- ggmap(Hel.stamen) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
+Hel.osm <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="osm")
+hmap3 <- ggmap(Hel.osm) + geom_point(data=stops, aes(x=stop_lon, y=stop_lat))
+
+
 # file.remove("ggmapTemp.png")
