@@ -19,7 +19,8 @@ CleanRoute <- function(route.id) {
   return(res)
 }
 
-route.id <- "506"
+route.id <- "68"
+
 temp <- CleanRoute(route.id)
 p <- ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + xlab("BusStop") + ylab("Observed - Schedule (min)") + ggtitle(paste("Route", route.id)) + facet_wrap(~Direction, nrow=2) + ylim(-10, 20)
 ggsave(plot=p, width=10, height=8, file=paste("HSL-Navigator/Route_",route.id,".png",sep=""))
@@ -87,3 +88,19 @@ hist(bus.106.clean2$Rank, breaks=100)
 # TODO
 # Compute ratio of discarded Trips
 # Check time distribution the discarded Trips 
+
+# Plot on map
+stops <- read.csv(file.path(data.folder, "stops.txt"))
+library(ggmap)
+Hel.center <- geocode("Helsinki")
+Hel.center$lat <- Hel.center$lat + 0.1
+Hel.googlemap <- get_map(location=c(lon=Hel.center$lon, lat=Hel.center$lat), zoom=10, source="google")
+
+# Take subset
+bus <- droplevels(subset(dat, Route=="68"))
+dat2 <- merge(bus, stops, by.x="Location", by.y="stop_id")
+# Locate Helsinki
+
+hmap1 <- ggmap(Hel.googlemap) + geom_point(data=dat2, aes(x=stop_lon, y=stop_lat))
+hmap1
+
