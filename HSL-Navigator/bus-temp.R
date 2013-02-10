@@ -56,19 +56,19 @@ ggplot(r2l.df, aes(x=factor(Var1), y=factor(Var2), fill=value)) + geom_tile() + 
 
 ## CLEAN DATA
 
-# TRY 1: Get only those trips which occur Nstops times (max +1)
-trip.freq1 <- table(bus.106.1$Trip)
-trip.freq2 <- table(bus.106.2$Trip)
-
-bus.106.clean1 <- droplevels(subset(bus.106.1, Trip %in% names(which(trip.freq1==max(bus.106.1$Rank) +1))))
-bus.106.clean2 <- droplevels(subset(bus.106.2, Trip %in% names(which(trip.freq2==max(bus.106.2$Rank) +1))))
-
-ggplot(bus.106.clean1, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15)
-ggplot(bus.106.clean2, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15)
-
-hist(bus.106.clean1$Rank, breaks=100)
-hist(bus.106.clean2$Rank, breaks=100)
-message("Cleaning is not perfect yet!!!")
+# # TRY 1: Get only those trips which occur Nstops times (max +1)
+# trip.freq1 <- table(bus.106.1$Trip)
+# trip.freq2 <- table(bus.106.2$Trip)
+# 
+# bus.106.clean1 <- droplevels(subset(bus.106.1, Trip %in% names(which(trip.freq1==max(bus.106.1$Rank) +1))))
+# bus.106.clean2 <- droplevels(subset(bus.106.2, Trip %in% names(which(trip.freq2==max(bus.106.2$Rank) +1))))
+# 
+# ggplot(bus.106.clean1, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15)
+# ggplot(bus.106.clean2, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + ylim(-15, 15)
+# 
+# hist(bus.106.clean1$Rank, breaks=100)
+# hist(bus.106.clean2$Rank, breaks=100)
+# message("Cleaning is not perfect yet!!!")
 
 # TRY 2: 
 library(plyr)
