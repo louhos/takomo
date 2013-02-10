@@ -1,6 +1,8 @@
 # Visualizations from bus statistics
 
 CleanRoute <- function(route.id) {
+  
+  library(plyr)
   # take subset
   bus <- droplevels(subset(dat, Route==route.id))
   bus.1 <- subset(bus, Direction==1)
@@ -19,10 +21,11 @@ CleanRoute <- function(route.id) {
   return(res)
 }
 
-route.id <- "68"
+route.id <- "550"
 
 temp <- CleanRoute(route.id)
-p <- ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + xlab("BusStop") + ylab("Observed - Schedule (min)") + ggtitle(paste("Route", route.id)) + facet_wrap(~Direction, nrow=2) + ylim(-10, 20)
+library(ggplot2)
+p <- ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path(alpha=0.5) + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1) + xlab("BusStop") + ylab("Observed - Schedule (min)") + ggtitle(paste("Route", route.id)) + facet_wrap(~Direction, nrow=2) + ylim(-10, 20)
 ggsave(plot=p, width=10, height=8, file=paste("HSL-Navigator/Route_",route.id,".png",sep=""))
 
 
