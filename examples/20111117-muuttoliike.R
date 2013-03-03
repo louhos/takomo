@@ -1,9 +1,9 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# Copyright (C) 2008-2012 Louhos <louhos@googlegroups.com>. All rights reserved.
 
-# Tested with sorvi version 0.1.42
-# http://sorvi.r-forge.r-project.org/asennus.html
+# Tested with sorvi version 0.2.13
+# http://louhos.github.com/sorvi/asennus.html
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice):
@@ -18,11 +18,16 @@
 # NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
 library(sorvi)
 
+# Load rgl library
+a <- try(library("rgl")); 
+if (a == "try-error") {install.packages("rgl"); library("rgl")}
+
 # Load migration data for Finland
 migration.dat <- GetWorldbankMigration("Finland")
 
 # Load worldmap
-library(rworldmap)
+a <- try(library("rworldmap")); 
+if (a == "try-error") {install.packages("rworldmap"); library("rworldmap")}
 worldmap <- getMap(resolution="medium")
 
 ###############################################
@@ -57,8 +62,12 @@ cols.rgb[cols.rgb=="#00000000"] <- "grey90"
 names(cols.rgb) <- migration.dat$CountryAlternative
 
 # Initialize colours for all countries in the worldmap to light grey
+names <- as.character(worldmap@data$NAME)
+names[is.na(names)] <- "Unknown"
+worldmap@data$NAME <- factor(names)
+
 cols.countries <- rep("grey90", nrow(worldmap@data))
-names(cols.countries) <- levels(worldmap@data$NAME)
+names(cols.countries) <- as.character(worldmap@data$NAME)
 
 # Map countries in the migration data set to the worldmap and update country colours
 mapping <- match(names(cols.rgb), names(cols.countries))

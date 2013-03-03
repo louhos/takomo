@@ -1,6 +1,6 @@
 # This script is posted to Louhos blog: http://louhos.wordpress.com
 # Copyright (C) 2008-2012 Juuso Parkkinen and Leo Lahti
-# Contact: <sorvi-commits@lists.r-forge.r-project.org>
+# Contact: <louhos@googlegroups.com>
 # All rights reserved.
 
 # This program is open source software; you can redistribute it 
@@ -10,17 +10,28 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-# Install soRvi R package
+# Install sorvi R package
 # http://louhos.github.com/sorvi
-# This script was implemented with soRvi version 0.1.49
+# This script was implemented with soRvi version 0.2.13
 
 # This script was inspired by the visualization at:
 # https://sites.google.com/site/tiedonlouhintaa/
 
+
 library(sorvi)
-library(XML)
-library(googleVis)
+
+a <- try(library(XML)) 
+if (a == "try-error") {
+  install.packages("XML")
+  library(XML)
+}
+
+a <- try(library(reshape)) 
+if (a == "try-error") {
+  install.packages("reshape")
+  library(reshape)
+}
+
 
 # Retrieve the data / Lataa aineistot
 
@@ -31,11 +42,9 @@ votes1 <- GetElectionResultsPresidentti2012(election.round = 1,
 votes2 <- GetElectionResultsPresidentti2012(election.round = 2, 
        	  				    level = "municipalities")
 
-
 # Get municipality information from Tilastokeskus
 # Hae kuntatason perustilastot Tilastokeskukselta
 municipality.info <- GetPXTilastokeskus("http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px")
-
 
 # Process and match the data sets / Yhdista datat
 
@@ -45,7 +54,7 @@ municipality.info[municipality.info$Alue == "Hämeenkyrö-Tavastkyro", "Alue"] <
 municipality.info[municipality.info$Alue == "Mantta", "Alue"] <- "Mänttä-Vilppula"
 municipality.info$Alue <- factor(municipality.info$Alue)
 municipality.info$value <- municipality.info$dat
-municipality.info <- cast(municipality.info[, c("Alue", "Alueluokitus.2012", "Tunnusluku", "value")], Alue ~ Tunnusluku) # Convert to wide format
+municipality.info <- reshape::cast(municipality.info[, c("Alue", "Alueluokitus.2012", "Tunnusluku", "value")], Alue ~ Tunnusluku) # Convert to wide format
 
 # Combine voting results from both election rounds
 votes <- cbind(votes1, votes2[, -c(1,2,3)])
@@ -61,9 +70,15 @@ tab <- cbind(tab[1], Aika = 2012, tab[-1])
 # Remove region id number
 tab[["Aluenumero"]] <- NULL
 
-
 # Visualization
 # Plot Motion Chart using googleVis package
+
+a <- try(library(googleVis)) 
+if (a == "try-error") {
+  install.packages("googleVis")
+  library(googleVis)
+}
+
 mchart.mun <- gvisMotionChart(tab, idvar = "Alue", 
 	      			   timevar = "Aika", 
 				   options = list(height = 600, width = 700))

@@ -1,6 +1,7 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice): 
@@ -10,13 +11,23 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+####################
+## Load libraries ##
+####################
+
+# Plot Motion Chart using googleVis -package
+if (!try(require(googleVis))) {
+  install.packages("googleVis")
+  library(googleVis)
+}
+
 #################
 ## VOTING DATA ##
 #################
 
 ## Read 1st round votes from HS Next
 votes1.url <- "http://www2.hs.fi/extrat/hsnext/presidentti1-tulos.csv"
-votes1 <- read.csv(votes1.url, sep=";")
+votes1 <- read.csv(votes1.url, sep=";", fileEncoding="UTF-8")
 
 # Fix column names ("osuus" and "aania" are mixed with each other)
 names(votes1) <- gsub("osuus", "temp", names(votes1))
@@ -43,7 +54,6 @@ names(votes1) <- gsub("\\.", " ", names(votes1))
 names(votes2) <- gsub("\\.", " ", names(votes2))
 names(votes1)[3:39] <- paste("1.K", names(votes1)[3:39], sep=" ")
 names(votes2)[3:15] <- paste("2.K", names(votes2)[3:15], sep=" ")
-
 
 #####################
 ## Helsinki Region ##
@@ -75,8 +85,6 @@ pks.votes$Kaupunki <- "Helsinki"
 pks.votes$Kaupunki[pks.votes$Alue %in% pks1$Alue[match(espoo.inds, pks.rows)]] <- "Espoo"
 pks.votes$Kaupunki[pks.votes$Alue %in% pks1$Alue[match(vantaa.inds, pks.rows)]] <- "Vantaa"
 
-# Plot a Motion Chart using googleVis -package
-library(googleVis)
 mchart.pks <- gvisMotionChart(pks.votes, idvar="Alue", timevar="Aika", options=list(height=600, width=700))
 # Plot immediately (opens in browser)
 plot(mchart.pks)

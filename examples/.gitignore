@@ -1,0 +1,9 @@
+*.dbf
+*.prj
+*.shp
+*.shx
+*~
+*.zip
+*.png
+*.RData
+*.html

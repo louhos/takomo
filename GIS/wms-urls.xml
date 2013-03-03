@@ -1,0 +1,53 @@
+<services>
+  <provider name = "OIVA">
+    <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE?f=json</url>
+    <service name = "Valuma">
+      <meta>Vesipuitedirektiivin mukaiset vesimuodostumat ja Valuma-aluejako</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Hydrografia/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Hydrografia/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Hydrografia/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+    <service name = "Suojelu">
+      <meta>Luonnonsuojelualueet ja Natura-aineistot</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_SuojellutAlueet/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_SuojellutAlueet/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_SuojellutAlueet/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+    <service name = "Syvyys">
+      <meta>Järvien syvyysaineistot</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Korkeus/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Korkeus/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Korkeus/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+    <service name = "Pohjavesi">
+      <meta>Pohjavesialueet</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGis/services/INSPIRE/SYKE_Geologia/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Geologia/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Geologia/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+    <service name = "Corine">
+      <meta>Corine Land Cover -aineistot</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Maanpeite/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Maanpeite/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Maanpeite/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+    <service name = "Image">
+      <meta>Image mosaiikit</meta>
+      <url type = "WMS">http://paikkatieto.ymparisto.fi/ArcGIS/services/INSPIRE/SYKE_Ortoilmakuvat/MapServer/WMSServer</url>
+      <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Ortoilmakuvat/MapServer?f=json</url>
+      <layers>
+        <url type = "REST">http://paikkatieto.ymparisto.fi/ArcGIS/rest/services/INSPIRE/SYKE_Ortoilmakuvat/MapServer/layers?f=json</url>
+      </layers>
+    </service>
+  </provider>
+</services>

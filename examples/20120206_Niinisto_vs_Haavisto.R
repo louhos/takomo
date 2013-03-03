@@ -1,6 +1,7 @@
 # This script is posted to the Louhos-blog 
 # http://louhos.wordpress.com 
-# Copyright (C) 2008-2012 Juuso Parkkinen, <juuso.parkkinen@gmail.com>. All rights reserved. 
+# Copyright (C) 2008-2012 Juuso Parkkinen, <juuso.parkkinen@gmail.com>. 
+# All rights reserved. 
 
 # This program is open source software; you can redistribute it and/or modify 
 # it under the terms of the FreeBSD License (keep this notice): 
@@ -17,7 +18,8 @@ library(ggplot2)
 library(gridExtra) 
 library(gpclib)
 
-# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
+# sorvi installation instructions: 
+# http://louhos.github.com/sorvi/asennus.html
 library(sorvi)
 
 
@@ -27,7 +29,7 @@ library(sorvi)
 
 ## Read voting results from HS Next 
 votes.url <- "http://www2.hs.fi/extrat/hsnext/presidentti1-tulos.csv" 
-votes <- read.csv(votes.url, sep=";") 
+votes <- read.csv(votes.url, sep=";", fileEncoding="UTF-8")
 
 # Fix column names ("osuus" and "aania" are mixed with each other) 
 names(votes) <- gsub("osuus", "temp", names(votes)) 
