@@ -1,6 +1,6 @@
 # This script is posted to the Louhos-blog
 # http://louhos.wordpress.com
-# Copyright (C) 2008-2012 Louhos <louhos@googlegroups.com>. All rights reserved.
+# Copyright (C) 2008-2013 Louhos <louhos@googlegroups.com>. All rights reserved.
 
 # Tested with sorvi version 0.2.13
 # http://louhos.github.com/sorvi/asennus.html
@@ -14,9 +14,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Install soRvi package
-# Instructions in http://sorvi.r-forge.r-project.org/asennus.html
-# NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# NOTE! This script has been udpated 3.3.2013 to use latest sorvi version!
 library(sorvi)
+
+#install.packages("rworldxtra")
+library(rworldxtra)
 
 # Load rgl library
 a <- try(library("rgl")); 
@@ -28,7 +31,8 @@ migration.dat <- GetWorldbankMigration("Finland")
 # Load worldmap
 a <- try(library("rworldmap")); 
 if (a == "try-error") {install.packages("rworldmap"); library("rworldmap")}
-worldmap <- getMap(resolution="medium")
+#worldmap <- getMap(resolution="high")
+worldmap <- getMap(resolution="li")
 
 ###############################################
 # Plot migration data for Finland on worldmap #
@@ -65,49 +69,54 @@ names(cols.rgb) <- migration.dat$CountryAlternative
 names <- as.character(worldmap@data$NAME)
 names[is.na(names)] <- "Unknown"
 worldmap@data$NAME <- factor(names)
-
 cols.countries <- rep("grey90", nrow(worldmap@data))
 names(cols.countries) <- as.character(worldmap@data$NAME)
 
-# Map countries in the migration data set to the worldmap and update country colours
+# Map countries in the migration data set to the worldmap and 
+# update country colours
 mapping <- match(names(cols.rgb), names(cols.countries))
 cols.countries[mapping[!is.na(mapping)]] <- cols.rgb[!is.na(mapping)]
 cols.countries["Finland"] <- "black"
 
 # Plot the map with the final visualization
-q <- spplot(worldmap, "NAME", col.regions = cols.countries,
-main = NULL, colorkey = FALSE, lwd = .4, col = "black")
-png("Finland_migration_20111116.png", width=2000, height=1000)
-par(mar=c(0,0,0,0))
+q <- spplot(worldmap, "NAME", col.regions = cols.countries, main = NULL, colorkey = FALSE, lwd = .4, col = "black")
+#png("Finland_migration_20111116.png", width=2000, height=1000)
+#par(mar=c(0,0,0,0))
 print(q)
-dev.off()
+#dev.off()
 
 ##########################################
 ## Plot the map on an interactive globe ##
 ##########################################
 
-# Script copied from http://www.r-ohjelmointi.org/?p=906
-# Construct globe
-lat <- matrix(seq(90,-90, len=200)*pi/180, 200, 200, byrow=TRUE)
-long <- matrix(seq(-180, 180, len=200)*pi/180, 200, 200)
-r <- 6378.1 # radius of Earth in km
-x <- r*cos(lat)*cos(long)
-y <- r*cos(lat)*sin(long)
-z <- r*sin(lat)
+# This produces 3D worldmap that can be rotated with mouse
+# Ceased working, something has changed. Investigate later.
 
-# Plot globe with rgl function using the migration statistics as texture
-# If rgl install failes, try the following first:
-# sudo apt-get -y install freeglut3 freegult3-dev
-library(rgl)
-open3d(windowRect=c(100, 100, 300, 300))
-clear3d("all")
-light3d()
-persp3d(x, y, z, col="white",
-texture="Finland_migration_20111116.png",
-specular="black", axes=FALSE, box=FALSE, xlab="", ylab="", zlab="",
-normal_x=x, normal_y=y, normal_z=z)
-par3d(userMatrix=rotationMatrix(-pi/2, 1, 0, 0)%*%
-rotationMatrix(-30/180*pi, 0, 0, 1)%*%
-rotationMatrix(45/180*pi, 1, 0, 0),
-zoom=2/3)
+skip <- TRUE
+if (!skip) {
 
+  # Script copied from http://www.r-ohjelmointi.org/?p=906
+  # Construct globe
+  lat <- matrix(seq(90,-90, len=100)*pi/180, 100, 100, byrow=TRUE)
+  long <- matrix(seq(-180, 180, len=100)*pi/180, 100, 100)
+  r <- 6378.1 # radius of Earth in km
+  x <- r*cos(lat)*cos(long)
+  y <- r*cos(lat)*sin(long)
+  z <- r*sin(lat)
+
+  # Plot globe with rgl function using the migration statistics as texture
+  # If rgl install failes, try the following first:
+  # sudo apt-get -y install freeglut3 freegult3-dev
+  library(rgl)
+  open3d(windowRect=c(100, 100, 300, 300))
+  clear3d("all")
+  light3d()
+  persp3d(x, y, z, col="white",
+  texture="Finland_migration_20111116.png",
+  specular="black", axes=FALSE, box=FALSE, xlab="", ylab="", zlab="",
+  normal_x=x, normal_y=y, normal_z=z)
+  par3d(userMatrix=rotationMatrix(-pi/2, 1, 0, 0)%*%
+  rotationMatrix(-30/180*pi, 0, 0, 1)%*%
+  rotationMatrix(45/180*pi, 1, 0, 0),
+  zoom=2/3)
+}
