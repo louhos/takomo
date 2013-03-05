@@ -18,7 +18,19 @@
 # NOTE! This script has been udpated 3.3.2013 to use latest sorvi version!
 library(sorvi)
 
-#install.packages("rworldxtra")
+a <- try(library(rworldmap)) 
+if (a == "try-error") {
+  install.packages("rworldmap")
+  library(rworldmap)
+}
+
+a <- try(library(rworldxtra)) 
+if (a == "try-error") {
+  install.packages("rworldxtra")
+  library(rworldxtra)
+}
+
+
 library(rworldxtra)
 
 # Load rgl library
