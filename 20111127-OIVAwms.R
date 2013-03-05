@@ -2,6 +2,7 @@
 # ympäristökeskuksen (SYKE) OIVA-palvelusta (WMS)
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 # Copyright 2011 Joona Lehtomäki, joona.lehtomaki@gmail.com.
+# TODO: add back to examples/ after checking this works.
 
 tmp <- try(library(raster))
 if (tmp == "try-error") {install.packages("raster"); library(raster)}
