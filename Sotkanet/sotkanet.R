@@ -1,44 +1,47 @@
-# Forked from http://en.opasnet.org/w/Sandbox#Sotkanet
+# R examples for Sotkanet API
+# Forked and modified from http://en.opasnet.org/w/Sandbox#Sotkane
+# antagomir 8.3.2013
 
-#library(OpasnetUtilsExt)
+# SOTKAnet REST API on tarkoitettu tietojen noutamiseen erissä
+# käytettäväksi eri sovelluksissa. Rajapintaa ei ole tarkoitettu suoraan
+# käyttöön.
+
+#SOTKAnetin rajapintaa saa käyttää vapaasti muiden järjestelmien
+#tietopohjana. Alueiden ja indikaattorien kuvailutieto
+#julkaistaanCreative Commons Attribution 3.0
+#-lisenssin<http://creativecommons.org/licenses/by/3.0/> mukaisesti.
+#THL tuottamat tilastotiedot ja indikaattorit julkaistaan Creative
+#Commons Attribution 3.0 –lisenssin mukaisesti. Muiden kuin THL:n
+#tuottamia tilastotietoja ja indikaattoreita saa käyttää vain ja
+#ainoastaan erillisen sopimuksen mukaisesti. Erillisessä sopimuksessa
+#osapuolina ovat rajapinnan käyttäjä, THL ja aineiston tuottaja.
+
+#Creative Commons Attribution 3.0
+#-lisenssin<http://creativecommons.org/licenses/by/3.0/> mukaisesti
+#rajapinnan kautta saatua aineistoa käytettäessä on mainittava lähteenä
+#SOTKAnet ja tarjottava linkki osoitteeseen
+#http://www.sotkanet.fi<http://www.sotkanet.fi/>. Kunkin aineiston
+#osalta on mainittava erikseen tilaston tai indikaattorin tuottajataho.
+
+#THL ei vastaa rajapintaa käyttävien sovellusten toiminnasta. THL
+#tuottaa rajapinnan sellaisenaan ilman takuita. Rajapintaa käytetään
+#omalla vastuulla.
+
+library(sorvi) # http://louhos.github.com/sorvi
 library(xtable)
 
-# collect makes a data.frame out of the list object from Sotkanet
-# x is the input data
-# name is the name for the column
-# single is a logical whether there is only a single entry in the x data.
+# List all indicators in Sotkanet database
+sotkanet.indicators <- SotkanetIndicators()
+sotkanet.indicators.table <- SotkanetCollect(sotkanet.indicators, "indicator")
+# Print as HTML: print(xtable(indicator.table), type = 'html')
 
-collect <- function(x, name, single = FALSE) {
-	out <- data.frame()
-	if(single) {out <- data.frame(temp1 = x$id, temp2 = x$title$fi) 
-	} else {
-		for(i in 1:length(x)) {
-			out <- rbind(out, data.frame(temp1 = x[[i]]$id, temp2 = x[[i]]$title$fi))
-		}
-	}
-	colnames(out) <- c(name, paste(name, "Result", sep=""))
-	return(out)
-}
+# Sotkanet regions
+sotkanet.regions <- SotkanetRegions()
+sotkanet.regions.table <- SotkanetCollect(sotkanet.regions, "region")
 
-a <- sotkanet.indicators()
+# Get Sotkanet data table
+# 1990-2012 currently available
+dat <- GetDataSotkanet(indicator = 127, years = 2011, genders = 'female')
+#print(xtable(dat),type='html')
 
-# print(a)
 
-b <- sotkanet.indicators(127)
-
-b <- collect(b, "indicator", TRUE)
-
-# print(xtable(b), type = 'html')
-
-d <- sotkanet.regions()
-
-d <- collect(d, "region")
-
-# print(xtable(d), type = 'html')
-
-e <- sotkanet.data(indicator=127,years=c(2011,2010),genders='female')
-
-e <- merge(b, e)
-e <- merge(d, e)
-
-#print(xtable(e),type='html')
