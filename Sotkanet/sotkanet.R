@@ -33,11 +33,10 @@
 if (try(library(devtools)) == "try-error") {install.packages("devtools")}
 library(devtools)
 
-install_github("sorvi", "louhos", ref = "master")
+install_github("sorvi", "louhos", ref = "develop")
 library(sorvi) # http://louhos.github.com/sorvi
 
 if (try(library(xtable)) == "try-error") {install.packages("xtable")}
-install.packages("xtable")
 library(xtable)
 
 # List all indicators in Sotkanet database
@@ -50,7 +49,7 @@ sotkanet.regions.table <- SotkanetCollect(sotkanet.regions, "region")
 
 # Get data for a given indicator
 indicator.index <- 10013
-dat <- GetDataSotkanet(indicator = indicator.index, years = 1990:2012, genders = c('female', 'male'))
+dat <- GetDataSotkanet(indicators = indicator.index, years = 1990:2012, genders = c('female', 'male'))
 
 # Pick subset of the data and indicator name
 region <- "Suomi"
