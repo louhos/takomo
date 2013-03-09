@@ -33,7 +33,7 @@
 if (try(library(devtools)) == "try-error") {install.packages("devtools")}
 library(devtools)
 
-install_github("sorvi", "louhos", ref = "develop")
+install_github("sorvi", "louhos", ref = "master")
 library(sorvi) # http://louhos.github.com/sorvi
 
 if (try(library(xtable)) == "try-error") {install.packages("xtable")}
