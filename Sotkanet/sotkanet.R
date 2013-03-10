@@ -33,36 +33,34 @@
 if (try(library(devtools)) == "try-error") {install.packages("devtools")}
 library(devtools)
 
-install_github("sorvi", "louhos", ref = "master")
+#install_github("sorvi", "louhos", ref = "master")
+install_github("sorvi", "louhos", ref = "develop")
 library(sorvi) # http://louhos.github.com/sorvi
+#source("~/Louhos/sorvi/R/sotkanet.R")
 
 if (try(library(xtable)) == "try-error") {install.packages("xtable")}
 library(xtable)
 
 # List all indicators in Sotkanet database
-sotkanet.indicators <- SotkanetIndicators()
-sotkanet.indicators.table <- SotkanetCollect(sotkanet.indicators, "indicator")
+sotkanet.indicators <- SotkanetIndicators(type = "table")
 
 # Sotkanet regions
-sotkanet.regions <- SotkanetRegions()
-sotkanet.regions.table <- SotkanetCollect(sotkanet.regions, "region")
+sotkanet.regions <- SotkanetRegions(type = "table")
 
 # Get data for a given indicator
 indicator.index <- 10013
-dat <- GetDataSotkanet(indicators = indicator.index, years = 1990:2012, genders = c('female', 'male'))
+dat <- GetDataSotkanet(indicators = indicator.index, years = 1990:2012, genders = c('female', 'male'), region.category = "EUROOPPA", region = "Suomi")
 
 # Pick subset of the data and indicator name
-region <- "Suomi"
-dat.fi <- dat[dat$regionResult == region, ]
-indicator.name <- as.character(unique(dat.fi$indicatorResult))
+indicator.name <- as.character(unique(dat$indicator.title.fi))
 
 # Visualize
 if (try(library(ggplot2)) == "try-error") {install.packages("ggplot2")}
 library(ggplot2); 
 theme_set(theme_bw(15)); 
-p <- ggplot(dat.fi, aes(x = year, y = primary.value, group = gender, color = gender)) 
+p <- ggplot(dat, aes(x = year, y = primary.value, group = gender, color = gender)) 
 p <- p + geom_line() 
-p <- p + ggtitle(paste(indicator.name, region, sep = " / "))
+p <- p + ggtitle(paste(indicator.name, sep = " / "))
 
 # Investigate results
 print(head(dat))
