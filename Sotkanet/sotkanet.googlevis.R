@@ -33,28 +33,49 @@ library(devtools)
 
 install_github("sorvi", "louhos", ref = "develop")
 library(sorvi) # http://louhos.github.com/sorvi
+#source("~/Louhos/sorvi/R/sotkanet.R")
 
 if (try(library(xtable)) == "try-error") {install.packages("xtable")}
 library(xtable)
 
-# List all indicators in Sotkanet database
-sotkanet.indicators.table <- SotkanetCollect(SotkanetIndicators(), "indicator")
+# Specify indicators to retrieve
+sotkanet.indicators <- SotkanetIndicators()
+idx <- grep("opiskelijoista", sotkanet.indicators[,2])
+inds <- c(2616, sotkanet.indicators[idx, "indicator"]) # Lisää keskiväkiluku
 
-# Get Sotkanet data table for randomly selected indicators
-set.seed(3556)
-inds <- sample(sotkanet.indicators.table$indicator, 3)
-sotkanet.df <- GetDataSotkanet(indicators = inds, years = 1990:2013, genders = c("total"))
+# Get Sotkanet data table for selected indicators
+sotkanet.df <- GetDataSotkanet(indicators = inds, years = 1990:2013, genders = c("total"), region.category = "KUNTA")
 
+# Recommended to avoid queries by retrieving the data only once 
+save(sotkanet.df, file = "sotkanet.rda", compress = "xz")
+#load("sotkanet.rda")
+
+# Get province info
+sotkanet.regions <- SotkanetRegions(type = "table")
+sotkanet.kunnat <- subset(sotkanet.regions, region.category == "KUNTA")
+maakunnat <- subset(sotkanet.regions, region.category == "MAAKUNTA")
+sotkanet.regions.raw <- SotkanetRegions("raw")
+kunnat <- sotkanet.regions.raw[sapply(sotkanet.regions.raw, function (x) {x$category == "KUNTA"})]
+kunta.maakunta <- lapply(kunnat, function (x) {x$memberOf})
+names(kunta.maakunta) <- sapply(kunnat, function (x) {x$title[["fi"]]})
 
 # Plot Motion Chart using googleVis -package
-if (try(library(googleVis)) == "try-error") {install.packages("googleVis")}
+if (try(library(googleVis)) == "try-error") { install.packages("googleVis") }
 library(googleVis)
 
-df <- sotkanet.df[, c("regionResult", "indicatorResult", "year", "primary.value")]
-colnames(df) <- c("Alue", "Muuttuja", "Vuosi", "arvo")
-df$Alue <- as.character(df$Alue)
+df <- sotkanet.df[, c("region.title.fi", "indicator.title.fi", "year", "primary.value")]
+colnames(df) <- c("Kunta", "Muuttuja", "Vuosi", "arvo")
+df$Kunta <- as.character(df$Kunta)
 df$Muuttuja <- as.character(df$Muuttuja)
 
+# Keep only those variables that have time series of 10 years or more
+keep <- names(which(sapply(split(df, df$Muuttuja), function (x) {length(unique(x$Vuosi))}) >= 10))
+df <- subset(df, Muuttuja %in% keep)
+
+# Pick data such that all variables are taken across the same time span (shared years)
+coms <- unique(subset(df, Muuttuja == df$Muuttuja[[1]])$Vuosi); 
+sapply(split(df, df$Muuttuja), function (x) {coms <<- intersect(coms, unique(x$Vuosi))})
+df <- subset(df, Vuosi %in% coms)
 
 # Form a motion chart from example data NOTE: the data set must be given
 # as data.frame which can contain NUMERIC and CHARACTER fields (NO
@@ -68,22 +89,23 @@ df$Muuttuja <- as.character(df$Muuttuja)
 
 if (try(library(reshape)) == "try-error") {install.packages("reshape")}
 library(reshape)
-dfm <- melt(df, id = c("Alue", "Vuosi", value = "arvo"))
+dfm <- melt(df, id = c("Kunta", "Vuosi", value = "arvo"))
 dfm$variable <- as.character(dfm$variable)
 dfm$value <- as.character(dfm$value)
 dfm$variable <- NULL
-dfr <- reshape(dfm, timevar = "value", idvar = c("Alue", "Vuosi"), direction = "wide")
+dfr <- reshape(dfm, timevar = "value", idvar = c("Kunta", "Vuosi"), direction = "wide")
 colnames(dfr) <- gsub("arvo\\.", "", colnames(dfr))
 
+# Add province information
+dfr$Maakunta <- as.character(sapply(as.character(dfr$Kunta), function (kunta) {maakunnat[na.omit(match(kunta.maakunta[[kunta]], maakunnat$region)), "region.title.fi"]}))
+
 # Plot a Motion Chart using googleVis -package
-mchart <- gvisMotionChart(dfr, idvar="Alue", timevar="Vuosi", options=list(height=600, width=700))
+mchart <- gvisMotionChart(dfr, idvar="Kunta", timevar="Vuosi", colorvar = "Maakunta", sizevar = "Väestö, keskiväkiluku", options=list(height=600, width=700))
 
 # Plot immediately (opens in browser)
 plot(mchart)
 
 # Save as html (needs javascript to open!)
 print(mchart, file="Sotkanet.html")
-
-
 
 
