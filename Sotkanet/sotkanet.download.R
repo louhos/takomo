@@ -49,14 +49,12 @@ sotkanet.regions <- SotkanetRegions(type = "table")
 
 # Get data for a given indicator
 datlist <- list()
-#for (ind in setdiff(sotkanet.indicators$indicator, c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 2033, 2050))) {
-
-# JATKA TASTA 923:sta
-for (ind in sotkanet.indicators$indicator[923:2134]) {
+#for (ind in sotkanet.indicators$indicator[2054:2134]) {
+for (ind in setdiff(sotkanet.indicators$indicator, c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 2033, 2050, 3386, 3443))) {
   datlist[[as.character(ind)]] <- GetDataSotkanet(indicators = ind, years = 1990:2013, genders = c('female', 'male', 'total'))
 }
 
-save(datlist, file = paste("sotkanet.", gsub(" ", "-", date()), ".RData"), compress = "xz")
+save(datlist, file = paste("sotkanet.", gsub(" ", "-", date()), ".RData", sep = ""), compress = "xz")
 
 
 
