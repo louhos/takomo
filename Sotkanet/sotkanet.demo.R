@@ -1,44 +1,32 @@
-library(sorvi)
+source("init.R")
 
-# Get Sotkanet Data
-#source("sotkanet.download.R")
-load("sotkanet.Mon-Mar-25-14:24:01-2013.RData") #datlist
+# ---------------------------------------------------------
 
-# Get province info
-sotkanet.regions <- SotkanetRegions(type = "table")
-sotkanet.kunnat <- subset(sotkanet.regions, region.category == "KUNTA")
-maakunnat <- subset(sotkanet.regions, region.category == "MAAKUNTA")
-sotkanet.regions.raw <- SotkanetRegions("raw")
-kunnat <- sotkanet.regions.raw[sapply(sotkanet.regions.raw, function (x) {x$category == "KUNTA"})]
-kunta.maakunta <- lapply(kunnat, function (x) {x$memberOf})
-names(kunta.maakunta) <- sapply(kunnat, function (x) {x$title[["fi"]]})
+# Load MML data
+#sp <- LoadMML(data.id = "kunta4_p", resolution = "4_5_milj_shape_etrs-tm35fin")
+sp <- LoadData("kuntarajat.maa.shp")
 
-# List all indicators in Sotkanet database
-sotkanet.indicators <- SotkanetIndicators(type = "table")
+# Select data to visualize
+year <- 2011
+indicator <- 7
+indicator.name <- as.character(sotkanet.indicators[sotkanet.indicators$indicator == indicator, "indicator.title.fi"])
+dat <- sotkanet[sotkanet$year == year & sotkanet$indicator == indicator, ]
+# Match municipality names between shape (map) object and indicator data
+# and add indicator data to the shape object
+varname <- "indicator"
+sp[[varname]] <- dat[match(sp@data$Kunta.FI, dat$region.title.fi), "primary.value"]
+# Compare the value to the mean over all municipalities to highlight differences
+sp[[varname]] <- sp[[varname]] - mean(na.omit(sp[[varname]]))
+# Replace NAs by 0
+sp[[varname]][is.na(sp[[varname]])] <- 0
 
-#List all indicators from THL
-thl.indicators <- as.character(unique(subset(sotkanet.indicators, indicator.organization.title.fi == "Terveyden ja hyvinvoinnin laitos (THL)")$indicator))
+# Visualize indicators on Finnish map
+int <- max(na.omit(abs(sp[[varname]])))
+q <- PlotShape(sp, varname, type = "twoway", main = indicator.name, at = seq(0 - int, 0 + int, length = 11))
+#print(q)
+pdf("~/test.pdf"); print(q); dev.off(); 
 
-# Select indicators that concern municipalities; ignore gender
-municipal.data <- lapply(datlist, function (tab) {subset(tab, region.category == "KUNTA" & gender == "total")})
-
-# Select indicators with the longest time series
-long.indicators <- names(which(sapply(municipal.data, function (tab) {length(unique(tab$year))}) == 22))
-dats <- municipal.data[long.indicators]
-sotkanet <- do.call("rbind", dats)
-
-# For each indicator,
-# Correlate indicators with time in each municipality
-corlist <- list()
-for (i in names(dats)) {
-  dat <- dats[[i]]; 
-  dat <- dat[order(dat$year), ]; 
-  dat <- dat[!duplicated(dat),]; 
-  spl <- split(1:nrow(dat), dat$region.title.fi); 
-  cors <- sapply(spl, function(inds) {cor(dat$year[inds], dat$primary.value[inds])})
-  corlist[[i]] <- cors
-}
-
+# --------------------------------------------------------------
 
 # Sort indicators by median time correlation
 s <- names(sort(sapply(corlist, function (x) {median(na.omit(x))})))
@@ -110,32 +98,4 @@ p <- p + geom_line()
 p <- p + ggtitle(indicator.name)
 p <- p + xlab("Vuosi") + ylab("Indikaattorin arvo")
 print(p)
-
-# ---------------------------------------------------------
-
-# Load MML data
-#sp <- LoadMML(data.id = "kunta4_p", resolution = "4_5_milj_shape_etrs-tm35fin")
-sp <- LoadData("kuntarajat.maa.shp")
-
-# Select data to visualize
-year <- 2011
-indicator <- 7
-indicator.name <- as.character(sotkanet.indicators[sotkanet.indicators$indicator == indicator, "indicator.title.fi"])
-dat <- sotkanet[sotkanet$year == year & sotkanet$indicator == indicator, ]
-# Match municipality names between shape (map) object and indicator data
-# and add indicator data to the shape object
-varname <- "indicator"
-sp[[varname]] <- dat[match(sp@data$Kunta.FI, dat$region.title.fi), "primary.value"]
-# Compare the value to the mean over all municipalities to highlight differences
-sp[[varname]] <- sp[[varname]] - mean(na.omit(sp[[varname]]))
-# Replace NAs by 0
-sp[[varname]][is.na(sp[[varname]])] <- 0
-
-# Visualize indicators on Finnish map
-int <- max(na.omit(abs(sp[[varname]])))
-q <- PlotShape(sp, varname, type = "twoway", main = indicator.name, at = seq(0 - int, 0 + int, length = 11))
-#print(q)
-pdf("~/test.pdf"); print(q); dev.off(); 
-
-# --------------------------------------------------------------
 

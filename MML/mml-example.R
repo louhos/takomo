@@ -41,7 +41,8 @@ natural.colors = function() {
 
 # SET YOUR WORKING DIR
 
-setwd("~/Desktop/takomo/MML")
+#setwd("~/Desktop/takomo/MML")
+setwd(".")
 
 # KAUPPATORI - 2M MAP DATA
 
