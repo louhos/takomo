@@ -1,7 +1,7 @@
 # R examples for Sotkanet API
-# (C) Opasnet & Louhos 2013 <louhos@googlegroups.com>
+# (C) Einari Happonen, Opasnet & Louhos 2013 <louhos@googlegroups.com>
 # Forked and modified from http://en.opasnet.org/w/Sandbox#Sotkanet
-# by antagomir 8.3.2013
+# by Leo Lahti 8.3.2013
 
 # SOTKAnet REST API on tarkoitettu tietojen noutamiseen erissä
 # käytettäväksi eri sovelluksissa. Rajapintaa ei ole tarkoitettu
