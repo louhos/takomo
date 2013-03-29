@@ -1,4 +1,5 @@
 # Visualizations from bus statistics
+library(ggplot2)
 
 CleanRoute <- function(route.id) {
   # take subset
@@ -25,7 +26,7 @@ p <- ggplot(temp, aes(x=Rank, y=timediff, group=Trip)) + geom_path() + geom_hlin
 ggsave(plot=p, width=10, height=8, file=paste("HSL-Navigator/Route_",route.id,".png",sep=""))
 
 
-# ggplot(temp$bus1, aes(x=Rank, y=timediff)) + geom_smooth() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
+d# ggplot(temp$bus1, aes(x=Rank, y=timediff)) + geom_smooth() + geom_hline(y=c(-1, 3), linetype="dashed", colour="red", size=1)
 
 # Take subset
 bus.106 <- droplevels(subset(dat, Route=="39"))
