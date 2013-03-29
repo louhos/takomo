@@ -1,6 +1,8 @@
 # List R files in this directory (except this file)
 fs <- list.files(pattern = ".R$")
 
+# see also ../testruns/ and merge here at some point
+
 # Files TO FIX
 # See also testing.tmp
 fixme.files <-  c("20120820-aihepiirianalyysi.R", 

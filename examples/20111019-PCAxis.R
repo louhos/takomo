@@ -1,4 +1,4 @@
-# (C) 2011-2012 Louhos <louhos@googlegroups.com> All rights reserved.
+# (C) 2011-2013 Louhos <louhos@googlegroups.com> All rights reserved.
 # License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
 
 # Tama esimerkki on testattu sorvi-paketin versiolla 0.2.13
@@ -6,6 +6,9 @@
 
 # Esimerkki Suomen kuntatason vaestonkasvutilastojen (Tilastokeskus)
 # visualisoinnista Maanmittauslaitoksen karttadatalla (vuonna 2010)
+
+# NOTE: special characters have been found to cause failure in Windows
+# with certain data sets.
 
 # Lataa soRvi
 # http://louhos.github.com/sorvi

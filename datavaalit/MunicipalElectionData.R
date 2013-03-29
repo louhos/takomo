@@ -1,7 +1,7 @@
 # This file is a part of the soRvi program
 # louhos.github.com/sorvi/
 
-# Copyright (C) Louhos (http://github.com/louhos)
+# Copyright (C) 2012-2013 Louhos (http://github.com/louhos)
 # All rights reserved. Contact: <leo.lahti@iki.fi>
 
 # This program is open source software; you can redistribute it and/or
@@ -33,7 +33,8 @@ election.districts <- setdiff(1:15, 5) # There is no district 5
 
 print("Kunnallisvaalit 2004")
 tabs2004 <- list()
-for (id in election.districts) {
+for (id in setdiff(election.districts, c(6, 9))) {
+#for (id in 10:15) {
   tabs2004[[id]] <- GetElectedCandidates(2004, "municipal", election.district = id, verbose = TRUE) 
 }
 
@@ -85,7 +86,7 @@ candidates2012.moj <- ReadAllCandidates()
 
 # Tilastokeskus / Statistics Finland
 tabs2012 <- list()
-for (id in election.districts) {
+for (id in setdiff(election.districts, c(6, 9))) {
 #for (id in 10:15) {
   tabs2012[[id]] <- GetElectedCandidates(2012, "municipal", election.district = id, verbose = TRUE) 
 }

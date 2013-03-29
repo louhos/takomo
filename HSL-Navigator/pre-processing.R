@@ -39,5 +39,41 @@ dat$timediff <- diffschedule(dat$scheduled_time,
 # Remove all the data for which timediff is not available
 dat <- dat[!is.na(dat$timediff),]
 
+# Fix route ids --------------------------------------
+
+# Read given route information
+routes <- read.csv(file.path(data.folder, "routes.csv"))
+
+# Separate route id's from the Trip variable
+# Split Trip ids to get route ids
+# Real route ids are 4-6 characters long
+temp <- sapply(strsplit(as.vector(dat$Trip), split=" "), "[", 1)
+route.ids <- substr(temp, 1, 6)
+unique.ids <- unique(route.ids)
+
+# Only these 5 do not match
+unique.ids[!(unique.ids %in% routes$route_id)]
+# [1] "2018Z"  "7974"   "1094A7" "1094N3" "1094A5"
+
+# These can be fixed manually
+route.ids[grep("1094A", route.ids)] <- "1094A"
+route.ids[grep("1094N", route.ids)] <- "1094N"
+
+# Two route ids remain without match, keep them as such
+unique.ids2 <- unique(route.ids)
+unique.ids2[!(unique.ids2 %in% routes$route_id)]
+# [1] "2018Z" "7974"
+
+# Results:
+length(unique(route.ids)) # 430 unique route ids
+length(which(unique(route.ids) %in% routes$route_id)) # 428 of which match to given routes data
+
+# Set route ids
+dat$route_id <- route.ids
+
+# Confirm matching manually
+dat[-which(duplicated(dat$Route)), c("Route", "route_id")]
+
+
 # Remove "outliers". These are not necessary outliers...
 
