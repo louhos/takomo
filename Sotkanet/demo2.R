@@ -40,10 +40,6 @@ library(devtools)
 install_github("sorvi", "louhos", ref = "master")
 library(sorvi) # http://louhos.github.com/sorvi
 
-# Get Complete Sotkanet Data for municipalities
-#source("sotkanet.download.R")
-load("sotkanet.Mon-Mar-25-14:24:01-2013.RData") #datlist
-
 # Get province info
 sotkanet.regions <- SotkanetRegions("table")
 maakunnat <- subset(sotkanet.regions, region.category == "MAAKUNTA")
@@ -56,18 +52,6 @@ names(kunta.maakunta) <- sapply(kunnat, function (x) {x$title[["fi"]]})
 # List all indicators in Sotkanet database
 sotkanet.indicators <- SotkanetIndicators(type = "table")
 
-# Pick THL indicators
-thl.indicators <- as.character(unique(subset(sotkanet.indicators, indicator.organization.title.fi == "Terveyden ja hyvinvoinnin laitos (THL)")$indicator))
-
-# Select indicators that concern municipalities; ignore gender
-municipal.data <- lapply(datlist, function (tab) {subset(tab, region.category == "KUNTA" & gender == "total")})
-
-# Select indicators with the longest time series
-long.indicators <- names(which(sapply(municipal.data, function (tab) {length(unique(tab$year))}) == 22))
-
-# Combine all indicators
-sotkanet <- do.call("rbind", municipal.data[long.indicators])
-
 # Pick some indicators for closer inspection
 selected.indicators <- c("Väestö, keskiväkiluku", 
 			 "Yksityisten lääkäripalvelujen kustannukset, 1 000 euroa",
@@ -75,8 +59,14 @@ selected.indicators <- c("Väestö, keskiväkiluku",
  			 "Korkea-asteen koulutuksen saaneet, % 15 vuotta täyttäneistä",      
 			 "Alkoholijuomien myynti asukasta kohti 100 %:n alkoholina, litraa")
 
+# Get data for selected indicators from Sotkanet
+selected.inds <- sotkanet.indicators$indicator[match(selected.indicators, sotkanet.indicators$indicator.title.fi)]
+temp <- GetDataSotkanet(indicators=selected.inds, genders="total")
+
+# Take only municipality data
+df <- droplevels(subset(temp, region.category=="KUNTA"))
+
 # Construct data table
-df <- subset(sotkanet, indicator.title.fi %in% selected.indicators)
 df <- df[, c("region.title.fi", "indicator.title.fi", "year", "primary.value", "absolute.value")]
 colnames(df) <- c("Kunta", "Muuttuja", "Vuosi", "primary.value", "absolute.value")
 df$Kunta <- as.character(df$Kunta)
@@ -93,8 +83,8 @@ df <- subset(df, Vuosi %in% coms)
 # idvar, timevar, two numeric fields,
 # then any number of numeric and character fields 
 
-if (try(library(reshape)) == "try-error") {install.packages("reshape")}
-library(reshape)
+if (try(library(reshape2)) == "try-error") {install.packages("reshape2")}
+library(reshape2)
 dfm <- melt(df, id = c("Kunta", "Vuosi", value = "primary.value"))
 dfm$variable <- as.character(dfm$variable)
 dfm$value <- as.character(dfm$value)
