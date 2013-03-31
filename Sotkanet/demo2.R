@@ -2,7 +2,7 @@
 # (C) Opasnet & Louhos 2013 
 # Contact: <louhos@googlegroups.com>
 
-# Sotkanetin kuntaindikaattoreiden visualisointi Suomen kartalla
+# Valittujen indikaattorien visualisointi yli kuntien Google MotionChartilla
 
 # -------------------------------------------------------------
 
