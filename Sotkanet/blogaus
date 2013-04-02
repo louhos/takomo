@@ -1,99 +1,46 @@
-TODO:
-- Mainitse sairastavuusindeksi!!!
+* Avoimet R-hakurutiinit Sotkanet-indikaattoripankille *
+
+Terveyden ja hyvinvoinnin laitos (THL) avasi äskettäin avoimen
+koneluettavan rajapinnan
+[SOTKAnet-indikaattoripankkiin](http://uusi.sotkanet.fi/portal/page/portal/etusivu/tietoa_palvelusta),
+joka tarjoaa ajantasaiseen kuntajakoon pohjautuvia tilastoja väestön
+hyvinvoinnista, väestörakenteesta sekä sosiaali- ja terveyspalveluiden
+käytöstä vuodesta 1990 alkaen. Lisäksi saatavilla on keskeisiä
+Euroopan maiden tasolla saatavia terveystilastoja. Yhteensä yli 2000
+tilastoindikaattorin kokoelmaa voi selata SOTKAnetin
+[portaalisivulla](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu).
+
+Tietojen tehokas tutkimuskäyttö edellyttää joustavia
+data-analyysivälineitä ja mahdollisuutta yhdistellä aineistoja muihin
+tietolähteisiin. [R-kieli](www.r-project.org) on tieteellisessä
+laskennassa suosittu avoimen lähdekoodin laskentaympäristö, jota
+käytetään kvantitatiivisen yhteiskuntatieteen lisäksi
+mm. bioinformatiikassa, ekologiassa ja taloustieteissä.
+
+
 - Datawiki
 - Opasnet
 - Takomo
 - sorvi
-
-ADDED BY JUUSO
 - Maanmittauslaitoksen avoimet datat ja yhdistäminen näihin
 - Paljon dataa, louhinta ei triviaalia
 - Tässä yksinkertaisia esimerkkejä kartta- ja aikasarjavisualisoinneista
 - (ehkä) Laskennallisten analyysimenetelmien soveltaminen tulevaisuudessa
+- Mainitse sairastavuusindeksi!!!
 
-Avoimet R-hakurutiinit Sotkanet-indikaattoripankille
+** Aineistojen tekninen toteutus ja käyttöoikeudet **
 
-
-Terveyden ja hyvinvoinnin laitos (THL) avasi äskettäin
-Sotkanet-indikaattoripankin tiedot saataville avoimen rajapinnan
-kautta.
-
-
-Indikaattoreita voi selata kätevästi täällä: http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu
-
-Indikaattoripankki SOTKAnet on Terveyden ja hyvinvoinnin laitoksen (THL) tietopalvelu, joka tarjoaa kaikista Suomen kunnista viimeisimpään voimassa olevaan kuntajakoon perustuen keskeisiä väestön hyvinvointia ja terveyttä koskevia tietoja vuodesta 1990 alkaen. SOTKAnetin avulla käyttäjä voi hakea sosiaali- ja terveysalaan liittyvää indikaattoritietoa eri aluetasoilla muun muassa absoluuttisina ja suhteutettuina lukuarvoina. Kaikista indikaattoreista on myös asiantuntijoiden laatimat kuvaukset niiden tietosisällöstä, tulkinnasta, tietojen tuottajasta, tuotantovuosista sekä mahdollisista rajoituksista.
-
-SOTKAnetin tiedot perustuvat THL:n ja muiden sosiaali- ja terveysalan tietovarantoja ylläpitävien tahojen keräämiin tietoihin. Tietokantaa pävitetään vuosittain säännöllisesti, kun eri rekisterit ja aineistot valmistuvat.
-
-SOTKAnettiin on tuotettu yhteistyössä muiden sosiaali- ja terveysalan asiantuntijoiden kanssa eri kohderyhmille ja käyttötarkoituksiin suunnattuja tietokokonaisuuksia. Mukana ovat myös keskeisten sosiaali- ja terveysalan politiikkaohjelmien seurantaindikaattorit sekä keskeisiä Euroopan maiden tasolla saatavia tietoja terveydentilaan sekä sosiaali- ja terveyspalveluiden käyttöön liittyen. Eri indikaattorihankekokonaisuuksien lisäksi SOTKAnet sisältää laajasti tilastotietoa sosiaali- ja terveydenhuollon keskeisiltä aihealueilta. SOTKAnetin tietosisältö kattaa yli 2 000 yksittäistä tilastotietoa.
-http://uusi.sotkanet.fi/portal/page/portal/etusivu/tietoa_palvelusta
-
-Käytettäessä SOTKAnetin tietoja julkaisuissa on tietojen lähde ilmoitettava seuraavan mallin mukaisesti.
-Lähde: SOTKAnet-verkkopalvelu www.sotkanet.fi [Viitattu <viittauspäivämäärä>]
-
-Rajapinta on tarkoitettu tietojen noutamiseen erissä niiden jatkokäyttöä varten eri sovelluksissa. Sitä ei ole tarkoitettu suoraan, online käyttöön.
-
-SOTKAnetin avoin rajapinta:
-http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF
+Rajapinta on tarkoitettu tietojen noutamiseen erissä niiden
+jatkokäyttöä varten eri sovelluksissa; sitä ei ole tarkoitettu
+jatkuvaan verkon kautta tapahtuvaan käyttöön.  Rajapinnan kautta
+saatua aineistoa käytettäessä on mainittava lähteenä Terveyden ja
+hyvinvoinnin laitos ja SOTKAnet sekä tarjottava linkki osoitteeseen
+[http://www.sotkanet.fi]. Kunkin aineiston osalta on mainittava
+erikseen tilaston tai indikaattorin tuottajataho.  Aineistojen
+käyttöoikeudet riippuvat tilaston tuottajatahosta. Tarkempia tietoja
+aineistojen lisensoinnista, käyttöoikeuksista, viittauskäytännöistä,
+rajapinnan teknisestä toteutuksesta ja muista yksityiskohdista löydät
+[tästä
+dokumentista])http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF).
 
 
-Terveyden ja hyvinvoinnin lait
-oksen (THL) ylläpitämän Tilasto
--
-ja indikaattoripankki
-SOTKAnetin metatiedot ja
-tietosisältö on ladattavissa ja hyödynnettävissä avoimen rajapinnan kautta.
-SOTKAnetin
-rajapintaa saa käyttää
-muiden järjestelmien tietopohjana.
-Rajapinnan kautta metatiedot ovat saatavissa JSON
--
-, JSONP
-\
--
-ja RDF
--
-muodoissa. Tilasto
-\
--
-ja indikaattoritiedot ovat saatavissa CSV
--
-muodossa.
-Kaikki metatieto tarjotaan aina
-kolmikielisenä: suomeksi,
-ruotsiksi ja englanniksi.
-Alueiden ja indikaattorien kuvailutieto julkaistaan [Creative Commons Attribution 3.0
-\
--
-lisenssin|http://creativecommons.org/licenses/by/3.0/] mukaisesti. THL tuottamat
-indikaattorit (
-tilastotiedot ja
-metatiedot)
-julkaistaan Crea
-tive Commons Attribution 3.0
-\
--
-lisenssin
-\
-|http://creativecommons.org/licenses/by/3.0/
-\
-] mukaisesti.
-Muiden kuin THL:n tuottamia tilastotietoja ja indikaattoreita saa käyttää vain ja ainoastaan erillisen sopimuksen
-mukaisesti. Erillisessä sopimuksessa osa
-puolina ovat rajapinnan käyttäjä ja aineiston tuottaja. THL toivoo, että
-sopimus tuodaan THL:lle tiedoksi.
-[Creative Commons Attribution 3.0
-\
--
-lisenssin|http://creativecommons.org/licenses/by/3.0/] mukaisesti rajapinnan
-kautta saatua aineistoa käytettäess
-ä on mainittava lähteenä
-Terveyden ja hyvinvoinnin laitos ja
-SOTKAnet
-sekä
-tarjottava linkki osoitteeseen [http://www.sotkanet.fi]. Kunkin aineiston osalta on mainittava erikseen tilaston tai
-indikaattorin tuottajataho.
-THL ei vastaa rajapintaa käyttävien
-sovellusten toiminnasta. THL tuottaa rajapinnan sellaisenaan ilman takuita.
-Rajapintaa käytetään omalla vastuulla.
-Rajapinta on saatavilla julkisesti verkossa osoitteessa [http://www.sotkanet.fi/rest
