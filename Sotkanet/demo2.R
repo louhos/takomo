@@ -83,8 +83,8 @@ df <- subset(df, Vuosi %in% coms)
 # idvar, timevar, two numeric fields,
 # then any number of numeric and character fields 
 
-if (try(library(reshape2)) == "try-error") {install.packages("reshape2")}
-library(reshape2)
+if (try(library(reshape)) == "try-error") { install.packages("reshape") }
+library(reshape)
 dfm <- melt(df, id = c("Kunta", "Vuosi", value = "primary.value"))
 dfm$variable <- as.character(dfm$variable)
 dfm$value <- as.character(dfm$value)

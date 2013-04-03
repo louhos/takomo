@@ -1,32 +1,53 @@
 * Avoimet R-hakurutiinit Sotkanet-indikaattoripankille *
 
-Terveyden ja hyvinvoinnin laitos (THL) avasi äskettäin avoimen
+Terveyden ja hyvinvoinnin laitos (THL) on avannut avoimen
 koneluettavan rajapinnan
 [SOTKAnet-indikaattoripankkiin](http://uusi.sotkanet.fi/portal/page/portal/etusivu/tietoa_palvelusta),
-joka tarjoaa ajantasaiseen kuntajakoon pohjautuvia tilastoja väestön
-hyvinvoinnista, väestörakenteesta sekä sosiaali- ja terveyspalveluiden
-käytöstä vuodesta 1990 alkaen. Lisäksi saatavilla on keskeisiä
-Euroopan maiden tasolla saatavia terveystilastoja. Yhteensä yli 2000
-tilastoindikaattorin kokoelmaa voi selata SOTKAnetin
+joka tarjoaa ajantasaiseen kuntajakoon pohjautuvia tilastoja
+väestörakenteesta, hyvinvoinnista sekä sosiaali- ja terveyspalveluiden
+käytöstä vuodesta 1990 alkaen. Mukana on esimerkiksi THL:n
+[sairastavuusindeksi](http://terveytemme.fi), johon on koottu tietoa
+useista rekistereistä keskeisten sairauksien esiintyvyydestä eri
+puolilla maata sekä ikävakioituina että absoluuttisina
+arvoina. Lisäksi saatavilla on keskeisiä terveystilastoja Euroopan
+alueelta. Yhteensä yli 2000 tilastoindikaattorin kokoelmaa voi selata
+SOTKAnetin
 [portaalisivulla](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu).
 
 Tietojen tehokas tutkimuskäyttö edellyttää joustavia
 data-analyysivälineitä ja mahdollisuutta yhdistellä aineistoja muihin
 tietolähteisiin. [R-kieli](www.r-project.org) on tieteellisessä
-laskennassa suosittu avoimen lähdekoodin laskentaympäristö, jota
-käytetään kvantitatiivisen yhteiskuntatieteen lisäksi
-mm. bioinformatiikassa, ekologiassa ja taloustieteissä.
+laskennassa suosittu avoimen lähdekoodin laskentaympäristö, johon on
+saatavilla laskenta- ja visualisointimenetelmien lisäksi käteviä
+välineitä keskeisten aineistojen automatisoituun hakuun,
+esikäsittelyyn ja yhdistelyyn. Suomalaisten tiedonlouhijoiden
+tarpeisiin vastaa avoimen datan työkalupakki
+[sorvi](http://louhos.github.com/sorvi), joka sisältää automatisoidut
+hakurutiinit [n. 20 keskeiselle kotimaiselle
+tietoaineistolle](https://github.com/louhos/sorvi/wiki/data/).
 
+Olemme nyt lisänneet valmiit R-hakurutiinit SOTKAnetin
+aineistoille. Esimerkkejä paketin käyttöön löytyy
+[Datawikistä](https://github.com/louhos/sorvi/wiki/Sotkanet). Voit
+selata koodia ja kokeilla keskeisiä toimintoja helposti
+[Opasnet-sivuston](http://fi.opasnet.org/fi/Sotkanet)
+vuorovaikutteisessa palvelinsovelluksessa ennen paketin asentamista
+omalle koneelle. 
 
-- Datawiki
-- Opasnet
-- Takomo
-- sorvi
-- Maanmittauslaitoksen avoimet datat ja yhdistäminen näihin
-- Paljon dataa, louhinta ei triviaalia
-- Tässä yksinkertaisia esimerkkejä kartta- ja aikasarjavisualisoinneista
-- (ehkä) Laskennallisten analyysimenetelmien soveltaminen tulevaisuudessa
-- Mainitse sairastavuusindeksi!!!
+Tieteellisen laskennan ja avoimen koneluettavan väestödatan
+yhdistäminen tarjoaa uusia mahdollisuuksia kvantitatiiviseen
+yhteiskuntatieteeseen. Erityisen lupaava on mahdollisuus yhdistellä
+aineistoja keskenään. [Opasnet-sivuston
+esimerkeissä](http://fi.opasnet.org/fi/Sotkanet) näytetään
+yksinkertaisia esimerkkejä kartta- ja aikasarjavisualisoinneista ja
+SOTKAnetin yhdistämisestä [Maanmittauslaitoksen avoimeen
+paikkatietoon](http://www.maanmittauslaitos.fi/avoindata). Syvällisempi
+pureutuminen tietomassaan vaatii perehtymistä aihepiiriin ja hyviä
+tutkimuskysymyksiä. Laskentarutiinien automatisoinnin ansiosta tähän
+vapautuu entistä enemmän aikaa. Lisäksi laskennan automatisointi
+kasvattaa analyysien toistettavuutta, läpinäkyvyyttä ja
+luotettavuutta.
+
 
 ** Aineistojen tekninen toteutus ja käyttöoikeudet **
 
@@ -39,8 +60,7 @@ hyvinvoinnin laitos ja SOTKAnet sekä tarjottava linkki osoitteeseen
 erikseen tilaston tai indikaattorin tuottajataho.  Aineistojen
 käyttöoikeudet riippuvat tilaston tuottajatahosta. Tarkempia tietoja
 aineistojen lisensoinnista, käyttöoikeuksista, viittauskäytännöistä,
-rajapinnan teknisestä toteutuksesta ja muista yksityiskohdista löydät
-[tästä
-dokumentista])http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF).
+rajapinnan teknisestä toteutuksesta ja muista yksityiskohdista kertoo
+[SOTKAnet REST API])http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF).
 
 
