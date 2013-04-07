@@ -1,7 +1,7 @@
-# This file is a part of the soRvi program 0.1.79
-# louhos.github.com/sorvi/
+# This file is a part of the soRvi program 0.2.26
+# http://louhos.github.com/sorvi/
 
-# Copyright (C) 2012 Leo Lahti, Juuso Parkkinen and Joona Lehtomäki. 
+# Copyright (C) 2012-2013 Leo Lahti, Juuso Parkkinen and Joona Lehtomäki. 
 # All rights reserved. Contact: <http://louhos.github.com/contact.html>
 
 # This program is open source software; you can redistribute it and/or
@@ -27,9 +27,10 @@ tabs <- NULL
 
 print("Tilastokeskus")
 
-# (C) Tilastokeskus 2012
-# "http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px
+print("Create output directory HSOpen")
+system("mkdir HSOpen")
 
+# (C) Tilastokeskus 2012
 statfi <- GetMunicipalityInfoStatFi() 
 municipalities <- rownames(statfi)
 write.table(statfi[municipalities, ], file = "HSOpen/Tilastokeskus-KuntienAvainluvut.csv", sep = ";", quote = FALSE, row.names = FALSE)
@@ -42,9 +43,7 @@ print("MML")
 
 # (C) MML 2012
 # http://www.maanmittauslaitos.fi/aineistot-palvelut/digitaaliset-tuotteet/ilmaiset-aineistot/hankinta
-
-LoadData("MML")
-mml <- GetMunicipalityInfoMML(MML)    
+mml <- GetMunicipalityInfoMML()    
 write.table(mml[municipalities, ], file = "HSOpen/MML.csv", sep = ";", quote = FALSE, row.names = FALSE)
 
 tabs <- cbind(tabs, mml[municipalities, ])
