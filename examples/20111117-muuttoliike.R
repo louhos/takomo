@@ -19,30 +19,26 @@
 library(sorvi)
 
 a <- try(library(rworldmap)) 
-if (a == "try-error") {
+if (class(a) == "try-error") {
   install.packages("rworldmap")
   library(rworldmap)
 }
 
 a <- try(library(rworldxtra)) 
-if (a == "try-error") {
+if (class(a) == "try-error") {
   install.packages("rworldxtra")
   library(rworldxtra)
 }
 
+# library(rworldxtra)
 
-library(rworldxtra)
-
-# Load rgl library
-a <- try(library("rgl")); 
-if (a == "try-error") {install.packages("rgl"); library("rgl")}
 
 # Load migration data for Finland
 migration.dat <- GetWorldbankMigration("Finland")
 
 # Load worldmap
-a <- try(library("rworldmap")); 
-if (a == "try-error") {install.packages("rworldmap"); library("rworldmap")}
+# a <- try(library("rworldmap")); 
+# if (a == "try-error") {install.packages("rworldmap"); library("rworldmap")}
 #worldmap <- getMap(resolution="high")
 worldmap <- getMap(resolution="li")
 
@@ -107,6 +103,10 @@ print(q)
 skip <- TRUE
 if (!skip) {
 
+  # Load rgl library
+  a <- try(library("rgl")); 
+  if (class(a) == "try-error") {install.packages("rgl"); library("rgl")}
+  
   # Script copied from http://www.r-ohjelmointi.org/?p=906
   # Construct globe
   lat <- matrix(seq(90,-90, len=100)*pi/180, 100, 100, byrow=TRUE)
@@ -119,7 +119,7 @@ if (!skip) {
   # Plot globe with rgl function using the migration statistics as texture
   # If rgl install failes, try the following first:
   # sudo apt-get -y install freeglut3 freegult3-dev
-  library(rgl)
+#   library(rgl)
   open3d(windowRect=c(100, 100, 300, 300))
   clear3d("all")
   light3d()
