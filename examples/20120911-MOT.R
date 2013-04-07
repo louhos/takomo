@@ -33,9 +33,7 @@ tuet <- GetMOTYritystuet()
 # Read county borders from Land Survey Finland (MML) data
 # Hosted at the datavaalit.fi site
 # (C) MML 2011
-LoadData("MML")
-#load("~/Rpackages/louhos/data.sorvi/maanmittauslaitos/MML.rda")
-maakuntadata <- MML[["1_milj_Shape_etrs_shape"]][["maaku1_p"]]
+maakuntadata <- LoadMML(data.id = "maaku1_p", resolution = "1_milj_Shape_etrs_shape")
  
 # Calculate total company support for each county (absolute)
 kokonaistuki <- ddply(tuet, .(maakunta), function (x) {sum(na.omit(x$maksettu.summa))})
