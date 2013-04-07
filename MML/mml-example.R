@@ -21,12 +21,12 @@ install_github("sorvi", "louhos", ref = "develop")
 library(sorvi) # http://louhos.github.com/sorvi
 
 # KAUPPATORI - 2M MAP DATA
-mat <- ReadASC(gzfile("data/L4133C.asc.gz"))
+mat <- ReadASC(gzfile("MML/data/L4133C.asc.gz"))
 tsel <- NormalizeValues(mat[0:600,2400:3000])
 PlotSurface(tsel/4)
 
 # KAUPPATORI - 10M MAP DATA
-mat <- ReadXYZ(gzfile("data/L4133C.xyz.gz"))
+mat <- ReadXYZ(gzfile("MML/data/L4133C.xyz.gz"))
 tsel <- NormalizeValues(mat[0:120,480:600])
 PlotSurface(tsel/16)
 
