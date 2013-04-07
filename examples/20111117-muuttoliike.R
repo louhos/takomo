@@ -30,16 +30,10 @@ if (class(a) == "try-error") {
   library(rworldxtra)
 }
 
-# library(rworldxtra)
-
-
 # Load migration data for Finland
 migration.dat <- GetWorldbankMigration("Finland")
 
 # Load worldmap
-# a <- try(library("rworldmap")); 
-# if (a == "try-error") {install.packages("rworldmap"); library("rworldmap")}
-#worldmap <- getMap(resolution="high")
 worldmap <- getMap(resolution="li")
 
 ###############################################
