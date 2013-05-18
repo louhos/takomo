@@ -48,8 +48,8 @@ q <- PlotShape(sp, varname, type = "twoway",
 main = "Väestönkasvu 2010",
 at = seq(0 - int, 0 + int, length = 11))
 
-#png("vaestonkasvu.png")
-jpeg("vaestonkasvu.jpg")
+# png("vaestonkasvu.png")
+## jpeg("vaestonkasvu.jpg")
 print(q)
-dev.off()
+# dev.off()
 

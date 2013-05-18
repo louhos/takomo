@@ -13,6 +13,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
 # Tested with sorvi 0.2.25
+# rgl requires in some systems installation of glu-dev ja freeglut-dev
+		  
 
 # Install and load libraries
 if (try(library(devtools)) == "try-error") {install.packages("devtools")}
