@@ -1,27 +1,28 @@
-# This script is posted to the Louhos-blog 
-# http://louhos.wordpress.com 
-# Copyright (C) 2008-2012 Juuso Parkkinen, <juuso.parkkinen@gmail.com>. 
-# All rights reserved. 
+# This script is part of the Louhos-project (http://louhos.github.com/)
 
-# This program is open source software; you can redistribute it and/or modify 
-# it under the terms of the FreeBSD License (keep this notice): 
-# http://en.wikipedia.org/wiki/BSD_licenses 
+# Copyright (C) 2010-2013 Leo Lahti and Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
-# This program is distributed in the hope that it will be useful, 
-# but WITHOUT ANY WARRANTY; without even the implied warranty of 
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
+# http://en.wikipedia.org/wiki/BSD_licenses
 
-# Install and load necessary packages
-install.packages(c("rgdal", "ggplot2", "gridExtra", "gpclib"))
-library(rgdal)
-library(ggplot2)
-library(gridExtra) 
-library(gpclib)
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# sorvi installation instructions: 
-# http://louhos.github.com/sorvi/asennus.html
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
 
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("rgdal")')
+library(rgdal)
+library(gpclib)
+library(ggplot2)
+library(gridExtra) 
 
 ################# 
 ## VOTING DATA ## 
@@ -38,7 +39,7 @@ names(votes) <- gsub("temp", "ääniä", names(votes))
 
 ## Read voting area data from HKK (Helsingin kaupungin kiinteistovirasto) 
 
-areas <- GetHKK(which.data="Aanestysaluejako", data.dir="TEMP") 
+areas <- sorvi::GetHKK(which.data="Aanestysaluejako", data.dir="TEMP") 
 
 # Create new Aluenumero code from TKTUNNUS for areas data (discard the first 2
 # digits)
@@ -52,17 +53,16 @@ if(!all(areas@data$Aluenumero %in% votes$Aluenumero))
 areas@data <- merge(areas@data, votes, by="Aluenumero")
 
 # Set the projection right and reproject to WS84
-areas@proj4string <- CRS("+init=epsg:2392")
-areas <- spTransform(areas, CRS("+proj=longlat +datum=WGS84"))
+areas@proj4string <- sp::CRS("+init=epsg:2392")
+areas <- sp::spTransform(areas, CRS("+proj=longlat +datum=WGS84"))
 
 # Map the cities from code to name
-city.codes  <- list("091"="Helsinki", "049"="Espoo", "235"="Kauniainen", 
-                    "092"="Vantaa")
+city.codes  <- list("091"="Helsinki", "049"="Espoo", "235"="Kauniainen", "092"="Vantaa")
 areas[["Kuntanimi"]] <- sapply(as.character(areas[["KUNTA"]]), function(x) city.codes[[x]])
 areas@data$Kuntanimi <- factor(areas@data$Kuntanimi)
 
 # Split the spatial data into respective cities
-areas.cities <- SplitSpatial(areas, "Kuntanimi")
+areas.cities <- sorvi::SplitSpatial(areas, "Kuntanimi")
 
 
 ############## 
@@ -70,19 +70,19 @@ areas.cities <- SplitSpatial(areas, "Kuntanimi")
 ############## 
 
 # Get the data frame
-gpclibPermit()
-areas.df <- fortify(areas, region="Aluenumero")
+maptools::gpclibPermit()
+areas.df <- ggplot2::fortify(areas, region="Aluenumero")
 
 # Add support for Pekka and Sauli 
 areas.df$Pekka.Haavisto.osuus <- votes$Pekka.Haavisto.osuus[match(areas.df$id, votes$Aluenumero)] 
 areas.df$Sauli.Niinistö.osuus <- votes$Sauli.Niinistö.osuus[match(areas.df$id, votes$Aluenumero)] 
 
 # Use sorvi's map theme
-theme_set(GetThemeMap()) 
+theme_set(sorvi::GetThemeMap()) 
 
 # Get map of Helsinki for background 
 Helsinki.center <- c(lon=24.93, lat = 60.20) 
-HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 10, GRAYSCALE=TRUE, maptype="Map", scale=1) 
+HelsinkiMap <- sorvi::GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 10, GRAYSCALE=TRUE, maptype="Map", scale=1) 
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat)) 
 hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none") 
 hplot <- hplot + xlab(NULL) + ylab(NULL) 
