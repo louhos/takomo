@@ -1,22 +1,27 @@
-# This script is posted to the Louhos-blog
-# http://louhos.wordpress.com
-# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License (keep this notice): 
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Install and load necessary packages
-install.packages(c("ggplot2", "gridExtra"))
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
+library(sorvi)
+
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("ggplot2")')
 library(ggplot2)
 library(gridExtra)
 
-# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
-library(sorvi)
 
 
 ###############
@@ -25,15 +30,15 @@ library(sorvi)
 
 
 # Get Oikotie myynnit data
-Oikotie <- GetOikotie()
+Oikotie <- sorvi::GetOikotie()
 hr.myynnit <- Oikotie$hr.myynnit
 
 # Get Lukio data
-Lukiot <- GetLukiot()
+Lukiot <- sorvi::GetLukiot()
 hr.lukiot <- Lukiot$hr.lukiot
 
 # Load Helsinki region area data
-HRI.aluejakokartat <- GetHRIaluejakokartat()
+HRI.aluejakokartat <- sorvi::GetHRIaluejakokartat()
 pks.df <- HRI.aluejakokartat$pienalue.df
 pks.pienalue <- HRI.aluejakokartat$pienalue
 
@@ -57,7 +62,7 @@ close(con)
 #   # Second day: for (i in (2500:nrow(combs))[-c(3699:3701-2499)]) { # Remove Tarkk'ampujankatu because it causes an error
 #   if (i %% 100 == 0)
 #     cat(i, ".")
-#   temp <- get.geocode.GoogleMaps(paste(combs$Katu[i], combs$Postinumero[i], "FI", sep=", "))
+#   temp <- sorvi::get.geocode.GoogleMaps(paste(combs$Katu[i], combs$Postinumero[i], "FI", sep=", "))
 #   hr.geo.codes[[i]] <- as.numeric(temp)
 # }
 
@@ -117,10 +122,10 @@ for (a in 1:length(area.median.prices)) {
 
 # Load map of Helsinki region from GoogleMaps
 center <- c(lon=24.90, lat = 60.20)
-hr.map <- GetStaticmapGoogleMaps(center = center, zoom = 10, GRAYSCALE=TRUE, maptype="map", scale=1)
+hr.map <- sorvi::GetStaticmapGoogleMaps(center = center, zoom = 10, GRAYSCALE=TRUE, maptype="map", scale=1)
 
 # Construct plain map plot
-theme_set(theme_bw())
+theme_set(sorvi::GetThemeMap())
 hplot <- ggplot(hr.map)
 hplot <- hplot + geom_tile(aes(x=lon, y=lat, fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
