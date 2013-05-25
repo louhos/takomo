@@ -9,7 +9,7 @@
 library(sorvi)
 
 # Hae kuntatason tiedot. Lähteet: Tilastokeskus ja Maanmittauslaitos.
-municipality.info <- GetMunicipalityInfo()
+suppressWarnings(municipality.info <- GetMunicipalityInfo())
 
 # Tutki taulukon sisaltoa
 print(names(municipality.info))
