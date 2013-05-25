@@ -1,6 +1,6 @@
 # This script is part of the Louhos-project (http://louhos.github.com/)
 
-# Copyright (C) 2010-2013 Juuso Parkkinen and Leo Lahti
+# Copyright (C) 2010-2013 Juuso Parkkinen and Leo Lahti.
 # Contact: <http://louhos.github.com/contact>. 
 # All rights reserved.
 
@@ -21,7 +21,7 @@
 library(sorvi)
 
 # Load required packages
-# Remember to install required packages (e.g. 'install.packages("plyr")')
+# Remember to install required packages (e.g. 'install.packages("XML")')
 library(XML)
 library(reshape)
 library(googleVis)
@@ -31,12 +31,12 @@ library(googleVis)
 
 # Read voting results for the first and second election round
 # Lue kuntatason aanestystulokset 1. ja 2. vaalikierrokselle
-votes1 <- GetElectionResultsPresidentti2012(election.round = 1, level = "municipalities")
-votes2 <- GetElectionResultsPresidentti2012(election.round = 2, level = "municipalities")
+votes1 <- sorvi::GetElectionResultsPresidentti2012(election.round = 1, level = "municipalities")
+votes2 <- sorvi::GetElectionResultsPresidentti2012(election.round = 2, level = "municipalities")
 
 # Get municipality information from Tilastokeskus
 # Hae kuntatason perustilastot Tilastokeskukselta
-municipality.info <- GetPXTilastokeskus("http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px")
+municipality.info <- sorvi::GetPXTilastokeskus("http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px")
 
 # Process and match the data sets / Yhdista datat
 
@@ -64,8 +64,8 @@ tab[["Aluenumero"]] <- NULL
 
 # Visualization
 # Plot Motion Chart using googleVis package
-mchart.mun <- gvisMotionChart(tab, idvar = "Alue", timevar = "Aika", 
-                              options = list(height = 600, width = 700))
+mchart.mun <- googleVis::gvisMotionChart(tab, idvar = "Alue", timevar = "Aika", 
+                                         options = list(height = 600, width = 700))
 
 # Plot 
 plot(mchart.mun)
