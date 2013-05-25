@@ -17,7 +17,7 @@
 
 # Install and load sorvi package
 # Instructions in http://louhos.github.com/sorvi/asennus.html
-# This script is tested with sorvi version 0.2.13
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
 
 # Load required packages
