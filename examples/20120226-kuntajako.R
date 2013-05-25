@@ -1,35 +1,46 @@
 # Suomen kuntien yhdistäminen ja visualisointi uuden kuntajaon mukaisesti
 
-# Copyright (C) 2012 Leo Lahti ja Joona Lehtomäki
-# Contact: sorvi-commits@lists.r-forge.r-project.org
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Leo Lahti and Joona Lehtomäki.
+# Contact: <http://louhos.github.com/contact>. 
 # All rights reserved.
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License:
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This script was implemented with soRvi version 0.1.55
-
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
+
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("rgeos")')
+library(XML)
 library(rgeos)
 library(rgdal)
-if (!gpclibPermit()) { gpclibPermit() }
+library(maptools)
+if (!maptools::gpclibPermit()) { maptools::gpclibPermit() }
+
+
 
 # ----------------------------------------------
 
 # Lue nykyiset kuntarajat Maanmittauslaitoksen aineistosta
 # (C) MML 2011
-fi.kunnat <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
+fi.kunnat <- sorvi::LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
 
 # Länsi-Turunmaan nimi vaihtui Paraisiksi vuoden 2012 alusta,
 # lisää muutos dataan
-kunnat <- as.character(fi.kunnat$Kunta.FI)
-kunnat[[which(kunnat == "Länsi-Turunmaa")]] <- "Parainen"
-fi.kunnat$Kunta.FI <- factor(kunnat)
+# EDIT: Not needed anymore
+# kunnat <- as.character(fi.kunnat$Kunta.FI)
+# kunnat[[which(kunnat == "Länsi-Turunmaa")]] <- "Parainen"
+# fi.kunnat$Kunta.FI <- factor(kunnat)
 
 # ----------------------------------------------
 
@@ -39,26 +50,26 @@ kuntajako.file <- "uusi.kuntajako.tab"
 
 # Hae uusi kuntajako verkosta, ellei sitä ole määritelty työhakemistossa
 if (!kuntajako.file %in% dir()) {
-download.file("http://antagomir.github.com/louhos/files/uusi.kuntajako.tab",
-destfile = kuntajako.file)
+  download.file("http://antagomir.github.com/louhos/files/uusi.kuntajako.tab",
+  destfile = kuntajako.file)
 }
 
 lines <- readLines(kuntajako.file)
 
 uudet.kunnat <- list()
 for (li in lines) {
-if (!li == "") {
-uusi.kunta <- strsplit(li, "\\:")[[1]][[1]]
-yhdistyvat <- Strip(strsplit(strsplit(li, "\\:")[[1]][[2]], "\\,")[[1]])
-uudet.kunnat[[uusi.kunta]] <- yhdistyvat
-}
+  if (!li == "") {
+    uusi.kunta <- strsplit(li, "\\:")[[1]][[1]]
+    yhdistyvat <- Strip(strsplit(strsplit(li, "\\:")[[1]][[2]], "\\,")[[1]])
+    uudet.kunnat[[uusi.kunta]] <- yhdistyvat
+  }
 }
 
 map <- NULL
 for (i in 1:length(uudet.kunnat)) {
-uusi <- names(uudet.kunnat)[[i]]
-vanhat <- uudet.kunnat[[i]]
-map <- rbind(map, cbind(rep(uusi, length(vanhat)), vanhat))
+  uusi <- names(uudet.kunnat)[[i]]
+  vanhat <- uudet.kunnat[[i]]
+  map <- rbind(map, cbind(rep(uusi, length(vanhat)), vanhat))
 }
 map <- as.data.frame(map)
 colnames(map) <- c("Uusi", "Vanha")
@@ -82,7 +93,7 @@ uusi.kunta <- droplevels(map$Uusi[match(fi.kunnat$Kunta.FI, map$Vanha)])
 
 # Yhdista nykyisten kuntien alueet uusi.kunta-muuttujan
 # osoittamiin uusiin kuntiin
-reg <- unionSpatialPolygons(fi.kunnat, uusi.kunta, avoidGEOS = T)
+reg <- maptools::unionSpatialPolygons(fi.kunnat, uusi.kunta, avoidGEOS = T)
 
 # Nimea uudet kunnat taulukkoon
 attr <- data.frame(Uusi.kuntajako = names(reg))
@@ -90,32 +101,32 @@ attr <- data.frame(Uusi.kuntajako = names(reg))
 # ----------------------------------------------
 
 # Yhdista uudet alueet ja nimet / Merge into a SpatialPolygonsDataFrame
-uusi.kuntajako <- SpatialPolygonsDataFrame(reg, attr, match.ID = F)
+uusi.kuntajako <- sp::SpatialPolygonsDataFrame(reg, attr, match.ID = F)
 
 # ----------------------------------------------
 
 # Laske vakiluku uusille kunnille:
 # Hae kuntatason tilastoja:
-municipality.info <- GetMunicipalityInfo()
-vakiluku <- municipality.info[["Väkiluku 31.12.2010"]]
+municipality.info <- sorvi::GetMunicipalityInfo()
+vakiluku <- municipality.info[["Väkiluku 31.12.2012"]]
 names(vakiluku) <- rownames(municipality.info)
-uusi.vakiluku <- sapply(split(vakiluku[as.character(map$Vanha)], map$Uusi), sum)
+uusi.vakiluku <- sapply(split(vakiluku[as.character(map$Vanha)], map$Uusi), sum, na.rm=TRUE)
 uusi.kuntajako$Vakiluku <- uusi.vakiluku[as.character(uusi.kuntajako$Uusi.kuntajako)]
 
 # ----------------------------------------------
 
 # Visualisoi uusi kuntajako
-pic <- PlotShape(uusi.kuntajako, "Uusi.kuntajako", type = "discrete",
+pic <- sorvi::PlotShape(uusi.kuntajako, "Uusi.kuntajako", type = "discrete",
 main = "Uusi kuntajako", ncol = 12)
 
 # Vaihtoehtoinen visualisointi. Esitä uudet kunnat väreillä ja
 # näytä nykyiset kuntarajat viivoilla.
 fi.kunnat$uusi.kunta <- uusi.kunta
-pic2 <- PlotShape(fi.kunnat, "uusi.kunta", type = "discrete",
+pic2 <- sorvi::PlotShape(fi.kunnat, "uusi.kunta", type = "discrete",
 main = "Uusi kuntajako", ncol = 12)
 
 # Visualisoi uusien kuntien vakiluku
-pic3 <- PlotShape(uusi.kuntajako, "Vakiluku", type = "sequential",
+pic3 <- sorvi::PlotShape(uusi.kuntajako, "Vakiluku", type = "sequential",
        				 main = "Uusien kuntien vakiluku", 
 		palette = colorRampPalette(c("white", "blue"), space = "rgb"), 
 		colorkey = FALSE, ncol = 100)
@@ -132,6 +143,6 @@ png("uusi.kuntajako3.png"); print(pic3); dev.off()
 # Kirjoita uuden kuntajaon mukaiset rajat ESRI-shapefileen
 # HUOM: kirjoitus epäonnistuu, jos työhakemistossa on jo
 # ennestaan saman niminen shp-file
-writeOGR(uusi.kuntajako, "uudet_kunnat.shp", "uusi.kuntajako",
+rgdal::writeOGR(uusi.kuntajako, "uudet_kunnat.shp", "uusi.kuntajako",
 driver="ESRI Shapefile")
 
