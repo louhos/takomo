@@ -1,37 +1,33 @@
-# This script is posted to the Louhos-blog
-# http://louhos.wordpress.com
-# Copyright (C) 2008-2012 Juuso Parkkinen <juuso.parkkinen@gmail.com>. 
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen and Leo Lahti.
+# Contact: <http://louhos.github.com/contact>. 
 # All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License (keep this notice): 
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Install soRvi package
+# Install and load sorvi package
 # Instructions in http://louhos.github.com/sorvi/asennus.html
-# NOTE! This script has been udpated 26.12.2011 to use sorvi version 0.1.40!
-
-# Install and load necessary packages
-
-# Install only if package is not already available; speeds up
-if (!try(require("ggplot2")))  {
-  install.packages("ggplot2")
-  require(ggplot2)
-}
-
-# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
 
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("ggplot2")')
+library(ggplot2)
+
+
 # Get Oikotie myynnit data
-Oikotie <- GetOikotie()
+Oikotie <- sorvi::GetOikotie()
 hr.myynnit <- Oikotie$hr.myynnit
 
 # Get Lukio data
-Lukiot <- GetLukiot()
+Lukiot <- sorvi::GetLukiot()
 hr.lukiot <- Lukiot$hr.lukiot
 
 # Compute mean and median prices per square meter for each street - zip code combination
@@ -42,8 +38,8 @@ names(hri.dat) <- c("Postinumero", "Katu", "Hinta.keskiarvo", "Hinta.mediaani")
 
 ## Get Helsinki Map (use function 'ggooglemap' from earlier HS open 3 blogpost)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
-HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(theme_bw())
+HelsinkiMap <- sorvi::GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
+theme_set(sorvi::GetThemeMap())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
 hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
@@ -90,7 +86,7 @@ hr.lukiot2 <- subset(hr.lukiot, min(HelsinkiMap$lat) <= lat & lat <= max(Helsink
 hplot2 <- hplot + geom_point(data=hri.dat2, aes(x=Lon, y=Lat, colour=Hinta.mediaani), size=2.5, alpha=0.8)
 hplot2 <- hplot2 + scale_colour_gradient(low="blue", high="red")
 hplot2 <- hplot2 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, size=Keskiarvo))
-hplot2 <- hplot2 + scale_area(range=c(3,6), breaks=seq(15, 21, 2))
+hplot2 <- hplot2 + scale_size_area(range=c(3,6), breaks=seq(15, 21, 2))
 hplot2 <- hplot2 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), colour="white", size=2)
 hplot2 <- hplot2 + ggtitle("Pääkaupunkiseudun asuntojen neliöhinnat ja lukioiden paremmuus kartalla")
 ggsave("Helsinki_price_highschools_20111010_final.png", plot=hplot2, width=10, height=9)
