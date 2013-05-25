@@ -1,6 +1,16 @@
-# (C) Louhos 2011-2012 <louhos@googlegroups.com>. All rights reserved.
-# License: FreeBSD (keep this notice):
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Leo Lahti, Juuso Parkkinen and Joona Lehtomäki.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
+
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Tama tiedosto hakee Helsingin seudun ymparistopalvelujen (HSY)
 # avoimia aineistoja ja visualisoi niita paakaupunkiseudun kartalla.
@@ -8,29 +18,26 @@
 # http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx
 # http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf
 
-# Tama esimerkki on testattu sorvi-paketin versiolla 0.2.13
-# http://louhos.github.com/sorvi/asennus.html
-
-# Load soRvi open data toolkit
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
 
-# Install reshape package if needed
-if (!try(require(library(reshape)))) {
-  install.packages("reshape")
-  require(reshape)
-}
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("reshape")')
+library(reshape)
+
 
 # Hae HSY:n Vaestoruudukko-data shape-muodossa
-sp <- GetHSY("Vaestoruudukko")
+sp <- sorvi::GetHSY("Vaestoruudukko")
 
 ## Tutki sp-objektin sisaltoa
 print(head(as.data.frame(sp)))
 
 # Visualisoi Helsingin asukasjakauma
 at <-  c(seq(0, 2000, 250), Inf) # color palette breakpoints
-q <- PlotShape(sp, "ASUKKAITA", type = "oneway",
-at = at, ncol = length(at),
-main = "Helsingin asukasjakauma")
+q <- sorvi::PlotShape(sp, "ASUKKAITA", type = "oneway", at = at, 
+               ncol = length(at), main = "Helsingin asukasjakauma")
 
 # Tallenna kuva PNG-muodossa
 png("HSY.vaesto.png")
@@ -45,12 +52,12 @@ dev.off()
 # Download and preprocess HSY SeutuRAMAVA data
 # (C) HSY 2011; for data description see:
 # http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf
-sp <- GetHSY("SeutuRAMAVA")
+sp <- sorvi::GetHSY("SeutuRAMAVA")
 sp$VANHINRAKE <- as.integer(sp$VANHINRAKE)
 sp$VANHINRAKE[sp$VANHINRAKE == 999999999] <- NA
 at <- seq(1800, 2020, 10)
 palette <- colorRampPalette(c("blue", "gray", "red"), space = "rgb")
-q <- PlotShape(sp, "VANHINRAKE", type = "twoway",
+q <- sorvi::PlotShape(sp, "VANHINRAKE", type = "twoway",
 at = at, ncol = length(at),
 palette = palette,
 main = "Vanhimman rakennuksen rakennusvuosi")
@@ -88,7 +95,7 @@ keep <- apply(df, 1, function (x) {!all(x == 0)}) & !is.na(as.data.frame(sp)$NIM
 df <- df[keep,]
 rownames(df) <- as.character(as.data.frame(sp)[keep, "NIMI"])
 
-df <- rename(df, c(RAKERA_AS = "Rakenteilla (asuminen)", RAKERA_MUU = "Rakenteilla (muu)", KARA_AS = "Rakennettu (asuminen)", KARA_MUU = "Rakennettu (muu)"))
+df <- reshape::rename(df, c(RAKERA_AS = "Rakenteilla (asuminen)", RAKERA_MUU = "Rakenteilla (muu)", KARA_AS = "Rakennettu (asuminen)", KARA_MUU = "Rakennettu (muu)"))
 #df <- df/as.data.frame(sp)$YKSLKM
 df <- df[rev(order(rowSums(df), decreasing = TRUE)[1:50]),]
 df <- df[, c(4,3,2,1)]
@@ -117,7 +124,7 @@ keep <- !df$RAKERA_AS == 0 & !df$RAKERA_MUU == 0
 df <- df[keep, c("RAKERA_AS", "RAKERA_MUU")]
 rownames(df) <- as.data.frame(sp)[keep, "NIMI"]
 df <- df[rev(order(rowSums(df), decreasing = TRUE)[1:50]),]
-df <- rename(df, c(RAKERA_AS = "Asuminen", RAKERA_MUU = "Muu"))
+df <- reshape::rename(df, c(RAKERA_AS = "Asuminen", RAKERA_MUU = "Muu"))
 df <- df[, c("Muu", "Asuminen")]
 # display.brewer.all()
 FD.palette <- c("darkgray", "orange")
