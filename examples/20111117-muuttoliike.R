@@ -1,9 +1,8 @@
-# This script is posted to the Louhos-blog
-# http://louhos.wordpress.com
-# Copyright (C) 2008-2013 Louhos <louhos@googlegroups.com>. All rights reserved.
+# This script is part of the Louhos-project (http://louhos.github.com/)
 
-# Tested with sorvi version 0.2.13
-# http://louhos.github.com/sorvi/asennus.html
+# Copyright (C) 2010-2013 Juuso Parkkinen and Leo Lahti.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice):
@@ -13,28 +12,21 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Install soRvi package
+# Install and load sorvi package
 # Instructions in http://louhos.github.com/sorvi/asennus.html
-# NOTE! This script has been udpated 3.3.2013 to use latest sorvi version!
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
 
-a <- try(library(rworldmap)) 
-if (class(a) == "try-error") {
-  install.packages("rworldmap")
-  library(rworldmap)
-}
-
-a <- try(library(rworldxtra)) 
-if (class(a) == "try-error") {
-  install.packages("rworldxtra")
-  library(rworldxtra)
-}
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("rworldmap")')
+library(rworldmap)
+library(rworldxtra)
 
 # Load migration data for Finland
-migration.dat <- GetWorldbankMigration("Finland")
+migration.dat <- sorvi::GetWorldbankMigration("Finland")
 
 # Load worldmap
-worldmap <- getMap(resolution="li")
+worldmap <- rworldmap::getMap(resolution="li")
 
 ###############################################
 # Plot migration data for Finland on worldmap #
@@ -98,8 +90,7 @@ skip <- TRUE
 if (!skip) {
 
   # Load rgl library
-  a <- try(library("rgl")); 
-  if (class(a) == "try-error") {install.packages("rgl"); library("rgl")}
+  library(rgl)
   
   # Script copied from http://www.r-ohjelmointi.org/?p=906
   # Construct globe
