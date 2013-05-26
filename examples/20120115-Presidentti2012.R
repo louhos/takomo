@@ -1,16 +1,24 @@
 # Script for loading and analyzing Finnish Presidential election data from year 2012
-# Copyright (C) 2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License:
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
+
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This script was implemented with soRvi version 0.1.44
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.1.44
 library(sorvi)
+
 
 ###################################
 ## USING THE PRESIDENTTI2012 API ##
