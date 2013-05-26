@@ -1,6 +1,8 @@
-# This script is posted to the Louhos-blog
-# http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. All rights reserved.
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice):
@@ -10,22 +12,22 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Install and load required packages
-install.packages(c("sp", "ggplot2", "gridExtra", "mapproj"))
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
+library(sorvi)
+
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("sp")')
 library(sp)
 library(ggplot2)
 library(gridExtra)
 library(mapproj)
-# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
-library(sorvi)
+library(rgeos)
+
 
 # Load apurahat data
-apurahat <- GetApurahat()
-
-# Load maakuntakartta (need to permit the use of gpclib)
-# if (!gpclibPermitStatus())
-#   gpclibPermit()
-#maakuntakartta <- GetMaakuntainfo()
+apurahat <- sorvi::GetApurahat()
 
 # Load maakuntakartta-data
 con <- url("http://gadm.org/data/rda/FIN_adm2.RData", encoding="UTF-8")
@@ -39,7 +41,7 @@ levels(gadm@data$Maakunnat) <- c("KESKI-SUOMI", "KESKI-POHJANMAA", "ITÄ-UUSIMAA
 # Transform to ggplot2-format with fortify
 if (!gpclibPermitStatus())
   gpclibPermit()
-maakuntakartta <- fortify(gadm, region="Maakunnat")
+maakuntakartta <- ggplot2::fortify(gadm, region="Maakunnat")
 
 # Remove ITA-UUSIMAA
 maakuntakartta$id[maakuntakartta$id=="ITÄ-UUSIMAA"] <- "UUSIMAA"
@@ -49,7 +51,7 @@ maakuntakartta$id[maakuntakartta$id=="ITÄ-UUSIMAA"] <- "UUSIMAA"
 temp <- data.frame(maakunta=sort(unique(maakuntakartta$id)))
 
 # Get population for each province
-pop <- GetProvinceInfo()
+pop <- sorvi::GetProvinceInfo()
 temp$asukasluku <- pop[match(temp$maakunta, toupper(pop$Maakunta)), "Vakiluku"]
 maakuntakartta$asukasluku <- temp$asukasluku[match(maakuntakartta$id, temp$maakunta)]
 
@@ -65,31 +67,28 @@ top20.nimet <- henkilo.summat[order(henkilo.summat$x, decreasing=T)[1:20],1]
 top20 <- subset(henkilo.summat, henkilo.summat$Group.1 %in% top20.nimet)
 names(top20) <- c("Hakijan.nimi", "Myontosumma.EUR")
 top20$Hakijan.nimi <- reorder(factor(top20$Hakijan.nimi), top20$Myontosumma.EUR, sum)
-p1 <- ggplot(top20, aes(Hakijan.nimi, Myontosumma.EUR)) + geom_bar(fill="red")
+p1 <- ggplot(top20, aes(x=Hakijan.nimi, y=Myontosumma.EUR)) + geom_bar(fill="red", stat="identity")
 p1 <- p1 + coord_flip() + theme(axis.text.x=element_text(angle=-90, hjust=0)) + ggtitle("Top 20 apurahan saaneet")
 ggsave("top20.png", plot=p1)
 
 # Plot by province and year
 maakunta.summat <- aggregate(apurahat$Myontosumma.EUR, list(apurahat$Maakunta, apurahat$Vuosi), sum)
 names(maakunta.summat) <- c("Maakunta", "Vuosi", "Myontosumma.EUR")
-p2 <- ggplot(maakunta.summat, aes(x=Maakunta, y=Myontosumma.EUR, fill=factor(Vuosi))) + geom_bar(position="dodge")
+p2 <- ggplot(maakunta.summat, aes(x=Maakunta, y=Myontosumma.EUR, fill=factor(Vuosi))) + geom_bar(position="dodge", stat="identity")
 p2 <- p2 + coord_flip() + theme(axis.text.x=element_text(angle=-90, hjust=0)) + ggtitle("Apurahat maakunnittain summattuna")
-# p2 <- p2 + scale_y_continuous(formatter="comma")
 
 # Plot by class and year
 hakemusluokka.summat <- aggregate(apurahat$Myontosumma.EUR, list(apurahat$Hakemusluokka, apurahat$Vuosi), sum)
 names(hakemusluokka.summat) <- c("Hakemusluokka", "Vuosi", "Myontosumma.EUR")
-p3 <- ggplot(hakemusluokka.summat, aes(x=Hakemusluokka, y=Myontosumma.EUR, fill=factor(Vuosi))) + geom_bar(position="dodge")
+p3 <- ggplot(hakemusluokka.summat, aes(x=Hakemusluokka, y=Myontosumma.EUR, fill=factor(Vuosi))) + geom_bar(position="dodge", stat="identity")
 p3 <- p3 + coord_flip() + theme(axis.text.x=element_text(angle=-90, hjust=0)) + ggtitle("Apurahat hakemusluokittain summattuna")
-# p3 <- p3 + scale_y_continuous(formatter="comma")
 ggsave("hakemusluokat.png", plot=p3)
 
 # Plot by age and gender
 ikaryhma.summat <- aggregate(apurahat$Myontosumma.EUR, list(apurahat$Ikaryhma, apurahat$Sukupuoli), sum)
 names(ikaryhma.summat) <- c("Ikaryhma", "Sukupuoli", "Myontosumma.EUR")
-p4 <- ggplot(ikaryhma.summat, aes(x=Ikaryhma, y=Myontosumma.EUR, fill=Sukupuoli)) + geom_bar(position="dodge")
+p4 <- ggplot(ikaryhma.summat, aes(x=Ikaryhma, y=Myontosumma.EUR, fill=Sukupuoli)) + geom_bar(position="dodge", stat="identity")
 p4 <- p4 + coord_flip() + theme(axis.text.x=element_text(angle=-90, hjust=0)) + ggtitle("Apurahat ikaryhmittain")
-# p4 <- p4 + scale_y_continuous(formatter="comma")
 ggsave("ika_sukupuoli.png", plot=p4)
 
 # Plot age group vs. class
@@ -97,7 +96,7 @@ ika.vs.hakemus <- aggregate(apurahat$Myontosumma.EUR, list(apurahat$Hakemusluokk
 names(ika.vs.hakemus) <- c("Hakemusluokka", "Ikaryhma", "Myontosumma.EUR")
 p5 <- ggplot(ika.vs.hakemus, aes(Hakemusluokka, Ikaryhma)) + geom_point(aes(size=Myontosumma.EUR))# + geom_jitter()
 p5 <- p5 + coord_flip() + theme(axis.text.x=element_text(angle=-90)) + ggtitle("Apurahat, ikaryhma vs. hakemusluokka")
-p5 <- p5 + scale_area()
+p5 <- p5 + scale_size_area()
 ggsave("ikaryhma_vs_hakemusluokka.png", plot=p5)
 
 
