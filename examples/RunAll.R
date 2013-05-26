@@ -12,8 +12,12 @@ fixme.files <-  c("20120820-aihepiirianalyysi.R",
 # Files to SKIP from testing
 skip.files <- c(
   "20120205-presidentti2012analysis.R", # -> requires personal API key
-  "20120115-Presidentti2012.R" # -> requires personal API key
+  "20120115-Presidentti2012.R", # -> requires personal API key
+  "20120207-Presidentti2012_MotionCharts.R", # Takes ages?
+  "20120521-Kuntadata.R" # Takes ages?
 	   )
+
+
 
 fs <- setdiff(fs, c("RunAll.R", fixme.files, skip.files))
 

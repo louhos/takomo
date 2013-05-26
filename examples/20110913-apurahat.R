@@ -22,6 +22,8 @@ library(sorvi)
 library(sp)
 library(ggplot2)
 library(gridExtra)
+
+# install.packages("mapproj")
 library(mapproj)
 library(rgeos)
 
