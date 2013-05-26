@@ -2,20 +2,31 @@
 # from Helsingin Sanomat vaalikone 2012 at
 # http://www.vaalikone.fi/presidentti2012/
 
-# Copyright (C) 2011-2012 Leo Lahti and Juuso Parkkinen
-# Contact: sorvi-commits@lists.r-forge.r-project.org
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Leo Lahti and Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
 # All rights reserved.
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License:
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This script was implemented with soRvi version 0.1.47
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.1.47
 library(sorvi)
+
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("stats")')
+library(stats)
+library(reshape)
+
+
 
 ##########################################
 
@@ -29,8 +40,7 @@ puoluekanta.vs.ykkosehdokkaan.puolue <- data.frame(list(Puoluekanta = as.charact
 				     		YkkosehdokkaanPuolue = unlist(candidate.info[as.character(user.info$Ykkosehdokas), "party"])))
 
 # Ristiintaulukointi:
-library(stats)
-xtab <- xtabs(~ Puoluekanta + YkkosehdokkaanPuolue, data = puoluekanta.vs.ykkosehdokkaan.puolue)
+xtab <- stats::xtabs(~ Puoluekanta + YkkosehdokkaanPuolue, data = puoluekanta.vs.ykkosehdokkaan.puolue)
 
 # Muunna prosenteiksi (kullekin puoluekannalle ykkösehdokkaiden kannatusprosentit)
 xtab.relative <- t(xtab / rowSums(xtab)) # Ykkosehdokas vs puoluekanta
@@ -38,8 +48,7 @@ df <- as.data.frame(xtab.relative[1:8, 1:11])
 df$YkkosehdokkaanPuolue <- rownames(df)
 
 # Visualisoi
-library(reshape)
-dfm <- melt(df, id = c("YkkosehdokkaanPuolue"), variable = "Puoluekanta")
+dfm <- reshape::melt(df, id = c("YkkosehdokkaanPuolue"), variable = "Puoluekanta")
 p <- ggplot(dfm, aes(x = Puoluekanta, weight = value, fill = YkkosehdokkaanPuolue))
 p <- p + geom_bar(position="stack") + coord_flip() + ylab("") + opts(title = "Ykkösehdokkaan puolue")
 cbgFillPalette <- scale_fill_manual(values = c("black", "blue", "white", "brown", "yellow", "orange", "red", "green"))
