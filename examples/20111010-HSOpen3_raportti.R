@@ -86,7 +86,7 @@ hr.lukiot2 <- subset(hr.lukiot, min(HelsinkiMap$lat) <= lat & lat <= max(Helsink
 hplot2 <- hplot + geom_point(data=hri.dat2, aes(x=Lon, y=Lat, colour=Hinta.mediaani), size=2.5, alpha=0.8)
 hplot2 <- hplot2 + scale_colour_gradient(low="blue", high="red")
 hplot2 <- hplot2 + geom_point(data=hr.lukiot2, aes(x=lon, y=lat, size=Keskiarvo))
-hplot2 <- hplot2 + scale_size_area(range=c(3,6), breaks=seq(15, 21, 2))
+hplot2 <- hplot2 + scale_size_area(max_size=6, breaks=seq(15, 21, 2))
 hplot2 <- hplot2 + geom_text(data=hr.lukiot2, aes(x=lon, y=lat, label=Ranking), colour="white", size=2)
 hplot2 <- hplot2 + ggtitle("Pääkaupunkiseudun asuntojen neliöhinnat ja lukioiden paremmuus kartalla")
 ggsave("Helsinki_price_highschools_20111010_final.png", plot=hplot2, width=10, height=9)
