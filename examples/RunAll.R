@@ -5,9 +5,9 @@ fs <- list.files(pattern = ".R$")
 
 # Files TO FIX
 # See also testing.tmp
-fixme.files <-  c("20120820-aihepiirianalyysi.R", 
-		  "20120226-kuntajako.R", 
-		  "20110117-HRI.R") 
+fixme.files <-  c("20120820-aihepiirianalyysi.R")
+#		  "20120226-kuntajako.R", # toimii OS X:lla -Juuso
+#                  ) 
 
 # Files to SKIP from testing
 skip.files <- c(
