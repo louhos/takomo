@@ -5,9 +5,9 @@ fs <- list.files(pattern = ".R$")
 
 # Files TO FIX
 # See also testing.tmp
-fixme.files <-  c("20120820-aihepiirianalyysi.R")
-#		  "20120226-kuntajako.R", # toimii OS X:lla -Juuso
-#                  ) 
+fixme.files <-  c("20120820-aihepiirianalyysi.R",
+                  "20111206-HSY.R", "20120226-kuntajako.R") # Error in UseMethod("depth") : no applicable method for 'depth' applied to an object of class "NULL"
+
 
 # Files to SKIP from testing
 skip.files <- c(
