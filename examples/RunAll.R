@@ -11,18 +11,18 @@ fixme.files <-  c("20120820-aihepiirianalyysi.R")
 
 # Files to SKIP from testing
 skip.files <- c(
-  "20120205-presidentti2012analysis.R" # -> requires personal API key
-  "20120115-Presidentti2012.R", # -> requires personal API key
+  "20120205-presidentti2012analysis.R", # -> requires personal API key
+  "20120115-Presidentti2012.R" # -> requires personal API key
 	   )
 
 fs <- setdiff(fs, c("RunAll.R", fixme.files, skip.files))
 
 # Run all R files
-for (f in sample(fs)) { 
+# for (f in sample(fs)) { 
+for (f in fs) { 
   print(paste("Executing", f))
   source(f) 
-  rm(list = setdiff(ls(), "fs"))
-  
+  rm(list = setdiff(ls(), "fs"))  
 }
 
 

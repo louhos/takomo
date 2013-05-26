@@ -15,10 +15,10 @@ suppressWarnings(municipality.info <- GetMunicipalityInfo())
 print(names(municipality.info))
 
 # Plot example
-xvar <- "Valtionveronalaiset tulot, euroa/tulonsaaja  2010"
-yvar <- "Taajama-aste, % 1.1.2011"
-x <- municipality.info[[xvar]]
-y <- municipality.info[[yvar]]
+# xvar <- "Valtionveronalaiset tulot, euroa/tulonsaaja  2011"
+# yvar <- "Taajama-aste, % 1.1.2011"
+x <- municipality.info[[13]] #[[xvar]]
+y <- municipality.info[[3]]#[[yvar]]
 lab <- municipality.info[["Kunta"]]
 plot(x, y, type = "n", xlab = xvar, ylab = yvar, main = "Tulot vs. taajama-aste")
 text(x, y, labels = lab, cex = 0.8)
