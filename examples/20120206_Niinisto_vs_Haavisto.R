@@ -54,7 +54,7 @@ areas@data <- merge(areas@data, votes, by="Aluenumero")
 
 # Set the projection right and reproject to WS84
 areas@proj4string <- sp::CRS("+init=epsg:2392")
-areas <- sp::spTransform(areas, CRS("+proj=longlat +datum=WGS84"))
+areas <- spTransform(areas, CRS("+proj=longlat +datum=WGS84"))
 
 # Map the cities from code to name
 city.codes  <- list("091"="Helsinki", "049"="Espoo", "235"="Kauniainen", "092"="Vantaa")

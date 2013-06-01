@@ -1,4 +1,4 @@
-# (C) Louhos 2011-2013 / Leo
+# (C) Louhos 2011-2013 / Leo Lahti
 # simple sorvi helloworld example
 # This downloads municipality information data from statfi (Tilastokeskus)
 # and produces basic visualization
@@ -20,5 +20,13 @@ yvar <- 3 #"Taajama-aste, % 1.1.2011"
 x <- municipality.info[[xvar]]
 y <- municipality.info[[yvar]]
 lab <- municipality.info[["Kunta"]]
-plot(x, y, type = "n", xlab = names(municipality.info)[xvar], ylab = names(municipality.info)[yvar], main = "Tulot vs. taajama-aste")
-text(x, y, labels = lab, cex = 0.8)
+
+# Remove 'Koko maa'
+keep <- (!lab == "Koko maa")
+x <- x[keep]
+y <- y[keep]
+lab <- lab[keep]
+
+
+plot(log10(x), y, type = "n", xlab = paste(names(municipality.info)[xvar], "log10"), ylab = names(municipality.info)[yvar], main = "Tulot vs. taajama-aste")
+text(log10(x), y, labels = lab, cex = 0.8)
