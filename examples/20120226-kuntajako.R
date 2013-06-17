@@ -117,19 +117,19 @@ uusi.kuntajako$Vakiluku <- uusi.vakiluku[as.character(uusi.kuntajako$Uusi.kuntaj
 
 # Visualisoi uusi kuntajako
 pic <- sorvi::PlotShape(uusi.kuntajako, "Uusi.kuntajako", type = "discrete",
-main = "Uusi kuntajako", ncol = 12)
+main = "Uusi kuntajako", ncol = 12, plot=FALSE)
 
 # Vaihtoehtoinen visualisointi. Esitä uudet kunnat väreillä ja
 # näytä nykyiset kuntarajat viivoilla.
 fi.kunnat$uusi.kunta <- uusi.kunta
 pic2 <- sorvi::PlotShape(fi.kunnat, "uusi.kunta", type = "discrete",
-main = "Uusi kuntajako", ncol = 12)
+main = "Uusi kuntajako", ncol = 12, plot=FALSE)
 
 # Visualisoi uusien kuntien vakiluku
 pic3 <- sorvi::PlotShape(uusi.kuntajako, "Vakiluku", type = "sequential",
        				 main = "Uusien kuntien vakiluku", 
 		palette = colorRampPalette(c("white", "blue"), space = "rgb"), 
-		colorkey = FALSE, ncol = 100)
+		colorkey = FALSE, ncol = 100, plot=FALSE)
 
 # -----------------------------------------------
 

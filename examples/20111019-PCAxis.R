@@ -49,10 +49,9 @@ sp[["vaestonkasvu"]][is.na(sp[["vaestonkasvu"]])] <- 0
 varname <- "vaestonkasvu"
 int <- max(abs(sp[[varname]]))
 q <- sorvi::PlotShape(sp, varname, type = "twoway", main = "Väestönkasvu 2010",
-     			  	   at = seq(0 - int, 0 + int, length = 11))
+     			  	   at = seq(0 - int, 0 + int, length = 11), plot=FALSE)
 
-# png("vaestonkasvu.png")
-## jpeg("vaestonkasvu.jpg")
+png("vaestonkasvu.png")
 print(q)
-# dev.off()
+dev.off()
 

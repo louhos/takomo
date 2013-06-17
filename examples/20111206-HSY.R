@@ -37,7 +37,7 @@ print(head(as.data.frame(sp)))
 # Visualisoi Helsingin asukasjakauma
 at <-  c(seq(0, 2000, 250), Inf) # color palette breakpoints
 q <- sorvi::PlotShape(sp, "ASUKKAITA", type = "oneway", at = at, 
-               ncol = length(at), main = "Helsingin asukasjakauma")
+               ncol = length(at), main = "Helsingin asukasjakauma", plot=FALSE)
 
 # Tallenna kuva PNG-muodossa
 png("HSY.vaesto.png")
@@ -60,7 +60,7 @@ palette <- colorRampPalette(c("blue", "gray", "red"), space = "rgb")
 q <- sorvi::PlotShape(sp, "VANHINRAKE", type = "twoway",
 at = at, ncol = length(at),
 palette = palette,
-main = "Vanhimman rakennuksen rakennusvuosi")
+main = "Vanhimman rakennuksen rakennusvuosi", plot=FALSE)
 
 png("HSY.vanhinrakennus.png")
 print(q)

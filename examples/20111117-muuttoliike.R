@@ -73,11 +73,11 @@ cols.countries[mapping[!is.na(mapping)]] <- cols.rgb[!is.na(mapping)]
 cols.countries["Finland"] <- "black"
 
 # Plot the map with the final visualization
-q <- spplot(worldmap, "NAME", col.regions = cols.countries, main = NULL, colorkey = FALSE, lwd = .4, col = "black")
-#png("Finland_migration_20111116.png", width=2000, height=1000)
+q <- spplot(worldmap, "NAME", col.regions = cols.countries, main = NULL, colorkey = FALSE, lwd = .4, col = "black", plot=FALSE)
+png("Finland_migration_20111116.png", width=2000, height=1000)
 #par(mar=c(0,0,0,0))
 print(q)
-#dev.off()
+dev.off()
 
 ##########################################
 ## Plot the map on an interactive globe ##
