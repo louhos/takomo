@@ -5,14 +5,15 @@ fs <- list.files(pattern = ".R$")
 
 # Files TO FIX
 # See also testing.tmp
-fixme.files <-  c("20120820-aihepiirianalyysi.R",
-  		  "20111019-PCAxis.R", # Figure does not become visible?
-  		  "20111117-muuttoliike.R" # Figure does not become visible?
-  )
+fixme.files <-  c()
+#   		  "20111019-PCAxis.R", # Figure does not become visible?
+#   		  "20111117-muuttoliike.R" # Figure does not become visible?
+#   )
   
 
 # Files to SKIP from testing
 skip.files <- c(
+  "20120820-aihepiirianalyysi.R", # -> too complicated to run in a batch
   "20120205-presidentti2012analysis.R", # -> requires personal API key
   "20120115-Presidentti2012.R" # -> requires personal API key
 	   )
