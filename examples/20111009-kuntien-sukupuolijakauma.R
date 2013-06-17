@@ -47,10 +47,10 @@ at <- seq(0.5 - interval, 0.5 + interval, length = 100)
 
 # Piirra Suomen kartta varitettyna naisten suhteellisen osuuden nojalla
 q <- sorvi::PlotShape(gadm, varname, type = "twoway",
-at = at, main = "Naiset Suomen kunnissa")
+at = at, main = "Naiset Suomen kunnissa", plot=FALSE)
 
 # Save the Figure into a file:
-#png("Suomen.kuntien.sukupuolijakauma.png", width = 600, height = 600)
+png("Suomen.kuntien.sukupuolijakauma.png", width = 600, height = 600)
 print(q)
-#dev.off()
+dev.off()
 
