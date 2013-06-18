@@ -10,7 +10,9 @@ skip.files <- c(
   "20120115-Presidentti2012.R", # -> requires personal API key
   "20120226-kuntajako.R", # Error in rgdal::writeOGR(uusi.kuntajako, "uudet_kunnat.shp", "uusi.kuntajako",  : Creation of output file failed -> IN UBUNTU / LL
   "20120216-KunnatJaPresidentinvaali.R", # takes ages??
-  "20120521-Kuntadata.R"  # takes ages??
+  "20120521-Kuntadata.R",  # takes ages??
+  "20111005-HSOpen3_lammittely.R", #Error in download.file(url, destfile, mode = "wb", quiet = TRUE) : cannot open URL 'http://maps.google.com/maps/api/staticmap?center=60.2,24.93&zoom=11&size=640x640&maptype=Map&format=png32&sensor=true' In addition: Warning message: In download.file(url, destfile, mode = "wb", quiet = TRUE) : cannot open: HTTP status was '403 Forbidden'
+  "20111010-HSOpen3_raportti.R" # Error in download.file(url, destfile, mode = "wb", quiet = TRUE) :   cannot open URL 'http://maps.google.com/maps/api/staticmap?center=60.2,24.93&zoom=11&size=640x640&maptype=Map&format=png32&sensor=true'
 	   )
 
 
