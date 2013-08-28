@@ -15,7 +15,8 @@ skip.files <- c(
   "20111010-HSOpen3_raportti.R", # Error in download.file(url, destfile, mode = "wb", quiet = TRUE) :   cannot open URL 'http://maps.google.com/maps/api/staticmap?center=60.2,24.93&zoom=11&size=640x640&maptype=Map&format=png32&sensor=true'
   "20120629-MMLcoast.R", # Never completes..
   "20120911-MOT.R", # Never completes..
-  "20111023-oikotie.R" # Oikotie deprecated from sorvi
+  "20111023-oikotie.R", # Oikotie deprecated from sorvi
+  "20120920-FinlandCO2.R" # Never completes..
 	   )
 
 
