@@ -79,7 +79,7 @@ choices=c(
   mainPanel(
     tabsetPanel(
       tabPanel("Motion chart",h4("Vertaile indikaattoreita alueittain"),htmlOutput("motionchart")),
-      tabPanel("Kartta1",h4("Tarkastele indikaattoreita kartalla"),htmlOutput("map.gvis")),
+      tabPanel("Kartta1",h4("Tarkastele indikaattoreita kartalla"),h4(textOutput("map.status")), htmlOutput("map.gvis")),
       tabPanel("Kartta2",h4("Tarkastele indikaattoreita kartalla vuosittain"),plotOutput("map.ggplot", width="100%"))
       
     )

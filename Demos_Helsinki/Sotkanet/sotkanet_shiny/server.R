@@ -50,6 +50,14 @@ shinyServer(function (input, output) {
     return(mchart)
   })
   
+  output$map.status <- renderText({
+    status <- paste("Muuttuja:", input$map.indicator)
+    if (nrow(data.map.gvis())==0)
+      status <- paste(status, "VIRHE: ANNETULLE VUODELLE EI LÖYDY DATAA. VAIHDA VUOSI!")
+
+    return(status)
+  })
+  
   output$map.gvis <- renderGvis({
     map.df <- data.map.gvis()
     if (nrow(map.df)==0)
