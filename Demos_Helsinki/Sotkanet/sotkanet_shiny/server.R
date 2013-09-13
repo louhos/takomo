@@ -1,3 +1,19 @@
+# Shiny script
+
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2012-2013 Juuso Parkkinen and Leo Lahti.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
+
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
+# http://en.wikipedia.org/wiki/BSD_licenses
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 library(shiny)
 
 
