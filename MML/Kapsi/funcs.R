@@ -1,57 +1,38 @@
-GetMML <- function (map, url.list, remove.temporary.dir = FALSE) {
+GetMML <- function (url, tmp.dir) {
 
   require(maptools)
 
-  # Go through all resolutions/versions of this map
-  MML <- list()
-  for (version in names(url.list[[map]])) {
+  # Temporary file name
+  items <- unlist(strsplit(gsub("/", "--", url), "--")); 
+  local.zip <- items[[length(items)]]
+  local.zip <- paste(tmp.dir, local.zip, sep = "/")
 
-    # Pick the url
-    url <- url.list[[map]][[version]]
+  # Create temporary directory and zip file destination
+  if (length(dir(tmp.dir)) == 0) {
+    system(paste("mkdir ", tmp.dir))  
+  }
 
-    # Define temporary data directory and file
-    data.dir <- gsub(" ", "-", paste(map, "-", version, "-tmpdata.", date(), sep = ""))
-    tmp.file <- "tmp.zip"
+  # Download the zip file:
+  download.file(url, destfile = local.zip)
 
-    # Create temporary directory and zip file destination
-    if (length(dir(data.dir)) == 0) {
-      system(paste("mkdir ", data.dir))  
-    }
-    local.zip <- paste(data.dir, "/", tmp.file, sep = "")
+  # Unzip the downloaded zip file
+  unzip(local.zip, exdir = file.path(tmp.dir))
 
-    # Download the zip file:
-    download.file(url, destfile = local.zip)
+  # List the unzipped shape files
+  shape.files <- dir(tmp.dir, pattern = ".shp$")
 
-    # Unzip the downloaded zip file
-    unzip(local.zip, exdir = file.path(data.dir))
-
-    # Remove the temporary zip
-    system(paste("rm ", data.dir, "/", tmp.file, sep = ""))
-
-    # List the unzipped shape files
-    shape.files <- dir(data.dir, pattern = ".shp$")
-
-    shape.list <- list()
-    for (f in shape.files) {
+  shape.list <- list()
+  for (f in shape.files) {
  
-      # Read and preprocess shape file
-      message(paste(map, version, f)) 
-      fnam <- paste(data.dir, "/", f, sep = "")
-      sp <- maptools::readShapeSpatial(fnam)
-      shape.list[[f]] <- PreprocessShapeMML(sp)
-
-    }
-
-    # Remove the temporary dir
-    if (remove.temporary.dir) {
-      system(paste("rm -rf ", data.dir))
-    }
-
-    MML[[version]] <- shape.list
+    # Read and preprocess shape file
+    message(f)
+    fnam <- paste(tmp.dir, "/", f, sep = "")
+    sp <- maptools::readShapeSpatial(fnam)
+    shape.list[[f]] <- PreprocessShapeMML(sp)
 
   }
 
-  MML
+  list(shape.list = shape.list, zipfile = local.zip, tmp.dir = tmp.dir)
 
 }
 
@@ -73,34 +54,33 @@ GetMML <- function (map, url.list, remove.temporary.dir = FALSE) {
 #' @examples # 
 #' @keywords utilities
 
-ConvertMMLToRData <- function (MML, output.dir = "rdata/") {
+ConvertMMLToRData <- function (MML, output.dir) {
 
   if (length(dir(output.dir)) == 0) {
-    system(paste("mkdir", output.dir))
-  }
-
-  for (nam in names(MML)) {
-    for (item in names(MML[[nam]])) {
-      message(paste(nam, item))
-
-      sp <- MML[[nam]][[item]]    
-      
-      # Create the output dir if needed      
-      dnam <- paste(output.dir, nam, sep = "")
-      if (length(dir(dnam)) == 0) {
-        system(paste("mkdir ", dnam))
-      }
-
-      fnam <- paste(output.dir, nam, "/", item, ".RData", sep = "")
-      
-      # Save the data
-      message(paste("Saving data to ", fnam))
-      save(sp, file = fnam)
-
+    nams <- unlist(strsplit(gsub("/", "--", output.dir), "--"))
+    dir.orig <- getwd()
+    k <- 1
+    while (k <= length(nams)) {
+      system(paste("mkdir", nams[[k]]))
+      setwd(nams[[k]])
+      k <- k+1
     }
+    setwd(dir.orig)
   }
 
-  write("For documentation, see http://takomo/MML/Kapsi/README", file = paste(output.dir, "README", sep = ""))
+  for (item in names(MML)) {
+    message(item)
+
+    sp <- MML[[item]]    
+      
+    fnam <- paste(output.dir, item, ".RData", sep = "")
+    fnam <- gsub(".shp", "", fnam)
+
+    # Save the data
+    message(paste("Saving data to ", fnam))
+    save(sp, file = fnam)
+
+  }
 
   output.dir
 

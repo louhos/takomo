@@ -1,1 +1,12 @@
-For documentation, see http://
+14.11.2013 / antagomir; Contact: http://louhos.github.com/contact.html
+
+Convert key data files from MML (Land Survey Finland / Maanmittauslaitos) into RData files using this R script:
+source("kapsi2rdata.R")
+
+This will Download MML data (http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)
+from Kapsi server (http://kartat.kapsi.fi/) and convert it into RData format for fluent, light-weight access through various R tools.
+
+Some preprocessing is done to handle special characters and harmonize
+ambiguous Finnish/Swedish names. Follow the script for full details.
+
+The converted data sets are stored in the "rdata" folder.
