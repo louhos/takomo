@@ -1,7 +1,6 @@
 library(sorvi)
-#library(pxR)
+#i <- 0; save(i, file = "tmp.RData")
 #source("read.pxr.fix.R") # Fix read.px function
-# i <- 0; save(i, file = "tmp.RData")
 
 # --------------------------------------
 
@@ -9,9 +8,8 @@ library(sorvi)
 
 # For more information, see:
 # http://www.stat.fi/org/lainsaadanto/avoin_data.html
-
-urls <- list(statfi = "http://pxweb2.stat.fi/database/StatFin/StatFin_rap.csv",
-     	     eurostat = "http://pxweb2.stat.fi/database/Eurostat/Eurostat_rap.csv")
+urls <- list(statfi = list_statfi_files(),
+     	     eurostat = list_eurostat_files())
 
 # StatFi
 #tab <- read.csv(urls$statfi, sep = ";")
