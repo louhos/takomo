@@ -28,7 +28,8 @@ for (i in 1:length(px.urls)) {
 
   openingtest <- NULL
   px <- NULL
-  openingtest <- try(px <- sorvi::read.px(pxf))
+  openingtest <- try(df <- get_statfi(pxf, format = "px", verbose = TRUE))
+
 
   if (length(openingtest)==1 && (grep("cannot open the connection", openingtest) == 1 || substr(openingtest, 1, 5) == "Error") ) {
 
@@ -36,8 +37,6 @@ for (i in 1:length(px.urls)) {
       non.extant.files <- c(non.extant.files, pxf)
 
     } else {
-
-      df <- try(as.data.frame(px))
 
       if (!is.data.frame(df)) {
         pxf.errors <- c(pxf.errors, pxf)
@@ -56,9 +55,16 @@ system("mv tmp.RData statfi.screen.RData")
 
 # Statfi
 print(as.matrix(c(OK = length(pxf.ok), OKpercentage = length(pxf.ok)/length(px.urls), N = length(px.urls))))
-#OK           2193.0000000
-#OKpercentage    0.7837741
-#N            2798.0000000
+
+
+#dims <- list()
+#for (f in pxf.errors) {
+#  print(f)
+#
+#  tab <- read.csv(gsub(".px$", ".csv", f), fileEncoding = "latin1", sep = ";")
+#  dims[[f]] <- dim(tab)
+#}
+#sapply(dims, identity)
 
 
 # Eurostat
