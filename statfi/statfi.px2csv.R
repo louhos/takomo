@@ -1,7 +1,5 @@
 library(sorvi)
-#library(pxR)
-#source("read.pxr.fix.R") # Fix read.px function
-# i <- 0; save(i, file = "tmp.RData")
+source("read.pxr.fix.R") # Fix read.px function
 
 # --------------------------------------
 
@@ -9,54 +7,36 @@ library(sorvi)
 
 # For more information, see:
 # http://www.stat.fi/org/lainsaadanto/avoin_data.html
-
-urls <- list(statfi = "http://pxweb2.stat.fi/database/StatFin/StatFin_rap.csv",
-     	     eurostat = "http://pxweb2.stat.fi/database/Eurostat/Eurostat_rap.csv")
-
-# StatFi
-#tab <- read.csv(urls$statfi, sep = ";")
-
-# Eurostat
-tab <- read.csv(urls$eurostat, sep = ";")
-
-# Combine the tables
-#tab <- rbind(tab1, tab2)
+urls <- list(statfi = list_statfi_files(),
+     	     eurostat = list_eurostat_files())
 
 # --------------------------------------
 
-px.urls <- unique(as.character(tab$File))
+# STATFI
 
-load("tmp.RData")
+px.urls <- unique(urls$statfi$File)
 
-if (!exists("filesalreadyhandled")) { filesalreadyhandled <- c()}
 if (!exists("non.extant.files")) { non.extant.files <- c()}
 if (!exists("pxf.errors")) { pxf.errors <- c()}
 if (!exists("pxf.ok")) { pxf.ok <- c()}
 
-k <- max(i+1, 1) # Start from the latest point
-
-# --------------------------------------
-
-for (i in k:length(px.urls)) {
+for (i in 1:length(px.urls)) {
 
   pxf <- px.urls[[i]]
 
-  if (!pxf %in% filesalreadyhandled) {
+  print(c(i, pxf, length(px.urls)))
 
-    print(c(i, pxf, length(px.urls)))
+  openingtest <- NULL
+  px <- NULL
+  openingtest <- try(df <- get_statfi(pxf, format = "px", verbose = TRUE))
 
-    openingtest <- NULL
-    px <- NULL
-    openingtest <- try(px <- sorvi::read.px(pxf))
 
-    if (length(openingtest)==1 && (grep("cannot open the connection", openingtest) == 1 || substr(openingtest, 1, 5) == "Error") ) {
+  if (length(openingtest)==1 && (grep("cannot open the connection", openingtest) == 1 || substr(openingtest, 1, 5) == "Error") ) {
 
       print(paste("errors: ", pxf))
       non.extant.files <- c(non.extant.files, pxf)
 
     } else {
-
-      df <- try(as.data.frame(px))
 
       if (!is.data.frame(df)) {
         pxf.errors <- c(pxf.errors, pxf)
@@ -64,24 +44,28 @@ for (i in k:length(px.urls)) {
         pxf.ok <- c(pxf.ok, pxf)
       }
       
-    }
-
-    filesalreadyhandled <-  c(filesalreadyhandled, pxf)
-
-    save(i, filesalreadyhandled, non.extant.files, pxf.errors, pxf.ok, file = "tmp.RData")
-    gc()
   }
 
 }
 
 # ------------------------------------
 
-# mv tmp.RData statfi.screen.RData
+system("mv tmp.RData statfi.screen.RData")
 # mv tmp.RData eurostat.screen.RData
 
 # Statfi
-# c(length(pxf.ok), length(px.urls), length(pxf.ok)/length(px.urls))
-# 1989.0000000 2614.0000000    0.7609028
+print(as.matrix(c(OK = length(pxf.ok), OKpercentage = length(pxf.ok)/length(px.urls), N = length(px.urls))))
+
+
+#dims <- list()
+#for (f in pxf.errors) {
+#  print(f)
+#
+#  tab <- read.csv(gsub(".px$", ".csv", f), fileEncoding = "latin1", sep = ";")
+#  dims[[f]] <- dim(tab)
+#}
+#sapply(dims, identity)
+
 
 # Eurostat
 # c(length(pxf.ok), length(px.urls), length(pxf.ok)/length(px.urls))

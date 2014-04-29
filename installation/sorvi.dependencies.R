@@ -1,21 +1,29 @@
 # soRvi-paketin ja suositeltujen riippuvuuksien asennusskripti R-kielelle
 # Lisätietoa projektista: louhos.github.com/sorvi
 
-# (C) 2011-2012 Louhos (louhos.github.com). 
+# (C) 2011-2013 Louhos (louhos.github.com). 
 # All rights reserved.
-# <sorvi-commits@lists.r-forge.r-project.org>
+# <louhos@googlegroups.com>
 # License: FreeBSD (keep this notice).
 
 # Kayttoohjeet: 
 # 1) Asenna vaaditut jarjestelmariippuvuudet:
-#     http://sorvi.r-forge.r-project.org/asennus.html
+#     http://louhos.github.com/sorvi/asennus.html
 #
-# 2) Aja tama skripti R:n komentorivilta kirjoittamalla
-#    source("http://sorvi.r-forge.r-project.org/examples/sorvi.installation.R")
+# 2) Lataa ja aja tama skripti R:n komentorivilta:
 #    (asentaminen edellyttaa toimivaa verkkoyhteytta)
-#
+
+if (!require(devtools, quietly = quietly)) {try(install.packages("devtools"), silent = silent)}
+library(devtools) 
+install_github(repo = "sorvi", username = "louhos")
+       
+# Riippuvuuksien asentaminen.
 # HUOM: Mahdolliset virhekohdat ohitetaan automaattisesti. 
 #
+
+skip <- TRUE
+
+if (!skip) {
 
 # Suppress error messages during installation
 silent <- TRUE
@@ -47,16 +55,5 @@ if (!require(sp, quietly = quietly)) {try(install.packages("sp"), silent = silen
 if (!require(spdep, quietly = quietly)) {try(install.packages("spdep"), silent = silent)}
 if (!require(XLConnect, quietly = quietly)) {try(install.packages("XLConnect"), silent = silent)}
 if (!require(XML, quietly = quietly)) {try(install.packages("XML"), silent = silent)}
-#if (!require(, quietly = quietly)) {try(install.packages(""), silent = silent)}
 
-install.packages("sorvi", repos="http://R-Forge.R-project.org", type = "source", dependencies = TRUE)
-
-# This is a temporary solution for cases where the R-Forge host service has
-# service breaks
-#download.file(“http://roihu.info/temp/sorvi/sorvi_latest.tar.gz”, destfile = “sorvi_latest.tar.gz”)
-#install.packages(“sorvi_latest.tar.gz”)
-
-#if (!require(RBGL, quietly = quietly)) {
-#  source("http://www.bioconductor.org/biocLite.R")
-#  try(biocLite("RBGL"), silent = silent)
-#}
+}

@@ -1,5 +1,8 @@
-# This script is posted to the Louhos-blog (http://louhos.wordpress.com)
-# Copyright (C) 2010-2012 Louhos <louhos.github.com>. All rights reserved.
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen, Leo Lahti.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
 # it under the terms of the FreeBSD License (keep this notice):
@@ -8,6 +11,7 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 
 ###############
 ## READ DATA ##
@@ -92,8 +96,7 @@ load("data/Representatives_vs_words_matrix_preprocessed_20120813.RData")
 load("data/Rep-party_20120813.RData")
 
 # Use the 'topicmodels' package
-tmp <- try(library(topicmodels))
-if (tmp == "try-error") {install.packages("topicmodels"); library(topicmodels)}
+library(topicmodels)}
 
 # Use 20 topics. See package documentation for proper model selection.
 K <- 20

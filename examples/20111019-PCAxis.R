@@ -1,25 +1,29 @@
-# (C) 2011-2013 Louhos <louhos@googlegroups.com> All rights reserved.
-# License: FreeBSD, http://en.wikipedia.org/wiki/BSD_licenses
+# This script is part of the Louhos-project (http://louhos.github.com/)
 
-# Tama esimerkki on testattu sorvi-paketin versiolla 0.2.13
-# Asennusohjeet: http://louhos.github.com/sorvi/asennus.html
+# Copyright (C) 2010-2013 Leo Lahti.
+# Contact: <http://louhos.github.com/contact>. 
+# All rights reserved.
 
-# Esimerkki Suomen kuntatason vaestonkasvutilastojen (Tilastokeskus)
-# visualisoinnista Maanmittauslaitoksen karttadatalla (vuonna 2010)
+# This program is open source software; you can redistribute it and/or modify
+# it under the terms of the FreeBSD License (keep this notice):
+# http://en.wikipedia.org/wiki/BSD_licenses
 
-# NOTE: special characters have been found to cause failure in Windows
-# with certain data sets.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Lataa soRvi
-# http://louhos.github.com/sorvi
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
+
 
 ###############################################
 
 # Lue Suomen kuntarajat SpatialPolygon-muodossa
 # (C) Maanmittauslaitos 2011
 # http://www.maanmittauslaitos.fi/aineistot-palvelut/digitaaliset-tuotteet/ilmaiset-aineistot/hankinta
-sp <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
+sp <- sorvi::LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape") 
 
 #################################################
 
@@ -27,7 +31,7 @@ sp <- LoadMML(data.id = "kunta1_p", resolution = "1_milj_Shape_etrs_shape")
 # http://www.stat.fi/tup/statfin/index.html
 # PC Axis-muodossa ja muunna data.frameksi
 #px <- GetPXTilastokeskus("http://pxweb2.stat.fi/database/StatFin/vrm/synt/080_synt_tau_203_fi.px")
-px <- GetPXTilastokeskus("http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px")
+px <- sorvi::GetPXTilastokeskus("http://pxweb2.stat.fi/database/StatFin/vrm/muutl/080_muutl_tau_203.px")
 
 # Poimi taulukosta halutut tiedot
 vaestonkasvu <- subset(px, Väestönmuutos.ja.väkiluku == "Luonnollinen väestönlisäys" & Vuosi == 2010)
@@ -44,12 +48,10 @@ sp[["vaestonkasvu"]][is.na(sp[["vaestonkasvu"]])] <- 0
 # Piirra kuva
 varname <- "vaestonkasvu"
 int <- max(abs(sp[[varname]]))
-q <- PlotShape(sp, varname, type = "twoway",
-main = "Väestönkasvu 2010",
-at = seq(0 - int, 0 + int, length = 11))
+q <- sorvi::PlotShape(sp, varname, type = "twoway", main = "Väestönkasvu 2010",
+     			  	   at = seq(0 - int, 0 + int, length = 11), plot=FALSE)
 
-# png("vaestonkasvu.png")
-## jpeg("vaestonkasvu.jpg")
+png("vaestonkasvu.png")
 print(q)
-# dev.off()
+dev.off()
 

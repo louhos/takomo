@@ -1,30 +1,32 @@
-# This script is posted to the Louhos-blog
-# http://louhos.wordpress.com
-# Copyright (C) 2008-2011 Juuso Parkkinen <juuso.parkkinen@gmail.com>. 
+# This script is part of the Louhos-project (http://louhos.github.com/)
+
+# Copyright (C) 2010-2013 Juuso Parkkinen.
+# Contact: <http://louhos.github.com/contact>. 
 # All rights reserved.
 
 # This program is open source software; you can redistribute it and/or modify
-# it under the terms of the FreeBSD License (keep this notice): 
+# it under the terms of the FreeBSD License (keep this notice):
 # http://en.wikipedia.org/wiki/BSD_licenses
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# Tested with sorvi_0.1.97
-# http://louhos.github.com/sorvi
-
-# Install and load necessary packages
-install.packages(c("ggplot2", "gdata"))
-library(ggplot2)
-library(gdata)  
-# sorvi installation instructions: http://louhos.github.com/sorvi/asennus.html
+# Install and load sorvi package
+# Instructions in http://louhos.github.com/sorvi/asennus.html
+# This script is tested with sorvi version 0.2.27
 library(sorvi)
+
+# Load required packages
+# Remember to install required packages (e.g. 'install.packages("ggplot2")')
+library(XML)
+library(gdata)  
 
 # Get map of Helsinki (takes some time)
 Helsinki.center <- c(lon=24.93, lat = 60.20)
-HelsinkiMap <- GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
-theme_set(GetThemeMap())
+HelsinkiMap <- sorvi::GetStaticmapGoogleMaps(center = Helsinki.center, zoom = 11, maptype="Map", scale=1)
+library(ggplot2)
+theme_set(sorvi::GetThemeMap())
 hplot <- ggplot(HelsinkiMap, aes(x=lon, y=lat))
 hplot <- hplot + geom_tile(aes(fill=fill)) + scale_fill_identity(guide="none")
 hplot <- hplot + scale_x_continuous('Longitude') + scale_y_continuous('Latitude')
@@ -38,7 +40,7 @@ pienalue <- read.csv("http://dl.dropbox.com/u/792906/data/PKS_pienalue_piste.csv
 names(pienalue) <- c("lon", "lat", "Alue", "")
 
 # Get Oikotie myynnit data
-Oikotie <- GetOikotie()
+Oikotie <- sorvi::GetOikotie()
 hr.myynnit <- Oikotie$hr.myynnit
 
 # Compute average prices per square meter for Helsinki zip codes
@@ -53,7 +55,7 @@ names(Helsinki.m2.prices) <- c("Zip.code", "Price")
 
 # Load older housing pricing data to get Helsinki Zip codes (link to data obtained from Helsinki Region Infoshare)
 data.url <- "http://www.hel2.fi/tietokeskus/data/helsinki/helsingin_kaupungin_tilastollinen_vuosikirja_2009/3asuminen/3.24.xls"
-asuntodata <- read.xls(data.url, skip=5, header=T, fileEncoding="ISO-8859-1")
+asuntodata <- gdata::read.xls(data.url, skip=5, header=T, fileEncoding="ISO-8859-1")
 
 # Use only area and zip code information
 asuntodata <- asuntodata[-c(1,75,76),-(3:8)]
