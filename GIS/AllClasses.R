@@ -1,6 +1,6 @@
+library(XML)
+
 # WMSLayer ----------------------------------------------------------------
-
-
 setClass("WMSLayer", representation(name = "character",
                                     group = "character",
                                     layer = "character"))
