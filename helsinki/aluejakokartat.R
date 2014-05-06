@@ -29,9 +29,24 @@ names(data.list) <- data.list
 # Get first all spatial data objects
 aluejakokartat <- list(sp=lapply(data.list, function(dat) get_Helsinki_aluejakokartat(map.specifier=dat, data.dir="TEMPDIR")))
 
+# Remove TEMPDIR
+file.remove(file.path("TEMPDIR", dir("TEMPDIR")))
+file.remove("TEMPDIR")
+
 # Add also transformed dataframe objects
 aluejakokartat$df <- lapply(aluejakokartat$sp[1:7], function(dat) sp2df(sp=dat, region="Name"))
 aluejakokartat$df[["aanestysalue"]] <- sp2df(sp=aluejakokartat$sp$aanestysalue, region="Nimi")
 
 # Save 
-save(aluejakokartat, file="./helsinki/data/aluejakokartat.RData")
+filename <- "./data/aluejakokartat.rda"
+save(aluejakokartat, file=filename)
+
+# Resave with 'tools' to get better compression
+library(tools)
+checkRdaFiles(filename)
+#                                size ASCII compress version
+# ./data/aluejakokartat.RData 2580380 FALSE     gzip       2
+resaveRdaFiles(filename)
+checkRdaFiles(filename)
+#                                size ASCII compress version
+# ./data/aluejakokartat.RData 1081128 FALSE       xz       2
