@@ -29,6 +29,30 @@ names(data.list) <- data.list
 # Get first all spatial data objects
 aluejakokartat <- list(sp=lapply(data.list, function(dat) get_Helsinki_aluejakokartat(map.specifier=dat, data.dir="TEMPDIR")))
 
+# Declare Encoding to UTF-8
+# Following this: http://stackoverflow.com/questions/18837855/making-non-ascii-data-suitable-for-cran
+aluejakokartat$sp[1:7] <- lapply(aluejakokartat$sp[1:7], function(dat) {res=dat; res@data$Name =  as.character(res@data$Name); Encoding(res@data$Name) = "UTF-8"; res})
+aluejakokartat$sp$aanestysalue@data$Nimi <- as.character(aluejakokartat$sp$aanestysalue@data$Nimi)
+Encoding(aluejakokartat$sp$aanestysalue@data$Nimi) <- "UTF-8"
+
+
+# # Convert characters to ASCII (required by R packages)
+# # Converts to bytes, not optimal...
+# # To convert these back, needs first gsub for each character and then iconv
+# aluejakokartat$sp[1:7] <- lapply(aluejakokartat$sp[1:7], function(dat) {res=dat; res@data$Name = iconv(res@data$Name, from="UTF-8", to="ASCII", sub="byte"); res})
+# aluejakokartat$sp$aanestysalue@data$Nimi <- iconv(aluejakokartat$sp$aanestysalue@data$Nimi, from="UTF-8", to="ASCII", sub="byte")
+
+# # # Try to convert back
+# temp <- lapply(aluejakokartat$sp[1:7], function(dat) {res=dat; res@data$Name = gsub("<c3><96>", "ö", res@data$Name); res})
+# # temp2 <- lapply(temp, function(dat) {res=dat; res@data$Name = iconv(res@data$Name, from="ASCII", to="UTF-8", sub="byte"); res})
+# # temp3 <- lapply(temp, function(dat) {res=dat; res@data$Name = iconv(res@data$Name, from="US-ASCII", to="UTF-8"); res})
+# # temp3 <- lapply(temp, function(dat) {res=dat; res@data$Name = iconv(res@data$Name, from="ASCII", to="UTF-16"); res})
+
+# # Alternative
+# temp <- lapply(aluejakokartat$sp[1:7], function(dat) {res=dat; res@data$Name = iconv(res@data$Name, from="UTF-8", to="ASCII"); res})
+
+
+
 # Remove TEMPDIR
 file.remove(file.path("TEMPDIR", dir("TEMPDIR")))
 file.remove("TEMPDIR")
