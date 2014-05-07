@@ -13,14 +13,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 
-# Script for retrieving the 'aluejakokartat' data with the fingis package and saving for helsinki package.
+# Script for retrieving the 'aluejakokartat' data with the gisfin package and saving for helsinki package.
 # Script run on 6.5.2014.
 
-# Install fingis from github
+# Install gisfin from github
 install.packages("devtools")
 library(devtools)
-install_github(repo="fingis", username="ropengov")
-library(fingis)
+install_github(repo="gisfin", username="ropengov")
+library(gisfin)
 
 # Get list of aluejakokartat data
 data.list <- get_Helsinki_aluejakokartat()
