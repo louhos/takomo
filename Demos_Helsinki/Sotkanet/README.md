@@ -1,3 +1,5 @@
+# Sotkanet Shiny code moved [here](https://github.com/ouzor/sotkanet-shiny)!
+
 ### R code for Sotkanet: Alueellinen hyvinvointi -visualization
 
 See the Shipy app [here](http://spark.rstudio.com/ouzor/Sotkanet/)
