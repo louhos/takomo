@@ -1,1 +1,3 @@
-# Takomo repo for various stuff related to the [Louhos-project](louhos.github.io)
+# Takomo
+
+Repository for various stuff related to the [Louhos-project](http://louhos.github.io/)
