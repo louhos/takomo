@@ -489,7 +489,7 @@ sessionInfo()
 ##  [1] mapproj_1.2-2      maps_2.3-9         scales_0.2.4      
 ##  [4] stringr_1.0.0      rgeos_0.3-8        maptools_0.8-36   
 ##  [7] rgdal_0.9-2        sp_1.1-0           tidyr_0.2.0       
-## [10] ggplot2_1.0.1      countrycode_0.18   eurostat_1.1.9001 
+## [10] ggplot2_1.0.1      countrycode_0.18   eurostat_1.0.16   
 ## [13] knitr_1.10         scimapClient_0.2.1
 ## 
 ## loaded via a namespace (and not attached):
