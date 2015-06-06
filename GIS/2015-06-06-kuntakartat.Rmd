@@ -90,7 +90,7 @@ spplot(sp, zcol = "Sairastavuusindeksi2", colorkey = TRUE,
 
 Datan visualisointi Suomen kuntakartalla ggplot2-paketilla:
 
-```{r 20150606-mmlplot2, warning=FALSE, message=FALSE}
+```{r 20150606-mmlplot2, warning=FALSE, message=FALSE, fig.width=5, fig.height=10}
 # Get data frames
 df <- sp2df(sp)
 
@@ -116,7 +116,7 @@ print(p)
 
 Voit vaihtoehtoisesti käyttää aluedatan nopeaan visualisointiin räätälöityä wrapperiä. Tämä tuottaa ggplot2-objektin, jonka visualisointiparametreja voi halutessasi säätää lisää tarpeen mukaan:
 
-```{r 20150606-mmlplot2b, warning=FALSE, message=FALSE}
+```{r 20150606-mmlplot2b, warning=FALSE, message=FALSE, fig.width=5, fig.height=10}
 p <- region_plot(sp, color = "Sairastavuusindeksi", region = "kuntakoodi")
 print(p)
 ```
@@ -127,7 +127,7 @@ Karttojen vuorovaikutteiseen visualisointiin soveltuvat ainakin [rMaps](http://r
 
 Seuraava esimerkki tulostaa leaflet-paketin avulla selaimeen vuorovaikutteisen kuntakartan [Dmitry Poletaevin koodia mukaillen](https://github.com/finKeva/DataKuntakartalle/blob/master/dataKuntakartalle.r):
 
-```{r 20150606-leaflet, warning=FALSE, message=FALSE}
+```{r 20150606-leaflet, warning=FALSE, message=FALSE, eval=FALSE}
 # Define the region and color variables and title:
 region <- "kuntanimi"
 color <- "Sairastavuusindeksi"
