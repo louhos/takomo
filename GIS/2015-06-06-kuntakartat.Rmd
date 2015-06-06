@@ -125,7 +125,7 @@ print(p)
 
 Karttojen vuorovaikutteiseen visualisointiin soveltuvat ainakin [rMaps](http://rmaps.github.io/) ja [leaflet](https://rstudio.github.io/leaflet/)-paketit.
 
-Seuraava esimerkki tulostaa leaflet-paketin avulla selaimeen vuorovaikutteisen kuntakartan [Dmitry Poletaevin koodia mukaillen](https://github.com/finKeva/DataKuntakartalle/blob/master/dataKuntakartalle.r):
+Seuraava esimerkki tulostaa leaflet-paketin avulla selaimeen vuorovaikutteisen kuntakartan [Dmitry Poletaevin koodia mukaillen](https://github.com/finKeva/DataKuntakartalle/blob/master/dataKuntakartalle.r). Lopputulos muistuttaa [Dmitryn RPubs-esimerkkiä](http://rpubs.com/welxo88/kela_tth_IvsIIsuhde):
 
 ```{r 20150606-leaflet, warning=FALSE, message=FALSE}
 # Define the region and color variables and title:
@@ -149,9 +149,9 @@ p <- leaflet(data = sp) %>%
                 color = "#000000", 
                 weight = 1,
                 popup = state_popup)
-renderLeaflet(p)
+p		
 ```  
 
 
-Pakettien kehitys tapahtuu vapaaehtoispohjalta, ja pakettien toiminnallisuuteen, dokumentaatioon, tutoriaaliin tai liittyvät [kontribuutiot ovat tervetulleita](https://github.com/rOpenGov/gisfin). Julkaisemme mieluusti täydennyksiä tähän postaukseen sekä muita R-kielen käyttöä käsitteleviä blogikirjoituksia.
+rOpenGov-pakettien kehitys tapahtuu vapaaehtoispohjalta. Pakettien toiminnallisuuteen, dokumentaatioon, tutoriaaliin tai liittyvät [kontribuutiot ovat tervetulleita](https://github.com/rOpenGov/gisfin). Julkaisemme mieluusti täydennyksiä tähän postaukseen sekä muita R-kielen käyttöä käsitteleviä blogikirjoituksia.
 
