@@ -156,7 +156,9 @@ p <- leaflet(data = sp) %>%
                 color = "#000000", 
                 weight = 1,
                 popup = state_popup)
-p		
+
+# Open in browser
+print(p)
 ```
 
 
