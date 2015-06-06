@@ -156,7 +156,32 @@ p <- leaflet(data = sp) %>%
                 color = "#000000", 
                 weight = 1,
                 popup = state_popup)
-p
+renderLeaflet(p)
+```
+
+```
+function () 
+{
+    instance <- func()
+    if (!is.null(instance$elementId)) {
+        warning("Ignoring explicitly provided widget ID \"", 
+            instance$elementId, "\"; Shiny doesn't use them")
+    }
+    deps <- .subset2(instance, "dependencies")
+    deps <- lapply(htmltools::resolveDependencies(deps), shiny::createWebDependency)
+    payload <- c(createPayload(instance), list(deps = deps))
+    toJSON(payload)
+}
+<environment: 0xb34ed80>
+attr(,"class")
+[1] "shiny.render.function" "function"             
+attr(,"outputFunc")
+function (outputId, width = "100%", height = 400) 
+{
+    htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, 
+        height, "leaflet")
+}
+<environment: namespace:leaflet>
 ```
 
 
