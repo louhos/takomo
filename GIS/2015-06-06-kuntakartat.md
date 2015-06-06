@@ -88,33 +88,6 @@ spplot(sp, zcol = "Sairastavuusindeksi2", colorkey = TRUE,
 ![plot of chunk 20150606-mmlplot](figure/20150606-mmlplot-1.png) 
 
 
-Datan visualisointi Suomen kuntakartalla ggplot2-paketilla:
-
-
-```r
-# Get data frames
-df <- sp2df(sp)
-
-# Set map theme
-library(ggplot2)
-theme_set(get_theme_map())
-
-# Plot regions, add labels using the points data
-p <- ggplot(df, aes(x=long, y=lat)) + 
-  geom_polygon(aes(fill=Sairastavuusindeksi, group=kuntakoodi)) 
-
-# Add custom color scale
-p <- p + scale_fill_gradientn(breaks = seq(from = min(df$Sairastavuusindeksi),
-       	 			     to = max(df$Sairastavuusindeksi), by = 20),
-	colours = c("darkblue", "blue", "white", "red", "darkred"),
-	limits = range(df$Sairastavuusindeksi))
-
-print(p)
-```
-
-![plot of chunk 20150606-mmlplot2](figure/20150606-mmlplot2-1.png) 
-
-
 ### Nopea visualisointi
 
 Voit vaihtoehtoisesti käyttää aluedatan nopeaan visualisointiin räätälöityä wrapperiä. Tämä tuottaa ggplot2-objektin, jonka visualisointiparametreja voi halutessasi säätää lisää tarpeen mukaan:
@@ -129,9 +102,7 @@ print(p)
 
 ### Vuorovaikutteinen kuntakartta
 
-Karttojen vuorovaikutteiseen visualisointiin soveltuvat ainakin [rMaps](http://rmaps.github.io/) ja [leaflet](https://rstudio.github.io/leaflet/)-paketit.
-
-Seuraava esimerkki tulostaa leaflet-paketin avulla selaimeen vuorovaikutteisen kuntakartan [Dmitry Poletaevin koodia mukaillen](https://github.com/finKeva/DataKuntakartalle/blob/master/dataKuntakartalle.r). Lopputulos muistuttaa [Dmitryn RPubs-esimerkkiä](http://rpubs.com/welxo88/kela_tth_IvsIIsuhde):
+Karttojen vuorovaikutteiseen visualisointiin soveltuvat ainakin [rMaps](http://rmaps.github.io/) ja [leaflet](https://rstudio.github.io/leaflet/)-paketit. Seuraava esimerkki tulostaa leaflet-paketin avulla selaimeen vuorovaikutteisen kuntakartan [Dmitry Poletaevin koodia mukaillen](https://github.com/finKeva/DataKuntakartalle/blob/master/dataKuntakartalle.r). Lopputulos muistuttaa [Dmitryn RPubs-esimerkkiä](http://rpubs.com/welxo88/kela_tth_IvsIIsuhde):
 
 
 ```r
