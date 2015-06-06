@@ -92,7 +92,7 @@ spplot(sp, zcol = "Sairastavuusindeksi2", colorkey = TRUE,
 
 Voit vaihtoehtoisesti käyttää aluedatan nopeaan visualisointiin räätälöityä wrapperiä. Tämä tuottaa ggplot2-objektin, jonka visualisointiparametreja voi halutessasi säätää lisää tarpeen mukaan:
 
-```{r 20150606-mmlplot2b, warning=FALSE, message=FALSE, fig.width=7, fig.height=8}
+```{r 20150606-mmlplot2b, warning=FALSE, message=FALSE, fig.width=6, fig.height=7}
 p <- region_plot(sp, color = "Sairastavuusindeksi", region = "kuntakoodi")
 print(p)
 ```
