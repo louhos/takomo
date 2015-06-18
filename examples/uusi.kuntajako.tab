@@ -1,0 +1,69 @@
+Uusimaa-1: Helsinki, Espoo, Vantaa, Kauniainen, Sipoo
+Uusimaa-2: Tuusula, Kerava, Järvenpää, Nurmijärvi
+Uusimaa-3: Porvoo, Askola, Myrskylä, Loviisa, Lapinjärvi
+Uusimaa-4: Kirkkonummi, Inkoo, Siuntio
+Uusimaa-5: Lohja, Karjalohja, Nummi-Pusula, Siuntio
+Uusimaa-6: Raasepori, Hanko
+Uusimaa-7: Vihti, Karkkila
+Uusimaa-8: Mäntsälä, Pukkila, Pornainen
+Varsinais-Suomi-1: Turku, Kaarina, Raisio, Naantali, Lieto, Tarvasjoki, Aura, Rusko, Masku, Nousiainen, Mynämäki
+Varsinais-Suomi-2: Salo, Sauvo, Paimio, Marttila, Koski Tl, Somero
+Varsinais-Suomi-3: Loimaa, Oripää, Pöytyä
+Varsinais-Suomi-4: Uusikaupunki, Laitila, Kustavi, Taivassalo, Vehmaa
+Varsinais-Suomi-5: Parainen, Kemiönsaari
+Satakunta-1: Pori, Ulvila, Luvia, Nakkila, Harjavalta, Pomarkku, Merikarvia, Siikainen
+Satakunta-2: Rauma, Eurajoki, Pyhäranta
+Satakunta-3: Huittinen, Kokemäki, Punkalaidun
+Satakunta-4: Kankaanpää, Jämijärvi, Honkajoki, Lavia, Karvia
+Satakunta-5: Eura, Säkylä, Köyliö
+Kanta-Häme-1: Hämeenlinna, Hattula, Janakkala
+Kanta-Häme-2: Riihimäki, Hausjärvi, Loppi, Hyvinkää
+Kanta-Häme-3: Forssa, Humppila, Jokioinen, Tammela, Ypäjä
+Pirkanmaa-1: Tampere, Pirkkala, Lempäälä, Kangasala, Ylöjärvi, Vesilahti, Nokia, Orivesi
+Pirkanmaa-2: Mänttä-Vilppula, Ruovesi, Juupajoki
+Pirkanmaa-3: Kihniö, Parkano, Ikaalinen, Hämeenkyrö
+Pirkanmaa-4: Urjala, Akaa, Valkeakoski, Pälkäne
+Pirkanmaa-5: Sastamala, Kiikoinen
+Pirkanmaa-6: Punkalaidun, Huittinen, Kokemäki
+Päijät-Häme-1: Lahti, Asikkala, Hollola, Hämeenkoski, Kärkölä, Nastola, Orimattila, Padasjoki
+Päijät-Häme-2: Heinola, Hartola, Sysmä
+Kymenlaakso-1: Kouvola, Iitti
+Kymenlaakso-2: Hamina, Kotka, Miehikkälä, Pyhtää, Virolahti
+Etelä-Karjala-1: Lappeenranta, Taipalsaari, Lemi, Luumäki, Savitaipale, Imatra, Ruokolahti, Rautjärvi, Parikkala
+Etelä-Savo-1: Mikkeli, Ristiina, Hirvensalmi, Suomenniemi, Mäntyharju, Juva, Kangasniemi, Puumala, Pertunmaa
+Etelä-Savo-2: Savonlinna, Kerimäki, Enonkoski, Punkaharju, Sulkava, Rantasalmi
+Etelä-Savo-3: Varkaus, Joroinen, Heinävesi, Pieksämäki, Leppävirta
+Pohjois-Savo-1: Kuopio, Siilinjärvi, Maaninka, Tervo, Tuusniemi, Suonenjoki, Juankoski, Nilsiä, Kaavi, Rautalampi, Vesanto, Rautavaara
+Pohjois-Savo-2: Iisalmi, Sonkajärvi, Vieremä, Lapinlahti, Kiuruvesi, Keitele, Pielavesi
+Pohjois-Savo-3: Varkaus, Joroinen, Heinävesi, Pieksämäki
+Pohjois-Karjala-1: Joensuu, Ilomantsi, Kontiolahti, Liperi, Outokumpu, Polvijärvi
+Pohjois-Karjala-2: Nurmes, Valtimo, Lieksa, Juuka
+Pohjois-Karjala-3: Kitee, Tohmajärvi, Kesälahti, Rääkkylä
+Keski-Suomi-1: Hankasalmi, Joutsa, Jyväskylä, Laukaa, Luhanka, Muurame, Petäjävesi, Toivakka, Uurainen, Keuruu, Multia
+Keski-Suomi-2: Jämsä, Kuhmoinen
+Keski-Suomi-3: Karstula, Kannonkoski, Kivijärvi, Kyyjärvi, Saarijärvi, Kinnula
+Keski-Suomi-4: Konnevesi, Pihtipudas, Viitasaari, Äänekoski
+Etelä-Pohjanmaa-1: Seinäjoki, Ilmajoki, Jalasjärvi, Lapua, Isokyrö
+Etelä-Pohjanmaa-2: Kauhajoki, Kurikka, Isojoki, Karijoki, Teuva
+Etelä-Pohjanmaa-3: Kauhava, Evijärvi, Lappajärvi
+Etelä-Pohjanmaa-4: Alajärvi, Soini, Vimpeli
+Etelä-Pohjanmaa-5: Alavus, Kuortane, Töysä, Ähtäri, Virrat
+Pohjanmaa-1: Vaasa, Korsnäs, Laihia, Maalahti, Mustasaari, Vöyri, Vähäkyrö
+Pohjanmaa-2: Kristiinankaupunki, Kaskinen, Närpiö
+Pohjanmaa-3: Pietarsaari, Luoto, Pedersöre, Uusikaarlepyy
+Keski-Pohjanmaa-1: Kokkola, Halsua, Kannus, Kaustinen, Lestijärvi, Perho, Toholampi, Veteli, Kruunupyy
+Pohjois-Pohjanmaa-1: Oulu, Hailuoto, Ii, Kempele, Liminka, Lumijoki, Muhos, Pudasjärvi, Tyrnävä, Utajärvi, Vaala, Haukipudas, Kiiminki, Oulunsalo, Yli-Ii
+Pohjois-Pohjanmaa-2: Pyhäjoki, Raahe, Siikajoki, Vihanti
+Pohjois-Pohjanmaa-3: Alavieska, Kalajoki, Merijärvi, Oulainen, Sievi, Ylivieska
+Pohjois-Pohjanmaa-4: Haapajärvi, Haapavesi, Kärsämäki, Pyhäjärvi, Pyhäntä, Reisjärvi, Siikalatva, Nivala
+Pohjois-Pohjanmaa-5: Kuusamo, Taivalkoski, Posio
+Kainuu-1: Kajaani, Sotkamo, Paltamo, Ristijärvi, Vaala
+Kainuu-2: Suomussalmi, Hyrynsalmi, Puolanka
+Kainuu-3: Kuhmo
+Lappi-1: Rovaniemi, Ranua, Pello
+Lappi-2: Kemi, Tornio, Keminmaa, Tervola, Simo, Ylitornio
+Lappi-3: Kittilä, Enontekiö, Kolari, Muonio
+Lappi-4: Inari, Utsjoki
+Lappi-5: Kemijärvi, Pelkosenniemi, Savukoski, Salla
+Lappi-6: Sodankylä
+
