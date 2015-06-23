@@ -20,7 +20,7 @@ theme_set(theme_bw(24))
 Käytämme esimerkkinä kuntatason aineistojen visualisoinnissa
 sairastavuusindeksiä, jonka voi ladata [THL:n
 sotkanet-palvelusta](http://www.sotkanet.fi/sotkanet/fi/index) R:ään
-[sotkanet](https://github.com/rOpenGov/sotkanet)-paketilla.
+[sotkanet](https://github.com/rOpenGov/sotkanet)-paketilla. Jostain syystä sotkanet-portaalin indeksiä ei saa vuotta 2010 pitemmälle joten otetaan se:
 
 ```{r 20150606-sairastavuus, warning=FALSE, message=FALSE}
 # List all available indicators from THL Sotkanet
