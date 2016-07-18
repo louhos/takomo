@@ -1,0 +1,17 @@
+---
+output: html_document
+runtime: shiny
+---
+
+Test leaflet
+
+```{r}
+library(leaflet)
+library(shiny)
+sliderInput('n', 'Number of markers', min = 1, max = 100, value = 30, step = 1)
+renderLeaflet({
+  n = input$n
+  df = data.frame(lat = rnorm(n, 42), lng = rnorm(n, -93))
+  leaflet(df) %>% addTiles() %>% addMarkers()
+})
+```
